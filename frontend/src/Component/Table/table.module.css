@@ -1,0 +1,33 @@
+.tab_total{
+    border: 1px solid grey;
+    border-collapse: collapse;
+}
+.header{
+    color: #000;
+    font-size: 36px;
+    font-family: Inter;
+    font-weight: 700;
+}
+
+.tab{
+    float: left;
+    padding: 20px;
+  }
+
+.tdTime{
+    border: 1px solid grey;
+    width: 100px;
+    height: 10px;
+}
+
+.tdClient{
+    border: 1px solid grey;
+    width: 200px;
+    height: 10px;
+}
+
+.tdSevice{
+    border: 1px solid grey;
+    width: 300px;
+    height: 10px;
+}
