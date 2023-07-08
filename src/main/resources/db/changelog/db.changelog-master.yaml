@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/db.changelog.yaml
+  - changeSet:
+      id: 1
+      author: postgres
+      changes:
+        - createTable:
+            tableName: user
+            columns:
+              - column:
+                  name: userId
+                  type: integer
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: userName
+                  type: varchar
+              - column:
+                  name: userCompany
+                  type: varchar
+              - column:
+                  name: userPhoneNumber
+                  type: varchar
+              - column:
+                  name: userProfession
+                  type: varchar
+              - column:
+                  name: userRole
+                  type: varchar
+              - column:
+                  name: userAccessed1
+                  type: integer
+              - column:
+                  name: userAccessed2
+                  type: integer
+        - addAutoIncrement:
+            catalogName: cat
+            columnDataType: int
+            columnName: userId
+            defaultOnNull: false
+            generationType: ALWAYS
+            incrementBy: 1
+            schemaName: public
+            startWith: 1
+            tableName: user

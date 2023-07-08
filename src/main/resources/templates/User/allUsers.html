@@ -5,8 +5,9 @@
     <title>Все пользователи</title>
 </head>
 <body>
-<div th:each = "user: ${AllUsers}">
-    <a th:href = "@{users/{id}(id=${user.getUserId()})}" th:text = "${user.getUserId()} + ' ' + ${user.getUserName()}" >user</a>
+<div th:each="user: ${allUsers}">
+    <a th:href="@{users/{id}(id=${user.getUserId()})}"
+       th:text="${user.getUserId()} + ' ' + ${user.getUserName()}">user</a>
 </div>
 <br/>
 <a href="users/new">New User</a>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://thymeleaf.org ">
+<head>
+    <meta charset="UTF-8">
+    <title>New User</title>
+</head>
+<body>
+<form th:method="POST" th:action="@{/users}" th:object="${user}">
+    <label for="UserId">Enter UserId: </label>
+    <input type="text" th:field="*{userId}" id="UserId">
+    <br/>
+    <label for="UserName">Enter UserName: </label>
+    <input type="text" th:field="*{userName}" id="UserName">
+    <div style = "color:red" th:if="${#fields.hasErrors('userName')}" th:errors = "*{userName}">UserName Errors</div>
+    <br/>
+    <label for="userCompany">Enter userCompany: </label>
+    <input type="text" th:field="*{userCompany}" id="userCompany">
+    <div style = "color:red" th:if="${#fields.hasErrors('userCompany')}" th:errors = "*{userCompany}">userCompany Errors</div>
+    <br/>
+    <label for="userPhoneNumber">Enter userPhoneNumber: </label>
+    <input type="text" th:field="*{userPhoneNumber}" id="userPhoneNumber">
+    <div style = "color:red" th:if="${#fields.hasErrors('userPhoneNumber')}" th:errors = "*{userPhoneNumber}">userPhoneNumber Errors</div>
+    <br/>
+    <label for="userProfession">Enter userProfession: </label>
+    <input type="text" th:field="*{userProfession}" id="userProfession">
+    <div style = "color:red" th:if="${#fields.hasErrors('userProfession')}" th:errors = "*{userProfession}">userProfession Errors</div>
+    <br/>
+    <label for="userRole">Enter userRole: </label>
+    <input type="text" th:field="*{userRole}" id="userRole">
+    <div style = "color:red" th:if="${#fields.hasErrors('userRole')}" th:errors = "*{userRole}">userRole Errors</div>
+    <br/>
+    <label for="userAccessed1">Enter userAccessed1: </label>
+    <input type="text" th:field="*{userAccessed1}" id="userAccessed1">
+    <div style = "color:red" th:if="${#fields.hasErrors('userAccessed1')}" th:errors = "*{userAccessed1}">userAccessed1 Errors</div>
+    <br/>
+    <label for="userAccessed2">Enter userAccessed2: </label>
+    <input type="text" th:field="*{userAccessed2}" id="userAccessed2">
+    <div style = "color:red" th:if="${#fields.hasErrors('userAccessed2')}" th:errors = "*{userAccessed2}">userAccessed2 Errors</div>
+    <br/>
+    <input type="submit" value="Create!">
+</form>
+</body>
+</html>

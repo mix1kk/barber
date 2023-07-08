@@ -26,4 +26,17 @@ public class UserService {
     public Optional <User> findById(Integer userId) {
         return userRepository.findById(userId);
     }
+
+    public void save(User user) {
+        userRepository.save(user);
+    }
+
+    public void update(int id, User user) {
+        user.setUserId(id);
+        userRepository.save(user);
+    }
+
+    public void delete(int id) {
+        userRepository.deleteById(id);
+    }
 }
