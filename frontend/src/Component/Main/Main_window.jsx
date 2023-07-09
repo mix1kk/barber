@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import React from "react";
-import Table from "../Table/table";
+import TableContainer from "../Table/tableContainer";
 //import cs from './main_window.module.css'
 
 function Main(){
@@ -13,8 +13,7 @@ function Main(){
     
     return(
         <div >
-            <Table data = {master}/>
-            <Table data = {master}/>            
+            <TableContainer/>    
         </div>
     )
 }

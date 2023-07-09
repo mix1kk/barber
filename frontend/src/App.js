@@ -1,10 +1,15 @@
+import { Provider } from 'react-redux';
 import './App.css';
 import Main from './Component/Main/Main_window';
+import store from './Redux/Redux-Store';
 
 function App() {
   return (
     <div>
-      <Main/>
+      <Provider store = {store}>
+        <Main/>
+      </Provider>
+      
     </div>
   );
 }
