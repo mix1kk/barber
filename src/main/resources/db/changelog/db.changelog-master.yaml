@@ -42,6 +42,15 @@ databaseChangeLog:
                   name: picture
                   type: varchar
               - column:
+                  name: createdAt
+                  type: varchar
+              - column:
+                  name: updatedAt
+                  type: varchar
+              - column:
+                  name: updatedBy
+                  type: varchar
+              - column:
                   name: spare1
                   type: varchar
               - column:
@@ -102,3 +111,78 @@ databaseChangeLog:
             schemaName: public
             startWith: 1
             tableName: line
+  - changeSet:
+      id: 3
+      author: postgres
+      changes:
+        - createTable:
+            tableName: client
+            columns:
+              - column:
+                  name: clientId
+                  type: integer
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: clientName
+                  type: varchar
+              - column:
+                  name: userId
+                  type: integer
+              - column:
+                  name: companyName
+                  type: varchar
+              - column:
+                  name: clientPhoneNumber
+                  type: varchar
+              - column:
+                  name: clientEmail
+                  type: varchar
+        - addAutoIncrement:
+            catalogName: cat
+            columnDataType: int
+            columnName: clientId
+            defaultOnNull: false
+            generationType: ALWAYS
+            incrementBy: 1
+            schemaName: public
+            startWith: 1
+            tableName: client
+  - changeSet:
+      id: 4
+      author: postgres
+      changes:
+        - createTable:
+            tableName: procedure
+            columns:
+              - column:
+                  name: procedureId
+                  type: integer
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: procedureName
+                  type: varchar
+              - column:
+                  name: procedureDuration
+                  type: varchar
+              - column:
+                  name: userId
+                  type: integer
+              - column:
+                  name: companyName
+                  type: varchar
+        - addAutoIncrement:
+            catalogName: cat
+            columnDataType: int
+            columnName: procedureId
+            defaultOnNull: false
+            generationType: ALWAYS
+            incrementBy: 1
+            schemaName: public
+            startWith: 1
+            tableName: procedure

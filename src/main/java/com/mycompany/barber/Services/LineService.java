@@ -1,6 +1,6 @@
 package com.mycompany.barber.Services;
 
-import com.mycompany.barber.Models.HttpMessages.Line;
+import com.mycompany.barber.Models.Line;
 import com.mycompany.barber.Repository.LineRepository;
 import com.mycompany.barber.Utils.Line.LineNotFoundException;
 import jakarta.transaction.Transactional;

@@ -12,18 +12,18 @@ import org.springframework.stereotype.Component;
 @Table
 public class Client {
     @Id
-    @Column(name = "clientId")
+    @Column(name = "\"clientId\"")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int clientId;
-    @Column
+    @Column(name = "\"clientName\"")
     private String clientName;
-    @Column
+    @Column(name = "\"userId\"")
     private int userId;//id пользователя, который завел клиента
-    @Column
+    @Column(name = "\"companyName\"")
     private String companyName;//название компании, которая завела клиента в базу
-    @Column
+    @Column(name = "\"clientPhoneNumber\"")
     private String clientPhoneNumber;
-    @Column
+    @Column(name = "\"clientEmail\"")
     private String clientEmail;
 
 }

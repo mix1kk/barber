@@ -43,6 +43,12 @@ public class User {
     private String email;
     @Column(name = "\"picture\"")
     private String picture;
+    @Column(name = "\"createdAt\"")
+    private String createdAt;
+    @Column(name = "\"updatedAt\"")
+    private String updatedAt;
+    @Column(name = "\"updatedBy\"")
+    private String updatedBy;
     @Column(name = "\"spare1\"")
     private String spare1;
     @Column(name = "\"spare2\"")
@@ -59,6 +65,9 @@ public class User {
         this.password = "password";
         this.email = "email@email.com";
         this.picture = "url";
+        this.createdAt = "createdAt";
+        this.updatedAt = "updatedAt";
+        this.updatedBy = "updatedBy";
         this.spare1 = "spare1";
         this.spare2 = "spare2";
     }

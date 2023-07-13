@@ -12,15 +12,15 @@ import org.springframework.stereotype.Component;
 @Setter
 public class Procedure {
     @Id
-    @Column(name = "procedureId")
+    @Column(name = "\"procedureId\"")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int procedureId;
-    @Column
+    @Column(name = "\"procedureName\"")
     private String procedureName;
-    @Column
+    @Column(name = "\"procedureDuration\"")
     private String procedureDuration;
-    @Column
+    @Column(name = "\"userId\"")
     private int userId;
-    @Column
+    @Column(name = "\"companyName\"")
     private String companyName;
 }

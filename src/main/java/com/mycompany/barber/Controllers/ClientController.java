@@ -1,9 +1,8 @@
 package com.mycompany.barber.Controllers;
 
-import com.mycompany.barber.Models.Line;
-import com.mycompany.barber.DTO.Record;
-import com.mycompany.barber.Services.LineService;
-import com.mycompany.barber.Services.UserService;
+import com.mycompany.barber.Models.Client;
+import com.mycompany.barber.Models.User;
+import com.mycompany.barber.Services.ClientService;
 import com.mycompany.barber.Utils.User.UserErrorResponse;
 import com.mycompany.barber.Utils.User.UserNotCreatedException;
 import com.mycompany.barber.Utils.User.UserNotFoundException;
@@ -16,30 +15,34 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 @RestController
-@RequestMapping("/records")
-public class RecordController {
-    private final LineService lineService;
-    private final UserService userService;
-
+@RequestMapping("/clients")
+public class ClientController {
+    private final ClientService clientService;
 
     @Autowired
-    public RecordController(LineService lineService, UserService userService) {
-        this.lineService = lineService;
-        this.userService = userService;
+    public ClientController(ClientService clientService) {
+        this.clientService = clientService;
     }
-    @GetMapping("/{userId}")
-    public Record getAllRecordsForUser(@PathVariable int userId){
-        return new Record(userService.findById(userId).getUserName(),"date",lineService.findAll(userId));
+
+    @GetMapping()
+    public List<Client> allClientsForUser() {
+        return clientService.findAll();
+    }//TODO: Сделать сортировку по юзеру
+
+    @GetMapping("/{id}")
+    public Client singleClient(@PathVariable int id) {
+        return clientService.findById(id);
     }
+
     @ExceptionHandler
     private ResponseEntity<UserErrorResponse> handleException(UserNotFoundException e) {
-        UserErrorResponse response = new UserErrorResponse("User not exist", System.currentTimeMillis());
+        UserErrorResponse response = new UserErrorResponse("Client not exist", System.currentTimeMillis());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
-    @PostMapping("/{userId}")
-    public ResponseEntity<HttpStatus> addLine (@RequestBody @Valid Line line, BindingResult bindingResult, @PathVariable int userId) {
+
+    @PostMapping()
+    public ResponseEntity<HttpStatus> create(@RequestBody @Valid Client client, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             StringBuilder errorMsg = new StringBuilder();
             List<FieldError> errors = bindingResult.getFieldErrors();
@@ -49,9 +52,7 @@ public class RecordController {
             System.out.println(errorMsg);
             throw new UserNotCreatedException(errorMsg.toString());
         }
-        line.setUserId(userId);
-        line.setUserCompany(userService.findById(userId).getUserCompany());
-        lineService.save(line);
+        clientService.save(client);
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @ExceptionHandler

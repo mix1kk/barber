@@ -1,5 +1,6 @@
-package com.mycompany.barber.Models.HttpMessages;
+package com.mycompany.barber.DTO;
 
+import com.mycompany.barber.Models.Line;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
@@ -20,7 +21,6 @@ public class Record {
         this.date       =    "date";
         this.userRecords = new ArrayList<>(Arrays.asList(new Line())) ;
     }
-
     public Record(String userName, String date, List<Line> userRecords) {
         this.userName = userName;
         this.date = date;

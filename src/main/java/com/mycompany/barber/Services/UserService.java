@@ -28,6 +28,7 @@ public class UserService {
     }
 
     public void save(User user) {
+        fillUser(user);
         userRepository.save(user);
     }
 
@@ -38,5 +39,11 @@ public class UserService {
 
     public void delete(int id) {
         userRepository.deleteById(id);
+    }
+
+    private void fillUser(User user){
+    user.setCreatedAt(String.valueOf(System.currentTimeMillis()));
+    user.setUpdatedAt(String.valueOf(System.currentTimeMillis()));
+    user.setUpdatedBy(user.getUserName());//TODO: сделать запись имени того, кто изменил поле
     }
 }

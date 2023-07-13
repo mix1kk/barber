@@ -1,4 +1,4 @@
-package com.mycompany.barber.Models.HttpMessages;
+package com.mycompany.barber.Models;
 
 import jakarta.persistence.*;
 import lombok.Getter;

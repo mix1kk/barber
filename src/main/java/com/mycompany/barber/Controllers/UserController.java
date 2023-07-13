@@ -1,40 +1,44 @@
 package com.mycompany.barber.Controllers;
 
 
+import com.mycompany.barber.DTO.UserDTO;
 import com.mycompany.barber.Models.*;
 import com.mycompany.barber.Services.UserService;
 import com.mycompany.barber.Utils.User.UserErrorResponse;
 import com.mycompany.barber.Utils.User.UserNotCreatedException;
 import com.mycompany.barber.Utils.User.UserNotFoundException;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ModelMapper modelMapper) {
         this.userService = userService;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping()
-    public List<User> allUsers() {
-        return userService.findAll();
+    public List<UserDTO> allUsers() {
+        return userService.findAll().stream().map(this::convertToUserDTO).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public User singleUser(@PathVariable int id) {
-        return userService.findById(id);
+    public UserDTO singleUser(@PathVariable int id) {
+        return convertToUserDTO(userService.findById(id));
     }
 
     @ExceptionHandler
@@ -49,7 +53,7 @@ public class UserController {
 //    }
 
     @PostMapping()
-    public ResponseEntity<HttpStatus> create(@RequestBody @Valid User user, BindingResult bindingResult) {
+    public ResponseEntity<HttpStatus> create(@RequestBody @Valid UserDTO userDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             StringBuilder errorMsg = new StringBuilder();
             List<FieldError> errors = bindingResult.getFieldErrors();
@@ -59,9 +63,10 @@ public class UserController {
             System.out.println(errorMsg);
             throw new UserNotCreatedException(errorMsg.toString());
         }
-        userService.save(user);
+        userService.save(convertToUser(userDTO));
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
     @ExceptionHandler
     private ResponseEntity<UserErrorResponse> handleException(UserNotCreatedException e) {
         UserErrorResponse response = new UserErrorResponse(e.getMessage(), System.currentTimeMillis());
@@ -87,4 +92,12 @@ public class UserController {
 //        userService.delete(id);
 //        return "redirect:/users";
 //    }
+
+    private User convertToUser(UserDTO userDTO) {
+        return modelMapper.map(userDTO, User.class);
+    }
+
+    private UserDTO convertToUserDTO(User user) {
+        return modelMapper.map(user, UserDTO.class);
+    }
 }
