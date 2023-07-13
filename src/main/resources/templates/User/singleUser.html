@@ -11,8 +11,9 @@
 <div th:text="'userPhoneNumber: ' +${user.getUserPhoneNumber()}"></div>
 <div th:text="'userProfession: ' +${user.getUserProfession()}"></div>
 <div th:text="'userRole: ' +${user.getUserRole()}"></div>
-<div th:text="'userAccessed1: ' +${user.getUserAccessed1()}"></div>
-<div th:text="'userAccessed2: ' +${user.getUserAccessed1()}"></div>
+<div th:text="'usersAccessed: ' +${user.getUsersAccessed()}"></div>
+<div th:text="'password: ' +${user.getPassword()}"></div>
+<div th:text="'picture: ' +${user.getPicture()}"></div>
 
 <a th:href="@{/users/{id}/edit (id = ${user.getUserId()})}">Edit</a>
 <form th:method="DELETE" th:action="@{/users/{id} (id = ${user.getUserId()})}">

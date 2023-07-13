@@ -2,12 +2,12 @@ package com.mycompany.barber.Services;
 
 import com.mycompany.barber.Models.User;
 import com.mycompany.barber.Repository.UserRepository;
+import com.mycompany.barber.Utils.User.UserNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -23,8 +23,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional <User> findById(Integer userId) {
-        return userRepository.findById(userId);
+    public User findById(Integer userId) {
+        return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
     }
 
     public void save(User user) {

@@ -35,15 +35,21 @@
     <input type="text" th:field="*{userRole}" id="userRole">
     <div style="color:red" th:if="${#fields.hasErrors('userRole')}" th:errors="*{userRole}">userRole Errors</div>
     <br/>
-    <label for="userAccessed1">Enter userAccessed1: </label>
-    <input type="text" th:field="*{userAccessed1}" id="userAccessed1">
-    <div style="color:red" th:if="${#fields.hasErrors('userAccessed1')}" th:errors="*{userAccessed1}">userAccessed1
+    <label for="usersAccessed">Enter usersAccessed: </label>
+    <input type="text" th:field="*{usersAccessed}" id="usersAccessed">
+    <div style="color:red" th:if="${#fields.hasErrors('usersAccessed')}" th:errors="*{usersAccessed}">userAccessed1
         Errors
     </div>
     <br/>
-    <label for="userAccessed2">Enter userAccessed2: </label>
-    <input type="text" th:field="*{userAccessed2}" id="userAccessed2">
-    <div style="color:red" th:if="${#fields.hasErrors('userAccessed2')}" th:errors="*{userAccessed2}">userAccessed2
+    <label for="password">Enter password: </label>
+    <input type="text" th:field="*{password}" id="password">
+    <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password
+        Errors
+    </div>
+    <br/>
+    <label for="picture">Enter picture: </label>
+    <input type="text" th:field="*{picture}" id="picture">
+    <div style="color:red" th:if="${#fields.hasErrors('picture')}" th:errors="*{picture}">picture
         Errors
     </div>
     <br/>

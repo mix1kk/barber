@@ -30,11 +30,23 @@ databaseChangeLog:
                   name: userRole
                   type: varchar
               - column:
-                  name: userAccessed1
-                  type: integer
+                  name: userAccessed
+                  type: varchar
               - column:
-                  name: userAccessed2
-                  type: integer
+                  name: password
+                  type: varchar
+              - column:
+                  name: Email
+                  type: varchar
+              - column:
+                  name: picture
+                  type: varchar
+              - column:
+                  name: spare1
+                  type: varchar
+              - column:
+                  name: spare2
+                  type: varchar
         - addAutoIncrement:
             catalogName: cat
             columnDataType: int
@@ -45,3 +57,48 @@ databaseChangeLog:
             schemaName: public
             startWith: 1
             tableName: user
+  - changeSet:
+      id: 2
+      author: postgres
+      changes:
+        - createTable:
+            tableName: line
+            columns:
+              - column:
+                  name: lineId
+                  type: integer
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: userId
+                  type: integer
+              - column:
+                  name: userCompany
+                  type: varchar
+              - column:
+                  name: date
+                  type: varchar
+              - column:
+                  name: time
+                  type: varchar
+              - column:
+                  name: clientName
+                  type: varchar
+              - column:
+                  name: procedureName
+                  type: varchar
+              - column:
+                  name: comment
+                  type: varchar
+        - addAutoIncrement:
+            catalogName: cat
+            columnDataType: int
+            columnName: lineId
+            defaultOnNull: false
+            generationType: ALWAYS
+            incrementBy: 1
+            schemaName: public
+            startWith: 1
+            tableName: line
