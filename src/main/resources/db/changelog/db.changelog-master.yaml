@@ -101,6 +101,21 @@ databaseChangeLog:
               - column:
                   name: comment
                   type: varchar
+              - column:
+                  name: createdAt
+                  type: varchar
+              - column:
+                  name: updatedAt
+                  type: varchar
+              - column:
+                  name: updatedBy
+                  type: varchar
+              - column:
+                  name: spare1
+                  type: varchar
+              - column:
+                  name: spare2
+                  type: varchar
         - addAutoIncrement:
             catalogName: cat
             columnDataType: int

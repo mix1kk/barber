@@ -13,10 +13,12 @@ import java.util.List;
 @Transactional
 public class LineService {
     private final LineRepository lineRepository;
+    private final UserService userService;
 
     @Autowired
-    public LineService(LineRepository lineRepository) {
+    public LineService(LineRepository lineRepository, UserService userService) {
         this.lineRepository = lineRepository;
+        this.userService = userService;
     }
     public List<Line> findAll(int userId) {
         return lineRepository.findByUserId(userId);
@@ -27,6 +29,9 @@ public class LineService {
     }
 
     public void save(Line line) {
+        line.setUserCompany(userService.findById(line.getUserId()).getUserCompany());
+        System.out.println(line.getUserCompany());
+        fillLine(line);
         lineRepository.save(line);
     }
 
@@ -37,5 +42,12 @@ public class LineService {
 
     public void delete(int id) {
         lineRepository.deleteById(id);
+    }
+    private void fillLine(Line line){
+        line.setCreatedAt(String.valueOf(System.currentTimeMillis()));
+        line.setUpdatedAt(String.valueOf(System.currentTimeMillis()));
+        line.setUpdatedBy("User");//TODO: сделать запись имени того, кто изменил поле
+        line.setSpare1("spare1");
+        line.setSpare2("spare2");
     }
 }

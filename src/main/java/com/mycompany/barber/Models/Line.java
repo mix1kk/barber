@@ -29,6 +29,16 @@ public class Line {
     private String procedureName;
     @Column(name = "\"comment\"")
     private String comment;
+    @Column(name = "\"createdAt\"")
+    private String createdAt;
+    @Column(name = "\"updatedAt\"")
+    private String updatedAt;
+    @Column(name = "\"updatedBy\"")
+    private String updatedBy;
+    @Column(name = "\"spare1\"")
+    private String spare1;
+    @Column(name = "\"spare2\"")
+    private String spare2;
 
     public Line() {
         this.lineId = 1;
@@ -39,5 +49,10 @@ public class Line {
         this.clientName = "clientName";
         this.procedureName = "procedureName";
         this.comment = "comment";
+        this.createdAt = "createdAt";
+        this.updatedAt = "updatedAt";
+        this.updatedBy = "updatedBy";
+        this.spare1 = "spare1";
+        this.spare2 = "spare2";
     }
 }

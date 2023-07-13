@@ -12,16 +12,15 @@ import java.util.List;
 @Component
 @Getter
 @Setter
-public class Record {
+public class RecordDTO {
     private String userName;
     private String date;
-    private List<Line> userRecords;
-    public Record() {
-        this.userName   =    "userName";
-        this.date       =    "date";
-        this.userRecords = new ArrayList<>(Arrays.asList(new Line())) ;
+    private List<LineDTO> userRecords;
+
+    public RecordDTO() {
     }
-    public Record(String userName, String date, List<Line> userRecords) {
+
+    public RecordDTO(String userName, String date, List<LineDTO> userRecords) {
         this.userName = userName;
         this.date = date;
         this.userRecords = userRecords;
