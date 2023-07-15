@@ -3,6 +3,7 @@ package com.mycompany.barber.Models;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 @Setter
 @Entity
 @Table
+@ToString(includeFieldNames=true)
 public class Client {
     @Id
     @Column(name = "\"clientId\"")
@@ -25,5 +27,16 @@ public class Client {
     private String clientPhoneNumber;
     @Column(name = "\"clientEmail\"")
     private String clientEmail;
+    @Column(name = "\"createdAt\"")
+    private String createdAt;
+    @Column(name = "\"updatedAt\"")
+    private String updatedAt;
+    @Column(name = "\"updatedBy\"")
+    private String updatedBy;
+    @Column(name = "\"spare1\"")
+    private String spare1;
+    @Column(name = "\"spare2\"")
+    private String spare2;
+
 
 }

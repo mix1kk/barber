@@ -1,6 +1,7 @@
 package com.mycompany.barber.Services;
 
 import com.mycompany.barber.Models.Line;
+import com.mycompany.barber.Models.User;
 import com.mycompany.barber.Repository.LineRepository;
 import com.mycompany.barber.Utils.Line.LineNotFoundException;
 import jakarta.transaction.Transactional;
@@ -20,7 +21,7 @@ public class LineService {
         this.lineRepository = lineRepository;
         this.userService = userService;
     }
-    public List<Line> findAll(int userId) {
+    public List<Line> findAllForUser(int userId) {
         return lineRepository.findByUserId(userId);
     }
 

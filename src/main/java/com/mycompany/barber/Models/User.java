@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 @Table(name = "\"user\"")
 @Getter
 @Setter
+@ToString(includeFieldNames=true)
 public class User {
     @Id
     @Column(name = "\"userId\"")

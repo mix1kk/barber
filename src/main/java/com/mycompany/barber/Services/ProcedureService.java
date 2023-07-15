@@ -1,6 +1,7 @@
 package com.mycompany.barber.Services;
 
 import com.mycompany.barber.Models.Client;
+import com.mycompany.barber.Models.Line;
 import com.mycompany.barber.Models.Procedure;
 import com.mycompany.barber.Models.User;
 import com.mycompany.barber.Repository.ClientRepository;
@@ -23,8 +24,8 @@ public class ProcedureService {
         this.procedureRepository = procedureRepository;
     }
 
-    public List<Procedure> findAll() {
-        return procedureRepository.findAll();
+    public List<Procedure> findAllForUser(int userId) {
+        return procedureRepository.findByUserId(userId);
     }
 
     public Procedure findById(Integer procedureId) {
@@ -32,6 +33,8 @@ public class ProcedureService {
     }
 
     public void save(Procedure procedure) {
+        fillProcedure(procedure);
+        procedure.setProcedureId(0);
         procedureRepository.save(procedure);
     }
 
@@ -43,4 +46,13 @@ public class ProcedureService {
     public void delete(int id) {
         procedureRepository.deleteById(id);
     }
+
+    private void fillProcedure(Procedure procedure){
+        procedure.setCreatedAt(String.valueOf(System.currentTimeMillis()));
+        procedure.setUpdatedAt(String.valueOf(System.currentTimeMillis()));
+        procedure.setUpdatedBy("User");//TODO: сделать запись имени того, кто изменил поле
+        procedure.setSpare1("spare1");
+        procedure.setSpare2("spare2");
+    }
+
 }

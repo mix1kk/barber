@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserDTO {
-    private int clientId;
+    private int userId;
     @NotEmpty(message = "Empty name")
     @Size(min = 3, max = 20, message = "Name must be between 3 and 20 symbols")
     private String userName;

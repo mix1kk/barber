@@ -1,10 +1,8 @@
 package com.mycompany.barber.Controllers;
 
 import com.mycompany.barber.DTO.LineDTO;
-import com.mycompany.barber.DTO.UserDTO;
 import com.mycompany.barber.Models.Line;
 import com.mycompany.barber.DTO.RecordDTO;
-import com.mycompany.barber.Models.User;
 import com.mycompany.barber.Services.LineService;
 import com.mycompany.barber.Services.UserService;
 import com.mycompany.barber.Utils.User.UserErrorResponse;
@@ -37,10 +35,10 @@ public class RecordController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/user/{userId}")
     public RecordDTO getAllRecordsForUser(@PathVariable int userId) {
         return new RecordDTO(userService.findById(userId).getUserName(), "date",
-                lineService.findAll(userId).stream().map(this::convertToLineDTO).collect(Collectors.toList()));
+                lineService.findAllForUser(userId).stream().map(this::convertToLineDTO).collect(Collectors.toList()));
     }
 
     @ExceptionHandler
@@ -49,7 +47,7 @@ public class RecordController {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/{userId}")
+    @PostMapping("/user/{userId}")
     public ResponseEntity<HttpStatus> addLine(@RequestBody @Valid LineDTO lineDTO, BindingResult bindingResult, @PathVariable int userId) {
         if (bindingResult.hasErrors()) {
             StringBuilder errorMsg = new StringBuilder();

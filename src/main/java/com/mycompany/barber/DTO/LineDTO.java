@@ -16,6 +16,8 @@ public class LineDTO {
     private String time;
     private String clientName;
     private String procedureName;
+    private String procedureCost;
+    private String procedureDiscount;
     private String comment;
 
 }

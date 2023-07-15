@@ -1,12 +1,14 @@
 package com.mycompany.barber.Controllers;
 
+import com.mycompany.barber.DTO.ClientDTO;
 import com.mycompany.barber.Models.Client;
-import com.mycompany.barber.Models.User;
 import com.mycompany.barber.Services.ClientService;
-import com.mycompany.barber.Utils.User.UserErrorResponse;
+import com.mycompany.barber.Utils.Client.ClientErrorResponse;
+import com.mycompany.barber.Utils.Client.ClientNotCreatedException;
 import com.mycompany.barber.Utils.User.UserNotCreatedException;
 import com.mycompany.barber.Utils.User.UserNotFoundException;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,35 +17,40 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/clients")
 public class ClientController {
     private final ClientService clientService;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public ClientController(ClientService clientService) {
+    public ClientController(ClientService clientService, ModelMapper modelMapper) {
         this.clientService = clientService;
+        this.modelMapper = modelMapper;
     }
 
-    @GetMapping()
-    public List<Client> allClientsForUser() {
-        return clientService.findAll();
-    }//TODO: Сделать сортировку по юзеру
+    @GetMapping("/user/{userId}")
+    public List<ClientDTO> allClientsForUser(@PathVariable int userId) {
+        return clientService.findAllForUser(userId).stream().map(this::convertToClientDTO).collect(Collectors.toList());
+    }
 
-    @GetMapping("/{id}")
-    public Client singleClient(@PathVariable int id) {
-        return clientService.findById(id);
+    @GetMapping("/{clientId}")
+    public ClientDTO singleClient(@PathVariable int clientId) {
+        return convertToClientDTO(clientService.findById(clientId));
     }
 
     @ExceptionHandler
-    private ResponseEntity<UserErrorResponse> handleException(UserNotFoundException e) {
-        UserErrorResponse response = new UserErrorResponse("Client not exist", System.currentTimeMillis());
+    private ResponseEntity<ClientErrorResponse> handleException(UserNotFoundException e) {
+        ClientErrorResponse response = new ClientErrorResponse("Client not exist", System.currentTimeMillis());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping()
-    public ResponseEntity<HttpStatus> create(@RequestBody @Valid Client client, BindingResult bindingResult) {
+    @PostMapping("/user/{userId}")
+    public ResponseEntity<HttpStatus> create(@RequestBody @Valid ClientDTO clientDTO, BindingResult bindingResult,
+                                             @PathVariable int userId) {
         if (bindingResult.hasErrors()) {
             StringBuilder errorMsg = new StringBuilder();
             List<FieldError> errors = bindingResult.getFieldErrors();
@@ -51,14 +58,22 @@ public class ClientController {
                 errorMsg.append(error.getField()).append(": ").append(error.getDefaultMessage()).append("<br>");
             }
             System.out.println(errorMsg);
-            throw new UserNotCreatedException(errorMsg.toString());
+            throw new ClientNotCreatedException(errorMsg.toString());
         }
-        clientService.save(client);
+        clientDTO.setUserId(userId);
+        clientService.save(convertToClient(clientDTO));
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @ExceptionHandler
-    private ResponseEntity<UserErrorResponse> handleException(UserNotCreatedException e) {
-        UserErrorResponse response = new UserErrorResponse(e.getMessage(), System.currentTimeMillis());
+    private ResponseEntity<ClientErrorResponse> handleException(UserNotCreatedException e) {
+        ClientErrorResponse response = new ClientErrorResponse(e.getMessage(), System.currentTimeMillis());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+    private Client convertToClient(ClientDTO clientDTO) {
+        return modelMapper.map(clientDTO, Client.class);
+    }
+
+    private ClientDTO convertToClientDTO(Client client) {
+        return modelMapper.map(client, ClientDTO.class);
     }
 }
