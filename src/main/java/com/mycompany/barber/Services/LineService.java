@@ -31,7 +31,6 @@ public class LineService {
 
     public void save(Line line) {
         line.setUserCompany(userService.findById(line.getUserId()).getUserCompany());
-        System.out.println(line.getUserCompany());
         fillLine(line);
         lineRepository.save(line);
     }

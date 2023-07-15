@@ -8,6 +8,8 @@ import com.mycompany.barber.Services.UserService;
 import com.mycompany.barber.Utils.User.UserErrorResponse;
 import com.mycompany.barber.Utils.User.UserNotCreatedException;
 import com.mycompany.barber.Utils.User.UserNotFoundException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import java.util.stream.Collectors;
 @RestController
 @CrossOrigin
 @RequestMapping("/records")
+@Tag(name = "Контроллер записей пользователя", description = "Позволяет добавлять, удалять, редактировать строки в таблице")
 public class RecordController {
     private final LineService lineService;
     private final UserService userService;
@@ -35,9 +38,10 @@ public class RecordController {
         this.modelMapper = modelMapper;
     }
 
+    @Operation(summary = "Получить список записей пользователя")
     @GetMapping("/user/{userId}")
     public RecordDTO getAllRecordsForUser(@PathVariable int userId) {
-        return new RecordDTO(userService.findById(userId).getUserName(), "date",
+        return new RecordDTO(userId, userService.findById(userId).getUserName(), "date",
                 lineService.findAllForUser(userId).stream().map(this::convertToLineDTO).collect(Collectors.toList()));
     }
 
@@ -47,6 +51,7 @@ public class RecordController {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
+    @Operation(summary = "Создать новую запись пользователя")
     @PostMapping("/user/{userId}")
     public ResponseEntity<HttpStatus> addLine(@RequestBody @Valid LineDTO lineDTO, BindingResult bindingResult, @PathVariable int userId) {
         if (bindingResult.hasErrors()) {

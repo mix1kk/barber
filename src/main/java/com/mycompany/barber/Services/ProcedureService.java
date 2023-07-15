@@ -1,10 +1,6 @@
 package com.mycompany.barber.Services;
 
-import com.mycompany.barber.Models.Client;
-import com.mycompany.barber.Models.Line;
 import com.mycompany.barber.Models.Procedure;
-import com.mycompany.barber.Models.User;
-import com.mycompany.barber.Repository.ClientRepository;
 import com.mycompany.barber.Repository.ProcedureRepository;
 import com.mycompany.barber.Utils.Procedure.ProcedureNotFoundException;
 import jakarta.transaction.Transactional;

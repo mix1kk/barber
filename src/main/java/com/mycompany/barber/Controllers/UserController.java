@@ -7,6 +7,9 @@ import com.mycompany.barber.Services.UserService;
 import com.mycompany.barber.Utils.User.UserErrorResponse;
 import com.mycompany.barber.Utils.User.UserNotCreatedException;
 import com.mycompany.barber.Utils.User.UserNotFoundException;
+import com.mycompany.barber.Utils.User.UserNotUpdatedException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +24,8 @@ import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/users")
+@Tag(name = "Контроллер пользователей", description = "Позволяет добавлять, удалять, редактировать пользователей")
+@RequestMapping()
 public class UserController {
     private final UserService userService;
     private final ModelMapper modelMapper;
@@ -32,12 +36,14 @@ public class UserController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping()
+    @Operation(summary = "Получить список всех пользователей")
+    @GetMapping("/users")
     public List<UserDTO> allUsers() {
         return userService.findAll().stream().map(this::convertToUserDTO).collect(Collectors.toList());
     }
 
-    @GetMapping("/{id}")
+    @Operation(summary = "Получить пользователя по id")
+    @GetMapping("/user/{id}")
     public UserDTO singleUser(@PathVariable int id) {
         return convertToUserDTO(userService.findById(id));
     }
@@ -48,12 +54,8 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
-//    @GetMapping("/new")
-//    public String newUser(@ModelAttribute("user") User user) {
-//        return "/User/newUser";
-//    }
-
-    @PostMapping()
+    @Operation(summary = "Создает нового пользователя")
+    @PostMapping("/users")
     public ResponseEntity<HttpStatus> create(@RequestBody @Valid UserDTO userDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             StringBuilder errorMsg = new StringBuilder();
@@ -73,26 +75,36 @@ public class UserController {
         UserErrorResponse response = new UserErrorResponse(e.getMessage(), System.currentTimeMillis());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
-//    @GetMapping("/{id}/edit")
-//    public String edit(Model model, @PathVariable("id") int id) {
-//        model.addAttribute("user", userService.findById(id));
-//        return "/User/editUser";
-//    }
-//
-//    @PatchMapping("/{id}")
-//    public String update(@ModelAttribute("user") User user, BindingResult bindingResult, @PathVariable("id") int id) {
-//        if (bindingResult.hasErrors())
-//            return "/User/editUser";
-//
-//        userService.update(id, user);
-//        return "redirect:/users";
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public String delete(@PathVariable("id") int id) {
-//        userService.delete(id);
-//        return "redirect:/users";
-//    }
+
+    @Operation(summary = "Редактировать пользователя")
+    @PatchMapping("/user/{id}")
+    public ResponseEntity<HttpStatus> updateUser(@RequestBody @Valid UserDTO userDTO, BindingResult bindingResult, @PathVariable("id") int userId) {
+        if (bindingResult.hasErrors()) {
+            StringBuilder errorMsg = new StringBuilder();
+            List<FieldError> errors = bindingResult.getFieldErrors();
+            for (FieldError error : errors) {
+                errorMsg.append(error.getField()).append(": ").append(error.getDefaultMessage()).append("<br>");
+            }
+            System.out.println(errorMsg);
+            throw new UserNotUpdatedException(errorMsg.toString());
+        }
+
+        userService.update(userId, convertToUser(userDTO));
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<UserErrorResponse> handleException(UserNotUpdatedException e) {
+        UserErrorResponse response = new UserErrorResponse(e.getMessage(), System.currentTimeMillis());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @Operation(summary = "Удалить пользователя")
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<HttpStatus> delete(@PathVariable("id") int id) {
+        userService.delete(id);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 
     private User convertToUser(UserDTO userDTO) {
         return modelMapper.map(userDTO, User.class);

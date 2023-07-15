@@ -32,18 +32,23 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void update(int id, User user) {
-        user.setUserId(id);
+    public void update(int userId, User user) {
+        String createdAt = userRepository.findById(userId).orElseThrow(UserNotFoundException::new).getCreatedAt();
+        fillUser(user);
+        user.setCreatedAt(createdAt);
+        user.setUserId(userId);
         userRepository.save(user);
     }
 
-    public void delete(int id) {
-        userRepository.deleteById(id);
+    public void delete(int userId) {
+        userRepository.deleteById(userId);
     }
 
-    private void fillUser(User user){
-    user.setCreatedAt(String.valueOf(System.currentTimeMillis()));
-    user.setUpdatedAt(String.valueOf(System.currentTimeMillis()));
-    user.setUpdatedBy(user.getUserName());//TODO: сделать запись имени того, кто изменил поле
+    private void fillUser(User user) {
+        if (user.getCreatedAt() == null) {
+            user.setCreatedAt(String.valueOf(System.currentTimeMillis()));
+        }
+        user.setUpdatedAt(String.valueOf(System.currentTimeMillis()));
+        user.setUpdatedBy(user.getUserName());//TODO: сделать запись имени того, кто изменил поле
     }
 }
