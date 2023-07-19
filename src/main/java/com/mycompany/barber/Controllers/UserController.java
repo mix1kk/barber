@@ -4,10 +4,7 @@ package com.mycompany.barber.Controllers;
 import com.mycompany.barber.DTO.UserDTO;
 import com.mycompany.barber.Models.*;
 import com.mycompany.barber.Services.UserService;
-import com.mycompany.barber.Utils.User.UserErrorResponse;
-import com.mycompany.barber.Utils.User.UserNotCreatedException;
-import com.mycompany.barber.Utils.User.UserNotFoundException;
-import com.mycompany.barber.Utils.User.UserNotUpdatedException;
+import com.mycompany.barber.Utils.User.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -42,21 +39,21 @@ public class UserController {
         return userService.findAll().stream().map(this::convertToUserDTO).collect(Collectors.toList());
     }
 
+    @Operation(summary = "Получить список всех пользователей в компании")
+    @GetMapping("/users/{userCompany}")
+    public List<UserDTO> allUsersForCompany(@PathVariable("userCompany") String userCompany) {
+        return userService.findByUserCompany(userCompany).stream().map(this::convertToUserDTO).collect(Collectors.toList());
+    }
+
     @Operation(summary = "Получить пользователя по id")
     @GetMapping("/user/{id}")
-    public UserDTO singleUser(@PathVariable int id) {
+    public UserDTO singleUser(@PathVariable("id") int id) {
         return convertToUserDTO(userService.findById(id));
     }
 
-    @ExceptionHandler
-    private ResponseEntity<UserErrorResponse> handleException(UserNotFoundException e) {
-        UserErrorResponse response = new UserErrorResponse("User not exist", System.currentTimeMillis());
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
-
-    @Operation(summary = "Создает нового пользователя")
+    @Operation(summary = "Создать нового пользователя")
     @PostMapping("/users")
-    public ResponseEntity<HttpStatus> create(@RequestBody @Valid UserDTO userDTO, BindingResult bindingResult) {
+    public ResponseEntity<HttpStatus> createUser(@RequestBody @Valid UserDTO userDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             StringBuilder errorMsg = new StringBuilder();
             List<FieldError> errors = bindingResult.getFieldErrors();
@@ -68,12 +65,6 @@ public class UserController {
         }
         userService.save(convertToUser(userDTO));
         return ResponseEntity.ok(HttpStatus.OK);
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<UserErrorResponse> handleException(UserNotCreatedException e) {
-        UserErrorResponse response = new UserErrorResponse(e.getMessage(), System.currentTimeMillis());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @Operation(summary = "Редактировать пользователя")
@@ -93,17 +84,35 @@ public class UserController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    @Operation(summary = "Удалить пользователя")
+    @DeleteMapping("/user/{userId}")
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("userId") int userId) {
+        userService.delete(userId);
+        return ResponseEntity.ok(HttpStatus.NO_CONTENT);
+    }
+
     @ExceptionHandler
     private ResponseEntity<UserErrorResponse> handleException(UserNotUpdatedException e) {
         UserErrorResponse response = new UserErrorResponse(e.getMessage(), System.currentTimeMillis());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    @Operation(summary = "Удалить пользователя")
-    @DeleteMapping("/user/{id}")
-    public ResponseEntity<HttpStatus> delete(@PathVariable("id") int id) {
-        userService.delete(id);
-        return ResponseEntity.ok(HttpStatus.OK);
+    @ExceptionHandler
+    private ResponseEntity<UserErrorResponse> handleException(UserNotDeletedException e) {
+        UserErrorResponse response = new UserErrorResponse(e.getMessage(), System.currentTimeMillis());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<UserErrorResponse> handleException(UserNotCreatedException e) {
+        UserErrorResponse response = new UserErrorResponse(e.getMessage(), System.currentTimeMillis());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<UserErrorResponse> handleException(UserNotFoundException e) {
+        UserErrorResponse response = new UserErrorResponse("User not exist", System.currentTimeMillis());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     private User convertToUser(UserDTO userDTO) {

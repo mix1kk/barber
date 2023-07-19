@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface ClientRepository extends JpaRepository<Client, Integer> {
     List<Client> findByUserId(int userId);
+
+    List<Client> findByCompanyName(String companyName);
 }

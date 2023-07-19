@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LineDTO {
-    @Schema(description = "Идентификатор строки", example = "1")
+    @Schema(description = "Идентификатор строки", example = "0")
     private int lineId;
     @Schema(description = "Идентификатор пользователя", example = "1")
     private int userId;

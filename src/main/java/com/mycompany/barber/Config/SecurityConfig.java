@@ -1,7 +1,8 @@
 //package com.mycompany.barber.Config;
 //
-//import com.mycompany.barber.Security.UserDetailService;
+////import com.mycompany.barber.Security.UserDetailService;
 //import org.springframework.context.annotation.Bean;
+//import org.springframework.context.annotation.Configuration;
 //import org.springframework.http.HttpMethod;
 //import org.springframework.security.authentication.AuthenticationManager;
 //import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -15,8 +16,8 @@
 //import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 //import org.springframework.security.web.SecurityFilterChain;
 //
-//@EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
+//import static org.springframework.security.config.Customizer.withDefaults;
+//
 //public class SecurityConfig {
 //    @Bean
 //    public UserDetailsService userDetailsService(BCryptPasswordEncoder bCryptPasswordEncoder) {
@@ -43,30 +44,30 @@
 //        authProvider.setPasswordEncoder(bCryptPasswordEncoder);
 //        return authProvider;
 //    }
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
-//        return security
-//                .authorizeRequests()
-//                .dispatcherTypeMatchers(HttpMethod.valueOf("/admin/**")).hasRole("admin")
-//                .dispatcherTypeMatchers(HttpMethod.valueOf("/user/**")).hasRole("user")
-//                .anyRequest().authenticated()
-//                .and().formLogin()
-//                .loginPage("/login")
-//                .permitAll()
-//                .and().logout()
-//              .permitAll()
-//              .and()
-//              .csrf()
-//              .disable()
-//              .build();
-//    }
-//    @Bean
-//    public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder, UserDetailsService userDetailsService)
-//            throws Exception {
-//        return http.getSharedObject(AuthenticationManagerBuilder.class)
-//                .userDetailsService(userDetailsService)
-//                .passwordEncoder(bCryptPasswordEncoder)
-//                .and()
-//                .build();
-//    }
+////    @Bean
+////    public SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
+////        return security
+////                .authorizeRequests()
+////                .dispatcherTypeMatchers(HttpMethod.valueOf("/admin/**")).hasRole("admin")
+////                .dispatcherTypeMatchers(HttpMethod.valueOf("/user/**")).hasRole("user")
+////                .anyRequest().authenticated()
+////                .and().formLogin()
+////                .loginPage("/login")
+////                .permitAll()
+////                .and().logout()
+////              .permitAll()
+////              .and()
+////              .csrf()
+////              .disable()
+////              .build();
+////    }
+////    @Bean
+////    public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder, UserDetailsService userDetailsService)
+////            throws Exception {
+////        return http.getSharedObject(AuthenticationManagerBuilder.class)
+////                .userDetailsService(userDetailsService)
+////                .passwordEncoder(bCryptPasswordEncoder)
+////                .and()
+////                .build();
+////    }
 //}

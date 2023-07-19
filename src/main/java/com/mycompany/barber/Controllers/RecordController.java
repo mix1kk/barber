@@ -1,13 +1,16 @@
 package com.mycompany.barber.Controllers;
 
 import com.mycompany.barber.DTO.LineDTO;
+import com.mycompany.barber.DTO.UserDTO;
 import com.mycompany.barber.Models.Line;
 import com.mycompany.barber.DTO.RecordDTO;
 import com.mycompany.barber.Services.LineService;
 import com.mycompany.barber.Services.UserService;
-import com.mycompany.barber.Utils.User.UserErrorResponse;
-import com.mycompany.barber.Utils.User.UserNotCreatedException;
-import com.mycompany.barber.Utils.User.UserNotFoundException;
+import com.mycompany.barber.Utils.Line.LineErrorResponse;
+import com.mycompany.barber.Utils.Line.LineNotDeletedException;
+import com.mycompany.barber.Utils.Line.LineNotFoundException;
+import com.mycompany.barber.Utils.Line.LineNotUpdatedException;
+import com.mycompany.barber.Utils.User.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -45,11 +48,12 @@ public class RecordController {
                 lineService.findAllForUser(userId).stream().map(this::convertToLineDTO).collect(Collectors.toList()));
     }
 
-    @ExceptionHandler
-    private ResponseEntity<UserErrorResponse> handleException(UserNotFoundException e) {
-        UserErrorResponse response = new UserErrorResponse("User not exist", System.currentTimeMillis());
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    @Operation(summary = "Получить запись по id записи")
+    @GetMapping("/{lineId}")
+    public LineDTO singleUser(@PathVariable("lineId") int lineId) {
+        return convertToLineDTO(lineService.findById(lineId));
     }
+
 
     @Operation(summary = "Создать новую запись пользователя")
     @PostMapping("/user/{userId}")
@@ -68,10 +72,59 @@ public class RecordController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    @Operation(summary = "Редактировать запись пользователя")
+    @PatchMapping("/line/{lineId}")
+    public ResponseEntity<HttpStatus> updateRecord(@RequestBody @Valid LineDTO lineDTO, BindingResult bindingResult,
+                                                   @PathVariable("userId") int userId, @PathVariable("lineId") int lineId) {
+        if (bindingResult.hasErrors()) {
+            StringBuilder errorMsg = new StringBuilder();
+            List<FieldError> errors = bindingResult.getFieldErrors();
+            for (FieldError error : errors) {
+                errorMsg.append(error.getField()).append(": ").append(error.getDefaultMessage()).append("<br>");
+            }
+            System.out.println(errorMsg);
+            throw new LineNotUpdatedException(errorMsg.toString());
+        }
+
+        lineService.update(lineId, convertToLine(lineDTO));
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @Operation(summary = "Удалить запись")
+    @DeleteMapping("/line/{lineId}")
+    public ResponseEntity<HttpStatus> delete(@PathVariable("lineId") int lineId) {
+        lineService.delete(lineId);
+        return ResponseEntity.ok(HttpStatus.NO_CONTENT);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<LineErrorResponse> handleException(LineNotDeletedException e) {
+        LineErrorResponse response = new LineErrorResponse(e.getMessage(), System.currentTimeMillis());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<UserErrorResponse> handleException(UserNotFoundException e) {
+        UserErrorResponse response = new UserErrorResponse("User not exist", System.currentTimeMillis());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<LineErrorResponse> handleException(LineNotUpdatedException e) {
+        LineErrorResponse response = new LineErrorResponse(e.getMessage(), System.currentTimeMillis());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler
     private ResponseEntity<UserErrorResponse> handleException(UserNotCreatedException e) {
         UserErrorResponse response = new UserErrorResponse(e.getMessage(), System.currentTimeMillis());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<LineErrorResponse> handleException(LineNotFoundException e) {
+        LineErrorResponse response = new LineErrorResponse("Line not exist", System.currentTimeMillis());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     private Line convertToLine(LineDTO lineDTO) {

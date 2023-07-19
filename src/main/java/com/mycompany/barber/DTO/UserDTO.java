@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @Schema(description = "Сущность пользователя")
 public class UserDTO {
-    @Schema(description = "Идентификатор пользователя", example = "1")
+    @Schema(description = "Идентификатор пользователя", example = "0")
     private int userId;
     @NotEmpty(message = "Empty name")
     @Size(min = 3, max = 20, message = "Name must be between 3 and 20 symbols")

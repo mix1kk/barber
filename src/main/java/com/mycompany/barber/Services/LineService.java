@@ -3,7 +3,10 @@ package com.mycompany.barber.Services;
 import com.mycompany.barber.Models.Line;
 import com.mycompany.barber.Models.User;
 import com.mycompany.barber.Repository.LineRepository;
+import com.mycompany.barber.Utils.Line.LineNotDeletedException;
 import com.mycompany.barber.Utils.Line.LineNotFoundException;
+import com.mycompany.barber.Utils.User.UserNotDeletedException;
+import com.mycompany.barber.Utils.User.UserNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +29,7 @@ public class LineService {
     }
 
     public Line findById(Integer lineId) {
-        return lineRepository.findById(lineId).orElseThrow(LineNotFoundException::new);
+        return lineRepository.findById(lineId).orElseThrow();
     }
 
     public void save(Line line) {
@@ -36,11 +39,21 @@ public class LineService {
     }
 
     public void update(int id,Line line) {
+        String createdAt = lineRepository.findById(id).orElseThrow().getCreatedAt();
+        fillLine(line);
+        line.setCreatedAt(createdAt);
         line.setLineId(id);
         lineRepository.save(line);
     }
 
     public void delete(int id) {
+        if(!lineRepository.existsById(id)){
+            throw new LineNotDeletedException("Не существует записи");
+        }
+        lineRepository.deleteById(id);
+        if(lineRepository.existsById(id)){
+            throw new LineNotDeletedException("Не удалось удалить запись");
+        }
         lineRepository.deleteById(id);
     }
     private void fillLine(Line line){

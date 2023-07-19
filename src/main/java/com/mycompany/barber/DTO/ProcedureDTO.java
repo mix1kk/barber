@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProcedureDTO {
-    @Schema(description = "Идентификатор процедуры", example = "1")
+    @Schema(description = "Идентификатор процедуры", example = "0")
     private int procedureId;
     @Schema(description = "Название процедуры", example = "Стрижка")
     private String procedureName;

@@ -2,11 +2,13 @@ package com.mycompany.barber.Services;
 
 import com.mycompany.barber.Models.User;
 import com.mycompany.barber.Repository.UserRepository;
+import com.mycompany.barber.Utils.User.UserNotDeletedException;
 import com.mycompany.barber.Utils.User.UserNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -27,6 +29,10 @@ public class UserService {
         return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
     }
 
+    public List<User> findByUserCompany(String userCompany) {
+        return userRepository.findByUserCompany(userCompany);
+    }
+
     public void save(User user) {
         fillUser(user);
         userRepository.save(user);
@@ -41,7 +47,13 @@ public class UserService {
     }
 
     public void delete(int userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new UserNotDeletedException("Не существует пользователя");
+        }
         userRepository.deleteById(userId);
+        if (userRepository.existsById(userId)) {
+            throw new UserNotDeletedException("Не удалось удалить пользователя");
+        }
     }
 
     private void fillUser(User user) {
@@ -51,4 +63,6 @@ public class UserService {
         user.setUpdatedAt(String.valueOf(System.currentTimeMillis()));
         user.setUpdatedBy(user.getUserName());//TODO: сделать запись имени того, кто изменил поле
     }
+
+
 }

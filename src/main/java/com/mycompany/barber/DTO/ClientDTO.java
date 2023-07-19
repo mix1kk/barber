@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ClientDTO {
-    @Schema(description = "Идентификатор клиента", example = "1")
+    @Schema(description = "Идентификатор клиента", example = "0")
     private int clientId;
     @Schema(description = "Имя клиента", example = "Иванов")
     private String clientName;
