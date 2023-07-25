@@ -7,10 +7,10 @@ import lombok.ToString;
 import org.springframework.stereotype.Component;
 
 @Component
+@Table(name ="client")
 @Getter
 @Setter
 @Entity
-@Table
 @ToString(includeFieldNames=true)
 public class Client {
     @Id

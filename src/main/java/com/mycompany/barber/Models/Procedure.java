@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Entity
-@Table
+@Table(name = "procedure")
 @Getter
 @Setter
 @ToString(includeFieldNames=true)

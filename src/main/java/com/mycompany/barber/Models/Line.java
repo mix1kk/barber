@@ -7,11 +7,11 @@ import lombok.ToString;
 import org.springframework.stereotype.Component;
 
 @Component
+@Entity
+@Table(name = "line")
 @Getter
 @Setter
-@Entity
-@Table
-@ToString(includeFieldNames=true)
+@ToString(includeFieldNames = true)
 public class Line {
     @Id
     @Column(name = "\"lineId\"")
@@ -47,8 +47,8 @@ public class Line {
     private String spare2;
 
     public Line() {
-        this.lineId = 1;
-        this.userId = 1;
+        this.lineId = 0;
+        this.userId = 0;
         this.userCompany = "userCompany";
         this.date = "date";
         this.time = "time";
@@ -62,3 +62,4 @@ public class Line {
         this.spare2 = "spare2";
     }
 }
+

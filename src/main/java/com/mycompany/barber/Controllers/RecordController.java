@@ -6,10 +6,8 @@ import com.mycompany.barber.Models.Line;
 import com.mycompany.barber.DTO.RecordDTO;
 import com.mycompany.barber.Services.LineService;
 import com.mycompany.barber.Services.UserService;
-import com.mycompany.barber.Utils.Line.LineErrorResponse;
-import com.mycompany.barber.Utils.Line.LineNotDeletedException;
-import com.mycompany.barber.Utils.Line.LineNotFoundException;
-import com.mycompany.barber.Utils.Line.LineNotUpdatedException;
+import com.mycompany.barber.Utils.Line.*;
+import com.mycompany.barber.Utils.Procedure.ProcedureNotCreatedException;
 import com.mycompany.barber.Utils.User.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,6 +27,7 @@ import java.util.stream.Collectors;
 @CrossOrigin
 @RequestMapping("/records")
 @Tag(name = "Контроллер записей пользователя", description = "Позволяет добавлять, удалять, редактировать строки в таблице")
+
 public class RecordController {
     private final LineService lineService;
     private final UserService userService;
@@ -65,7 +64,7 @@ public class RecordController {
                 errorMsg.append(error.getField()).append(": ").append(error.getDefaultMessage()).append("<br>");
             }
             System.out.println(errorMsg);
-            throw new UserNotCreatedException(errorMsg.toString());
+            throw new LineNotCreatedException(errorMsg.toString());
         }
         lineDTO.setUserId(userId);
         lineService.save(convertToLine(lineDTO));

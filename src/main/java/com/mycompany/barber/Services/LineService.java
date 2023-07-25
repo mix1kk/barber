@@ -24,6 +24,7 @@ public class LineService {
         this.lineRepository = lineRepository;
         this.userService = userService;
     }
+
     public List<Line> findAllForUser(int userId) {
         return lineRepository.findByUserId(userId);
     }
@@ -33,12 +34,12 @@ public class LineService {
     }
 
     public void save(Line line) {
-        line.setUserCompany(userService.findById(line.getUserId()).getUserCompany());
         fillLine(line);
+        line.setUserCompany(userService.findById(line.getUserId()).getUserCompany());
         lineRepository.save(line);
     }
 
-    public void update(int id,Line line) {
+    public void update(int id, Line line) {
         String createdAt = lineRepository.findById(id).orElseThrow().getCreatedAt();
         fillLine(line);
         line.setCreatedAt(createdAt);
@@ -47,16 +48,17 @@ public class LineService {
     }
 
     public void delete(int id) {
-        if(!lineRepository.existsById(id)){
+        if (!lineRepository.existsById(id)) {
             throw new LineNotDeletedException("Не существует записи");
         }
         lineRepository.deleteById(id);
-        if(lineRepository.existsById(id)){
+        if (lineRepository.existsById(id)) {
             throw new LineNotDeletedException("Не удалось удалить запись");
         }
         lineRepository.deleteById(id);
     }
-    private void fillLine(Line line){
+
+    private void fillLine(Line line) {
         line.setCreatedAt(String.valueOf(System.currentTimeMillis()));
         line.setUpdatedAt(String.valueOf(System.currentTimeMillis()));
         line.setUpdatedBy("User");//TODO: сделать запись имени того, кто изменил поле
