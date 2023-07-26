@@ -18,9 +18,20 @@ public class RecordDTO {
     private int userId;
     @Schema(description = "Имя пользователя", example = "John Doe")
     private String userName;
-    @Schema(description = "Дата", example = "Понедельник, 27 августа 2023")
+    @Schema(description = "Дата", example = "01-01-2020")
     private String date;
-    @Schema(description = "Список записей", example = "[{\"lineId\":1,\"lineName\":\"Магазин\"}]")
+    @Schema(description = "Список записей", example = "[" +
+            "{\"lineId\":0," +
+            "\"userId\":0," +
+            "\"date\":\"01-01-2020\"," +
+            "\"time\":\"8:30\"," +
+            "\"clientName\":\"clientName\"," +
+            "\"procedureName\":\"procedureName\"," +
+            "\"procedureCost\":\"1000\"," +
+            "\"procedureDiscount\":\"10\"," +
+            "\"comment\":\"comment\"," +
+            "}" +
+            "]")
     private List<LineDTO> userRecords;
 
     public RecordDTO() {

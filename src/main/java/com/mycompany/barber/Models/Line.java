@@ -6,6 +6,8 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
 @Entity
 @Table(name = "line")
@@ -22,7 +24,7 @@ public class Line {
     @Column(name = "\"userCompany\"")
     private String userCompany;
     @Column(name = "\"date\"")
-    private String date;
+    private LocalDate date;
     @Column(name = "\"time\"")
     private String time;
     @Column(name = "\"clientName\"")
@@ -50,7 +52,7 @@ public class Line {
         this.lineId = 0;
         this.userId = 0;
         this.userCompany = "userCompany";
-        this.date = "date";
+        this.date = LocalDate.now();
         this.time = "time";
         this.clientName = "clientName";
         this.procedureName = "procedureName";

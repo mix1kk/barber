@@ -11,7 +11,7 @@ public class LineDTO {
     private int lineId;
     @Schema(description = "Идентификатор пользователя", example = "1")
     private int userId;
-    @Schema(description = "Дата", example = "2020-01-01")
+    @Schema(description = "Дата", example = "01-01-2020")
     private String date;
     @Schema(description = "Время", example = "09:30")
     private String time;
