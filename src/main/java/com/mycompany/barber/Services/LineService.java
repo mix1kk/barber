@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -29,10 +30,12 @@ public class LineService {
         return lineRepository.findByUserId(userId);
     }
 
+    public List<Line> findByUserIdAndDateBetween(int userId, LocalDate fromDate, LocalDate toDate) {
+        return lineRepository.findByUserIdAndDateBetween(userId, fromDate,toDate);
+    }
     public Line findById(Integer lineId) {
         return lineRepository.findById(lineId).orElseThrow();
     }
-
     public void save(Line line) {
         fillLine(line);
         line.setUserCompany(userService.findById(line.getUserId()).getUserCompany());

@@ -1,13 +1,12 @@
 package com.mycompany.barber.Controllers;
 
 import com.mycompany.barber.DTO.LineDTO;
-import com.mycompany.barber.DTO.UserDTO;
 import com.mycompany.barber.Models.Line;
 import com.mycompany.barber.DTO.RecordDTO;
 import com.mycompany.barber.Services.LineService;
+import com.mycompany.barber.Services.RecordService;
 import com.mycompany.barber.Services.UserService;
 import com.mycompany.barber.Utils.Line.*;
-import com.mycompany.barber.Utils.Procedure.ProcedureNotCreatedException;
 import com.mycompany.barber.Utils.User.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,19 +31,22 @@ public class RecordController {
     private final LineService lineService;
     private final UserService userService;
     private final ModelMapper modelMapper;
+    private final RecordService recordService;
 
     @Autowired
-    public RecordController(LineService lineService, UserService userService, ModelMapper modelMapper) {
+    public RecordController(LineService lineService, UserService userService, ModelMapper modelMapper, RecordService recordService) {
         this.lineService = lineService;
         this.userService = userService;
         this.modelMapper = modelMapper;
+        this.recordService = recordService;
     }
 
     @Operation(summary = "Получить список записей пользователя")
     @GetMapping("/user/{userId}")
-    public RecordDTO getAllRecordsForUser(@PathVariable int userId) {
-        return new RecordDTO(userId, userService.findById(userId).getUserName(), "date",
-                lineService.findAllForUser(userId).stream().map(this::convertToLineDTO).collect(Collectors.toList()));
+    public List<RecordDTO> getAllRecordsForUser(@PathVariable int userId,
+                                                @RequestParam ("startDate") String startDate,
+                                                @RequestParam ("endDate") String endDate) {
+        return recordService.findAllForUserFromDateToDate(userId,userService.findById(userId).getUserName(), startDate, endDate);
     }
 
     @Operation(summary = "Получить запись по id записи")
