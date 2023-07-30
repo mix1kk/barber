@@ -1,62 +1,50 @@
-import React, {useState} from "react";
+import React, {useState,useEffect} from "react";
+import { Link, Route, Routes } from "react-router-dom";
+import RecordsReduxForm from "./recordsForm";
 import cs from './table.module.css';
-import ClientAddReduxForm from "./clientAddForm";
+
+
 
 function TableClient(props) {
-    //console.log(props);
-    //debugger;
 
-    const AddClient = (formData) => {
-        //console.log(formData);
-        let result = {
-            Id:props.Client.length+1,
-            time:formData.time,
-            clientName:formData.clientName,
-            service:formData.service,
-            comment:formData.comment
-        }
-        props.AddClientCreator(result, props.masterId)
+    const [isUpdateId, setIsUpdateId] = useState(0);
+    const [isUpdateDate, setIsUpdateDate] = useState("");
+    const onClicDelite = (e,lineId) => {
+       props.onDelete(lineId);    
     }
 
-    const onChengeTime = (e,clientId, masterId) => {
-        props.UpdateTimeCreator(e.target.value, masterId, clientId);
-    }
+    const UpdateClic = (e,lineId, date) => {
+        setIsUpdateId(prev=>prev=lineId);
+        setIsUpdateDate(prev=>prev=date);
+     }
 
-    const onChengeClientName = (e,clientId, masterId) => {
-        props.UpdateClientNameCreator(e.target.value, masterId, clientId);
-    }
+     const UpdateRecrdse = (formData) => {
+        
+        props.UpdateRecordse(formData,isUpdateDate, isUpdateId);
+        setIsUpdateDate(prev=>prev="");
+        setIsUpdateId(prev=>prev=0)
+     }
 
-    const onChengeService = (e,clientId, masterId) => {
-        props.UpdateServiceCreator(e.target.value, masterId, clientId);
-    }
-
-    const onChengeComment = (e,clientId, masterId) => {
-        props.UpdateCommentCreator(e.target.value, masterId, clientId);
-    }
     return (
         <div className={cs.tab}>
-            {props.Client.map(c => 
-                <table key={c.Id} className={cs.tab_total}>
-                    <tr>
-                        <td className={cs.tdTime}>
-                            <input value={c.time} onChange = {e=>onChengeTime(e, c.Id, props.masterId)}/>
-                        </td>
-
-                        <td className={cs.tdClient}>
-                            <input value={c.clientName} onChange = {e=>onChengeClientName(e, c.Id, props.masterId)}/> 
-                            
-                        </td>
-                        <td className={cs.tdSevice}>
-                            <input value={c.service} onChange = {e=>onChengeService(e, c.Id, props.masterId)}/>
-                            
-                        </td>
-                        <td className={cs.tdSevice}>
-                            <input value={c.comment} onChange = {e=>onChengeComment(e, c.Id, props.masterId)}/>
-                            
-                        </td>
-                    </tr>
-                </table>)} 
-                <ClientAddReduxForm onSubmit={AddClient}></ClientAddReduxForm>
+            {props.client.map(c => 
+            <div>
+                <span>
+                        {c.lineId!==isUpdateId? 
+                        <table key={c.Id} className={cs.tab_total}>
+                        <tr>
+                            <td className={cs.tdTime}>{c.time}</td>
+                            <td className={cs.tdClient}>{c.clientName}</td>
+                            <td className={cs.tdSevice}>{c.procedureName}</td>
+                            <td className={cs.tdSevice}>{c.comment} </td>
+                            <button onClick = {e=>onClicDelite(e, c.lineId)}>Удалить</button>
+                            <button onClick={(e)=>{UpdateClic(e,c.lineId, c.date)}}>Изменить</button>
+                        </tr>
+                        </table> :
+                            <RecordsReduxForm onSubmit={UpdateRecrdse} records={c} />
+                            }
+                </span>
+            </div>)}                 
         </div>
         
     )

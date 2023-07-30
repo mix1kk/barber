@@ -1,4 +1,4 @@
-import { assortimentAPI } from "../API/api";
+import { clientAPI, userAPI } from "../API/api";
 
 //const тип action = "тип action"; пример action
 const ADD_CLIENT = "ADD_CLIENT"; 
@@ -6,86 +6,41 @@ const UPDATE_TIME = "UPDATE_TIME";
 const UPDATE_CLIENT_NAME = "UPDATE_CLIENT_NAME"; 
 const UPDATE_SERVICE = "UPDATE_SERVICE";
 const UPDATE_COMMENT = "UPDATE_COMMENT";
+const SET_CLIENT = "SET_CLIENT";
+const SET_IS_DID_MOUNT = "SET_IS_DID_MOUNT"
+const DELITE_CLIENT = "DELITE_CLIENT"
 
-const initialState = {
-    master: [
-        {   Id:1,
-            MasterName: "Иванов Иван",
-            Date: '29.06.2023',
-            ClientName:[ 
-
-                {   Id:1,
-                    time:"8:30",
-                    clientName:"Петрова Катя",
-                    service:"monicur",
-                    comment:"bla-bla"
-                },
-
-                {   Id:2,
-                    time:"9:00",
-                    clientName:"Сидорова Катя",
-                    service:"pedicur",
-                    comment:"bla-bla"
-                }
-        ]},
-
-        { 
-            Id: 2,
-            MasterName: "Петухов Петр",
-            Date: '30.06.2023',
-            ClientName: [ 
-                {
-                    Id:1,
-                    time:"8:30",
-                    clientName:"Иванова Катя",
-                    service:"Просто подстрич ногти",
-                    comment:"bla-bla"} ] }
-        ],
-    isFiching:true
+let initialState = {
+    master:[]
     
 };
 
-const masterReducer = (state = initialState, action) => {
-    // console.log(action);
-    // debugger;
+let masterReducer = (state = initialState, action) => {
     let stateCopy;
     switch (action.type){
-        case ADD_CLIENT:
-            stateCopy = {...state};
-            stateCopy.master = [...state.master];
-            stateCopy.master.ClientName = [...state.master[action.masterId-1].ClientName]
-            stateCopy.master[action.masterId-1].ClientName.push(action.newClient) 
-            console.log(stateCopy);
-            //debugger;
-            return stateCopy;
+        case SET_CLIENT: 
+        stateCopy = {master:[]};
+        stateCopy.master.push(...action.master);
+        
+        for (let i = 0;i<action.master.length;i++){
+            stateCopy.master[i].userRecords=[ ...action.master[i].userRecords];
+        }
+        action.master = [];
+        return stateCopy;
 
-        case UPDATE_TIME:
-            stateCopy = {...state};
-            stateCopy.master = [...state.master];
-            stateCopy.master.ClientName = [...state.master[action.masterId-1].ClientName]
-            stateCopy.master[action.masterId-1].ClientName[action.clientId-1].time = action.newTime
-            return stateCopy;
 
-        case UPDATE_CLIENT_NAME:
-            stateCopy = {...state};
-            stateCopy.master = [...state.master];
-            stateCopy.master.ClientName = [...state.master[action.masterId-1].ClientName]
-            stateCopy.master[action.masterId-1].ClientName[action.clientId-1].clientName = action.newClientName
-            return stateCopy;
-
-        case UPDATE_SERVICE:
-            stateCopy = {...state};
-            stateCopy.master = [...state.master];
-            stateCopy.master.ClientName = [...state.master[action.masterId-1].ClientName]
-            stateCopy.master[action.masterId-1].ClientName[action.clientId-1].service = action.newService
-            return stateCopy;
-
-        case UPDATE_COMMENT:
-            stateCopy = {...state};
-            stateCopy.master = [...state.master];
-            stateCopy.master.ClientName = [...state.master[action.masterId-1].ClientName]
-            stateCopy.master[action.masterId-1].ClientName[action.clientId-1].comment = action.newComment
-            return stateCopy;
+        // console.log(state.master.toString() !== action.master.toString());
+        //     if(state.master.toString() !== action.master.toString())
+        //     {
+        //         stateCopy = {...state};
+        //         stateCopy.master = [...state.master, ...action.master];
+        //         for (let i = 0;i<stateCopy.master.length;i++){
+        //             stateCopy.master[i].userRecords = [ ...action.master[i].userRecords]
+        //         }
+        //         return stateCopy;
+              
+        //     }
+        //     else return {...state};
 
         default: 
             return state
@@ -94,10 +49,54 @@ const masterReducer = (state = initialState, action) => {
 
 // export const название-диспатча = (параметр) => ({type: название action, параметр}); пример dispatch или добавляем thunk
 export const AddClientCreator = (newClient,masterId) => ({type: ADD_CLIENT, newClient,masterId});
+export const SetClientCreator = (master) => ({type:SET_CLIENT,master});
+//export const DeliteClientCreator = (i) => ({type:DELITE_CLIENT,i})
+export const getClient = (id, startDate, endDate) => {   // Thunk
+    return (dispatch) => {
+        //dispatch(DeliteClientCreator());
+        clientAPI.GetClient(id, startDate, endDate).then(response => {
+        dispatch (SetClientCreator(response))
+      });
+    };
+}
 
-export const UpdateTimeCreator = (newTime,masterId,clientId) => ({type: UPDATE_TIME, newTime,masterId,clientId});
-export const UpdateClientNameCreator = (newClientName,masterId,clientId) => ({type: UPDATE_CLIENT_NAME, newClientName,masterId,clientId});
-export const UpdateServiceCreator = (newService,masterId,clientId) => ({type: UPDATE_SERVICE, newService,masterId,clientId});
-export const UpdateCommentCreator = (newComment,masterId,clientId) => ({type: UPDATE_COMMENT, newComment,masterId,clientId});
+export const deliteRecordsUser = (id, lineId, startDate, endDate) => { //id,, startDate, endDate
+    return (dispatch) => {
+        clientAPI.DeliteRecordsUser(lineId).then(response=>{
+            if(response==="NO_CONTENT")
+            {
+                clientAPI.GetClient(id, startDate, endDate).then(response => {
+                    dispatch (SetClientCreator(response))});
+            }
+        });
+        
+    };
+}
+
+export const addRecordsUser= (userId, records, startDate, endDate) => { 
+    return (dispatch) => {
+       // dispatch(DeliteClientCreator());
+        clientAPI.recordsUser(userId, records).then(response => {
+            if(response==="OK")
+            {
+                clientAPI.GetClient(userId, startDate, endDate).then(response => {
+                        dispatch (SetClientCreator(response))});
+            }
+          });
+    };
+}
+
+export const updateRecordsUser = (userId, lineId, records, startDate, endDate) => { 
+    return (dispatch) => {
+        //dispatch(DeliteClientCreator());
+        clientAPI.UpdateRecordsUser(lineId, records).then(response=>{
+            if(response==="OK")
+            {
+                clientAPI.GetClient(userId, startDate, endDate).then(response => {
+                    dispatch (SetClientCreator(response))});
+            }
+        });
+    };
+}
 
 export default masterReducer;
