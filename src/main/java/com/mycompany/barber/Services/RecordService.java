@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,14 +45,20 @@ public class RecordService {
             List<Line> lines = lineService.findByUserIdAndDateBetween(userId, fromDate, toDate);
             while (fromDate.isBefore(toDate) || fromDate.isEqual(toDate)) {
                 LocalDate finalFromDate = fromDate;
-                List<LineDTO> filteredLines = lines.stream().filter(line -> line.getDate().isEqual(finalFromDate))
+                LocalTime finalTime = LocalTime.of(0, 0, 0, 0);
+                List<LineDTO> filteredLines = lines.stream()
+                        .filter(line -> line.getDate().isEqual(finalFromDate))
                         .map(line -> LineMapper.mapToLineDTO(line))
+                        .sorted(Comparator.comparing(LineDTO::getTime))
                         .collect(Collectors.toList());
                 records.add(new RecordDTO(userId, userName, fromDate.format(FORMATTER).toString(), filteredLines));
                 fromDate = fromDate.plusDays(1);
             }
         }
         return records;
+    }
+    private LocalTime fromStringToLocalTime (String timeFromDTO){
+        return LocalTime.parse(timeFromDTO, DateTimeFormatter.ofPattern("HH:mm"));
     }
 }
 

@@ -43,8 +43,6 @@ public class RecordController {
     public List<RecordDTO> getAllRecordsForUser(@PathVariable int userId,
                                                 @RequestParam("startDate") String startDate,
                                                 @RequestParam("endDate") String endDate) {
-        System.out.println(startDate);
-        System.out.println(endDate);
         return recordService.findAllForUserFromDateToDate(userId, userService.findById(userId).getUserName(), startDate, endDate);
     }
 
@@ -75,7 +73,7 @@ public class RecordController {
     @Operation(summary = "Редактировать запись пользователя")
     @PatchMapping("/line/{lineId}")
     public ResponseEntity<HttpStatus> updateRecord(@RequestBody @Valid LineDTO lineDTO, BindingResult bindingResult,
-                                                   @PathVariable("userId") int userId, @PathVariable("lineId") int lineId) {
+                                                   @PathVariable("lineId") int lineId) {
         if (bindingResult.hasErrors()) {
             StringBuilder errorMsg = new StringBuilder();
             List<FieldError> errors = bindingResult.getFieldErrors();
