@@ -1,0 +1,16 @@
+.link{
+    border: 1px solid grey;
+    outline: none;
+    text-decoration: none;
+}
+.totalLink{
+    margin: 20px;
+}
+
+.user{
+    margin: 10px;
+}
+.userLink{ 
+    outline: none;  
+    text-decoration: none;
+}

@@ -31,3 +31,15 @@
     width: 300px;
     height: 10px;
 }
+
+.input{
+    background:transparent;
+}
+
+.link{
+    text-decoration: none;
+}
+
+.span{
+    margin-left: 20px;
+}

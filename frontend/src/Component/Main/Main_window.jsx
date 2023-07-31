@@ -1,20 +1,26 @@
-import { useState } from 'react';
 import React from "react";
-import Table from "../Table/table";
+import TableContainer from "../Table/tableContainer";
+import UserContainer from "../User/userContainer";
+import RecordsReduxForm from "../Table/recordsForm";
+import {
+    BrowserRouter, Routes,
+    Route,
+  } from 'react-router-dom'
+  import ClientPage from "../ClientPage/clientPage";
 //import cs from './main_window.module.css'
 
-function Main(){
-    const [master, setMaster] = useState({
-        MasterName: "Иванов Иван",
-        Date: '29.06.2023',
-        ClientName: "Петрова Катя",
-        coment: "bla-bla"
-    });
-    
+function Main(){    
     return(
         <div >
-            <Table data = {master}/>
-            <Table data = {master}/>            
+            <BrowserRouter>
+                    <Routes>
+                        <Route path='/' element = {<ClientPage/>  }/>
+                        <Route path='/users' element = {<UserContainer/>  }/>    
+                        <Route path='/records/user/:userID' element = {<TableContainer/>  }/>
+                        <Route path='/records/line' element = {<RecordsReduxForm/>  }/>
+                    </Routes>
+            </BrowserRouter>
+                                  
         </div>
     )
 }
