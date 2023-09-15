@@ -38,6 +38,10 @@
     <input type="text" th:field="*{password}" id="password">
     <div style = "color:red" th:if="${#fields.hasErrors('password')}" th:errors = "*{password}">password Errors</div>
     <br/>
+    <label for="email">Enter email: </label>
+    <input type="text" th:field="*{email}" id="email">
+    <div style = "color:red" th:if="${#fields.hasErrors('email')}" th:errors = "*{email}">email Errors</div>
+    <br/>
     <label for="picture">Enter picture: </label>
     <input type="text" th:field="*{picture}" id="picture">
     <div style = "color:red" th:if="${#fields.hasErrors('picture')}" th:errors = "*{picture}">picture Errors</div>
