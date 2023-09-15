@@ -6,7 +6,7 @@
     <title>Update User</title>
 </head>
 <body>
-<form th:method="PATCH" th:action="@{/users/{id} (id=${user.getUserId()})}" th:object="${user}">
+<form th:method="PATCH" th:action="@{/user/{id}/edit (id=${user.getUserId()})}" th:object="${user}">
     <label for="userId">Enter userId: </label>
     <input type="text" th:field="*{userId}" id="userId" disabled="true">
     <br/>
@@ -44,6 +44,12 @@
     <label for="password">Enter password: </label>
     <input type="text" th:field="*{password}" id="password">
     <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password
+        Errors
+    </div>
+    <br/>
+    <label for="email">Enter email: </label>
+    <input type="text" th:field="*{email}" id="email">
+    <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email
         Errors
     </div>
     <br/>

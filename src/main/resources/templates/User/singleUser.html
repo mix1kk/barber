@@ -13,10 +13,11 @@
 <div th:text="'userRole: ' +${user.getUserRole()}"></div>
 <div th:text="'usersAccessed: ' +${user.getUsersAccessed()}"></div>
 <div th:text="'password: ' +${user.getPassword()}"></div>
+<div th:text="'email: ' +${user.getEmail()}"></div>
 <div th:text="'picture: ' +${user.getPicture()}"></div>
 
-<a th:href="@{/users/{id}/edit (id = ${user.getUserId()})}">Edit</a>
-<form th:method="DELETE" th:action="@{/users/{id} (id = ${user.getUserId()})}">
+<a th:href="@{/user/{id}/edit (id = ${user.getUserId()})}">Edit</a>
+<form th:method="DELETE" th:action="@{/user/{id} (id = ${user.getUserId()})}">
     <input type="submit" value="Delete!">
 </form>
 </body>
