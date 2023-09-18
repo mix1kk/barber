@@ -10,42 +10,79 @@
     <title>Пользователь</title>
 </head>
 <body>
+<
 <table class="table table-striped table-bordered table-hover">
-    <thead>Пользователь</thead>
+    <thead>
+    <div>Пользователь</div>
+    </thead>
     <tbody>
     <tr>
-        <td>Id пользователя</td>
-        <td><div th:text="'userId: ' + ${user.getUserId()}"></div></td>
+        <th>Id пользователя</th>
+        <td>
+            <div th:text="${user.getUserId()}"></div>
+        </td>
     </tr>
     <tr>
-        <div th:text="'userName: ' +${user.getUserName()}"></div>
+        <td>Имя пользователя</td>
+        <td>
+            <div th:text="${user.getUserName()}"></div>
+        </td>
     </tr>
     <tr>
-        <div th:text="'userCompany: ' +${user.getUserCompany()}"></div>
+        <td>Компания</td>
+        <td>
+            <div th:text="${user.getUserCompany()}"></div>
+        </td>
+
     </tr>
     <tr>
-        <div th:text="'userPhoneNumber: ' +${user.getUserPhoneNumber()}"></div>
+        <td>Телефон пользователя</td>
+        <td>
+            <div th:text="${user.getUserPhoneNumber()}"></div>
+        </td>
     </tr>
     <tr>
-        <div th:text="'userProfession: ' +${user.getUserProfession()}"></div>
+        <td>Профессия пользователя</td>
+        <td>
+            <div th:text="'userProfession: ' +${user.getUserProfession()}"></div>
+        </td>
     </tr>
     <tr>
-        <div th:text="'userRole: ' +${user.getUserRole()}"></div>
+        <td>Роль пользователя</td>
+        <td>
+            <div th:text="${user.getUserRole()}"></div>
+        </td>
     </tr>
     <tr>
-        <div th:text="'usersAccessed: ' +${user.getUsersAccessed()}"></div>
+        <td>Доступ к пользователям</td>
+        <td>
+            <div th:text="${user.getUsersAccessed()}"></div>
+        </td>
     </tr>
     <tr>
-        <div th:text="'password: ' +${user.getPassword()}"></div>
+        <td>Пароль</td>
+        <td>
+            <div th:text="${user.getPassword()}"></div>
+        </td>
     </tr>
     <tr>
-        <div th:text="'picture: ' +${user.getPicture()}"></div>
+    <tr>
+        <td>Email пользователя</td>
+        <td>
+            <div th:text="${user.getEmail()}"></div>
+        </td>
+    </tr>
+    <tr>
+        <td>Аватар пользователя</td>
+        <td>
+            <div th:text="${user.getPicture()}"></div>
+        </td>
     </tr>
     </tbody>
 
 </table>
-<a th:href="@{/users/{id}/edit (id = ${user.getUserId()})}">Edit</a>
-<form th:method="DELETE" th:action="@{/users/{id} (id = ${user.getUserId()})}">
+<a th:href="@{/user/{id}/edit (id = ${user.getUserId()})}">Edit</a>
+<form th:method="DELETE" th:action="@{/user/{id} (id = ${user.getUserId()})}">
     <input type="submit" value="Delete!">
 </form>
 </body>
