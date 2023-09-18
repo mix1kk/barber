@@ -15,6 +15,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +24,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RestController
-@CrossOrigin
+@Controller
 @RequestMapping("/clients")
-@Tag(name = "Контроллер клиентов", description = "Позволяет добавлять, удалять, редактировать клиентов")
 public class ClientController {
     private final ClientService clientService;
     private final ModelMapper modelMapper;
@@ -36,22 +36,32 @@ public class ClientController {
         this.modelMapper = modelMapper;
     }
 
-    @Operation(summary = "Получить список всех клиентов для пользователя с идентификатором")
-    @GetMapping("/user/{userId}")
-    public List<ClientDTO> allClientsForUser(@PathVariable int userId) {
-        return clientService.findAllForUser(userId).stream().map(this::convertToClientDTO).collect(Collectors.toList());
-    }
 
-    @Operation(summary = "Получить список всех клиентов для компании")
-    @GetMapping("/company/{companyName}")
-    public List<ClientDTO> allClientsForUser(@PathVariable("companyName") String companyName) {
-        return clientService.findAllForCompany(companyName).stream().map(this::convertToClientDTO).collect(Collectors.toList());
+    /**
+     * Получить список всех клиентов для пользователя с id
+     */
+    @GetMapping("/user/{userId}")
+    public String allClientsForUser(Model model, @PathVariable("userId") int userId) {
+        model.addAttribute("allClients", clientService.findAllForUser(userId).stream().map(this::convertToClientDTO).collect(Collectors.toList()));
+        return "Client/allClients";
     }
+    /**
+     * Получить список всех клиентов для компании с названием
+     */
+    @GetMapping("/company/{companyName}")
+    public String allClientsForUser(Model model, @PathVariable("companyName") String companyName) {
+        model.addAttribute("allClients", clientService.findAllForCompany(companyName).stream().map(this::convertToClientDTO).collect(Collectors.toList()));
+        return "Client/allClients";
+    }
+    //TODO: Переделать на вью
 
     @GetMapping("/{clientId}")
-    @Operation(summary = "Получить клиента по id")
-    public ClientDTO singleClient(@PathVariable int clientId) {
-        return convertToClientDTO(clientService.findById(clientId));
+    /**
+     * Получить клиента по id
+     */
+    public String singleClient(@PathVariable("clientId") int clientId, Model model) {
+        model.addAttribute("client", convertToClientDTO(clientService.findById(clientId)));
+        return "Client/singleClient";
     }
 
 
