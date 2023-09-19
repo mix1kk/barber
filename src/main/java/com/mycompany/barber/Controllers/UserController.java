@@ -56,7 +56,6 @@ public class UserController {
      */
     @GetMapping("/user/{id}")
     public String singleUser(@PathVariable("id") int id, Model model) {
-        System.out.println(convertToUserDTO(userService.findById(id)));
         model.addAttribute("user", convertToUserDTO(userService.findById(id)));
         return "User/singleUser";
     }
