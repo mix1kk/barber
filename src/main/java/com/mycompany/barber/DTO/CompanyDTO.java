@@ -28,7 +28,7 @@ public class CompanyDTO {
     @NotEmpty(message = "Empty email")
     @Schema(description = "Email компании", example = "dycjh@example.com")
     private String email;
-    @Schema(description = "сайт компании", example = "https://site.com")
+    @Schema(description = "Cайт компании", example = "https://site.com")
     private String siteLink;
     @Schema(description = "ОГРН компании", example = "1047712345678")
     private String ogrn;
