@@ -23,7 +23,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#" th:text="${user.getUserCompany()}">Company</a>
+            <a class="navbar-brand" href="#">Barber Application</a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -44,54 +44,6 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <!--                <li>-->
-                <!--                    <a href="#"><i class="glyphicon glyphicon-ok" data-toggle="modal" data-target="#myModalAccept"></i>-->
-                <!--                    </a>-->
-                <!--                    <div id="myModalAccept" class="modal fade" tabindex="-1">-->
-                <!--                        <div class="modal-dialog modal-sm">-->
-                <!--                            <div class="modal-content">-->
-                <!--                                <div class="modal-header">-->
-                <!--                                    <button class="close" data-dismiss="modal">х</button>-->
-                <!--                                    <h4 class="modal-title">Подтвердите изменения</h4>-->
-                <!--                                </div>-->
-                <!--                                <div class="modal-body">Сохранить изменения?</div>-->
-                <!--                                <form th:method="PATCH" th:action="@{/user/{id}/edit (id=${user.getUserId()})}" th:object="${user}">-->
-                <!--                                    <div class="modal-footer">-->
-                <!--                                        <button class="btn btn-danger" data-dismiss="modal">Отмена</button>-->
-                <!--                                        <button class="btn btn-success" type="submit">Сохранить</button>-->
-                <!--                                    </div>-->
-                <!--                                </form>-->
-                <!--                            </div>-->
-                <!--                        </div>-->
-                <!--                    </div>-->
-                <!--                </li>-->
-                <li>
-                    <a th:href="@{/user/{id}(id=${user.getUserId()})}"><i
-                            class="glyphicon glyphicon-arrow-left"></i></a>
-                </li>
-                <li>
-                    <a href="#"><i class="glyphicon glyphicon-trash" data-toggle="modal"
-                                   data-target="#myModalDelete"></i>
-                    </a>
-                    <div id="myModalDelete" class="modal fade" tabindex="-1">
-                        <div class="modal-dialog modal-sm">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button class="close" data-dismiss="modal">х</button>
-                                    <h4 class="modal-title">Удаление пользователя</h4>
-                                </div>
-                                <div class="modal-body">Вы уверены, что хотите удалить пользователя?</div>
-                                <form th:method="DELETE" th:action="@{/user/{id} (id = ${user.getUserId()})}">
-                                    <div class="modal-footer">
-                                        <button class="btn btn-success" data-dismiss="modal">Отмена</button>
-                                        <button class="btn btn-danger" type="submit">Удалить</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -116,7 +68,7 @@
         <table class="table table-bordered table-hover">
             <thead>
             <th class="warning" colspan=2>
-                <div th:text="Создание нового пользователя"></div>
+                <div>Создание нового пользователя</div>
             </th>
             </thead>
             <tbody class="table-group-divider">
