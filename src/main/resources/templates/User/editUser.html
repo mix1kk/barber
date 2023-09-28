@@ -31,15 +31,11 @@
                 <li><a th:href="@{/users}"><i
                         class="glyphicon glyphicon-home"></i></a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Навигация<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Действие</a></li>
-                        <li><a href="#">Другое действие</a></li>
-                        <li><a href="#">Что-то еще</a></li>
+                        <li><a th:href="@{/companies}">Все компании</a></li>
                         <li class="divider"></li>
-                        <li><a href="#">Отдельная ссылка</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Еще одна отдельная ссылка</a></li>
+                        <li><a th:href="@{/users}">Все пользователи</a></li>
                     </ul>
                 </li>
             </ul>
@@ -144,10 +140,23 @@
             <tr>
                 <td>Компания</td>
                 <td>
-                    <label for="userCompany"></label>
-                    <input type="text" th:field="*{userCompany}" id="userCompany">
-                    <div style="color:red" th:if="${#fields.hasErrors('userCompany')}" th:errors="*{userCompany}">
-                        userCompany Errors
+                    <div>
+                        <label for="input"></label>
+                        <input type="text" name="input" id="input" th:field="*{userCompany}" class="form-control">
+                        <div style="color:red" th:if="${#fields.hasErrors('userCompany')}" th:errors="*{userCompany}">
+                            userCompany Errors
+                        </div>
+                        <select name="category" id="category">
+                            <div>
+                                <option value="">Выберите компанию:</option>
+                                <div th:each="company: ${allCompanies}">
+                                    <option th:text="${company.getCompanyName()}"
+                                            th:value="${company.getCompanyName()}">
+                                        Company
+                                    </option>
+                                </div>
+                            </div>
+                        </select>
                     </div>
                 </td>
 
@@ -230,29 +239,42 @@
 
         </table>
         <div>
-            <input class="btn btn-success button-md btn-block" value="Сохранить изменения" data-toggle="modal" data-target="#myModalAccept">
-        <div id="myModalAccept" class="modal fade" tabindex="-1">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button class="close" data-dismiss="modal">х</button>
-                        <h4 class="modal-title">Подтвердите изменения</h4>
-                    </div>
-                    <div class="modal-body">Сохранить изменения?</div>
-                    <form th:method="PATCH" th:action="@{/user/{id}/edit (id=${user.getUserId()})}" th:object="${user}">
-                        <div class="modal-footer">
-                            <button class="btn btn-danger" data-dismiss="modal">Отмена</button>
-                            <button class="btn btn-success" type="submit">Сохранить</button>
+            <input class="btn btn-success button-md btn-block" value="Сохранить изменения" data-toggle="modal"
+                   data-target="#myModalAccept">
+            <div id="myModalAccept" class="modal fade" tabindex="-1">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" data-dismiss="modal">х</button>
+                            <h4 class="modal-title">Подтвердите изменения</h4>
                         </div>
-                    </form>
+                        <div class="modal-body">Сохранить изменения?</div>
+                        <form th:method="PATCH" th:action="@{/user/{id}/edit (id=${user.getUserId()})}"
+                              th:object="${user}">
+                            <div class="modal-footer">
+                                <button class="btn btn-danger" data-dismiss="modal">Отмена</button>
+                                <button class="btn btn-success" type="submit">Сохранить</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
 
 
         </div>
     </div>
 </form>
+<script>
+    let form = document.forms[1], // Любая ссылка на форму
+        select = form.category,
+        input = form.input;
+
+    select.onchange = select_change;
+
+    function select_change() {
+        input.value = this.value;
+    }
+</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
