@@ -92,6 +92,44 @@
                     </div>
                 </td>
 
+
+
+                <div class="container">
+                    <h1>Выпадающий список с Thymeleaf и Bootstrap</h1>
+
+                    <!-- Выпадающий список Bootstrap -->
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                            Выберите элемент <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" data-value="Элемент 1">Элемент 1</a></li>
+                            <li><a href="#" data-value="Элемент 2">Элемент 2</a></li>
+                            <li><a href="#" data-value="Элемент 3">Элемент 3</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Поле input для отображения выбранного значения -->
+                    <div class="form-group">
+                        <label for="selectedValue">Выбранный элемент:</label>
+                        <input type="text" class="form-control" id="selectedValue" readonly>
+                    </div>
+                </div>
+
+<!--                &lt;!&ndash; Скрипты Bootstrap, jQuery и пользовательский JavaScript &ndash;&gt;-->
+<!--                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<!--                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+                <script>
+                    // JavaScript для обработки выбора элементов из выпадающего списка
+                    $(document).ready(function() {
+                        $(".dropdown-menu a").click(function(){
+                            var selectedValue = $(this).data("value");
+                            $("#selectedValue").val(selectedValue);
+                        });
+                    });
+                </script>
+
+
             </tr>
             <tr>
                 <td>Телефон пользователя</td>
