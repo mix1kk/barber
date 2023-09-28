@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+      integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<head>
+    <meta charset="UTF-8">
+    <title>Все записи на день</title>
+</head>
+
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Навигация</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Barber Application</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a th:href="@{/companies}"><i
+                        class="glyphicon glyphicon-home"></i></a></li>
+                <!--                <li><a href="#">Ссылка</a></li>-->
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Навигация<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a th:href="@{/companies}">Все компании</a></li>
+                        <li class="divider"></li>
+                        <li><a th:href="@{/users}">Все пользователи</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="/companies/new"><i
+                            class="glyphicon glyphicon-plus"></i></a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Действие</a></li>
+                        <li><a href="#">Другое действие</a></li>
+                        <li><a href="#">Что-то еще</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Отдельная ссылка</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br>
+<div class="container-fluid">
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <div class="col-md-1" style="background-color: #dff0d8; border-bottom: black">
+                Время
+            </div>
+            <div class="col-md-3" style="background-color: #dff0d8">
+                Имя клиента
+            </div>
+            <div class="col-md-2" style="background-color: #dff0d8">
+                Телефон клиента
+            </div>
+            <div class="col-md-2" style="background-color: #dff0d8">
+                Название процедуры
+            </div>
+            <div class="col-md-2" style="background-color: #dff0d8">
+                Стоимость
+            </div>
+            <div class="col-md-2" style="background-color: #dff0d8">
+                Комментарий
+            </div>
+        </tr>
+        </thead>
+    </table>
+    <div th:each="line: ${allLines}">
+        <table class="table table-bordered table-hover">
+            <tbody class="table-group-divider">
+            <tr>
+                <div class="col-md-1">
+                    <div>
+                        <a href="#"
+                           th:text="${line.getTime()}">Time</a>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div>
+                        <a href="#"
+                           th:text="${line.getClientName()}">Client Name</a>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div>
+                        <a href="#" th:text="${line.getSpare1()}">Client Phone</a>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div>
+                        <a href="#"
+                           th:text="${line.getProcedureName()}">Procedure Name</a>
+                    </div>
+                </div>
+                <div>
+                    <a href="#"
+                       th:text="${line.getProcedureCost()}">Procedure Cost</a>
+                </div>
+                <div class="col-md-2">
+                    <div>
+                        <a href="#"
+                           th:text="${line.getComment()}">Comment</a>
+                    </div>
+                </div>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+</body>
+</html>

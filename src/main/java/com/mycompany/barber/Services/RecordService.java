@@ -22,8 +22,7 @@ import java.util.stream.Collectors;
 public class RecordService {
     private final LineService lineService;
     private final ModelMapper modelMapper;
-    final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
+    final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     @Autowired
     public RecordService(LineService lineService, ModelMapper modelMapper) {
         this.lineService = lineService;

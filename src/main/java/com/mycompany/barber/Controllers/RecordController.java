@@ -14,6 +14,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +23,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-@RestController
-@CrossOrigin
-@RequestMapping("/records")
-@Tag(name = "Контроллер записей пользователя", description = "Позволяет добавлять, удалять, редактировать строки в таблице")
-
+@Controller
+@RequestMapping()
 public class RecordController {
     private final LineService lineService;
     private final UserService userService;
@@ -38,24 +37,41 @@ public class RecordController {
         this.recordService = recordService;
     }
 
-    @Operation(summary = "Получить список записей пользователя")
-    @GetMapping("/user/{userId}")
-    public List<RecordDTO> getAllRecordsForUser(@PathVariable int userId,
-                                                @RequestParam("startDate") String startDate,
-                                                @RequestParam("endDate") String endDate) {
-        return recordService.findAllForUserFromDateToDate(userId, userService.findById(userId).getUserName(), startDate, endDate);
+//    /**
+//     * Получить список записей пользователя от даты до даты
+//     * даты передаются в параметрах запроса
+//     */
+//    @GetMapping("/records/user/{userId}")
+//    public List<RecordDTO> getAllRecordsForUser(@PathVariable int userId,
+//                                                @RequestParam("startDate") String startDate,
+//                                                @RequestParam("endDate") String endDate) {
+//        return recordService.findAllForUserFromDateToDate(userId, userService.findById(userId).getUserName(), startDate, endDate);
+//    }
+
+    /**
+     * Получить список записей пользователя на конкретную дату
+     * дата передается в параметрах запроса
+     */
+    @GetMapping("/records/user/{userId}")
+    public String getRecordsForUser(@PathVariable int userId,
+                                    @RequestParam(required = false, name="date") String date,
+                                    Model model) {
+        RecordDTO recordDTO = recordService.findAllForUserFromDateToDate(userId, userService.findById(userId).getUserName(), date, date).get(0);
+        model.addAttribute("record", recordDTO);
+        model.addAttribute("allLines",recordDTO.getUserRecords());
+        return "Record/allRecords";
     }
 
     @Operation(summary = "Получить запись по id записи")
-    @GetMapping("/{lineId}")
-    public LineDTO singleUser(@PathVariable("lineId") int lineId) {
+    @GetMapping("/records/{lineId}")
+    public LineDTO singleRecord(@PathVariable("lineId") int lineId) {
         return LineMapper.mapToLineDTO(lineService.findById(lineId));
     }
 
 
     @Operation(summary = "Создать новую запись пользователя")
-    @PostMapping("/user/{userId}")
-    public ResponseEntity<HttpStatus> addLine(@RequestBody @Valid LineDTO lineDTO, BindingResult bindingResult, @PathVariable int userId) {
+    @PostMapping("/records/user/{userId}")
+    public ResponseEntity<HttpStatus> addRecord(@RequestBody @Valid LineDTO lineDTO, BindingResult bindingResult, @PathVariable int userId) {
         if (bindingResult.hasErrors()) {
             StringBuilder errorMsg = new StringBuilder();
             List<FieldError> errors = bindingResult.getFieldErrors();
@@ -71,7 +87,7 @@ public class RecordController {
     }
 
     @Operation(summary = "Редактировать запись пользователя")
-    @PatchMapping("/line/{lineId}")
+    @PatchMapping("/records/line/{lineId}")
     public ResponseEntity<HttpStatus> updateRecord(@RequestBody @Valid LineDTO lineDTO, BindingResult bindingResult,
                                                    @PathVariable("lineId") int lineId) {
         if (bindingResult.hasErrors()) {
@@ -89,40 +105,40 @@ public class RecordController {
     }
 
     @Operation(summary = "Удалить запись")
-    @DeleteMapping("/line/{lineId}")
+    @DeleteMapping("/records/line/{lineId}")
     public ResponseEntity<HttpStatus> delete(@PathVariable("lineId") int lineId) {
         lineService.delete(lineId);
         return ResponseEntity.ok(HttpStatus.NO_CONTENT);
     }
-
-    @ExceptionHandler
-    private ResponseEntity<LineErrorResponse> handleException(LineNotDeletedException e) {
-        LineErrorResponse response = new LineErrorResponse(e.getMessage(), System.currentTimeMillis());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<UserErrorResponse> handleException(UserNotFoundException e) {
-        UserErrorResponse response = new UserErrorResponse("User not exist", System.currentTimeMillis());
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<LineErrorResponse> handleException(LineNotUpdatedException e) {
-        LineErrorResponse response = new LineErrorResponse(e.getMessage(), System.currentTimeMillis());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<UserErrorResponse> handleException(UserNotCreatedException e) {
-        UserErrorResponse response = new UserErrorResponse(e.getMessage(), System.currentTimeMillis());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<LineErrorResponse> handleException(LineNotFoundException e) {
-        LineErrorResponse response = new LineErrorResponse("Line not exist", System.currentTimeMillis());
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
+//
+//    @ExceptionHandler
+//    private ResponseEntity<LineErrorResponse> handleException(LineNotDeletedException e) {
+//        LineErrorResponse response = new LineErrorResponse(e.getMessage(), System.currentTimeMillis());
+//        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+//    }
+//
+//    @ExceptionHandler
+//    private ResponseEntity<UserErrorResponse> handleException(UserNotFoundException e) {
+//        UserErrorResponse response = new UserErrorResponse("User not exist", System.currentTimeMillis());
+//        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+//    }
+//
+//    @ExceptionHandler
+//    private ResponseEntity<LineErrorResponse> handleException(LineNotUpdatedException e) {
+//        LineErrorResponse response = new LineErrorResponse(e.getMessage(), System.currentTimeMillis());
+//        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+//    }
+//
+//    @ExceptionHandler
+//    private ResponseEntity<UserErrorResponse> handleException(UserNotCreatedException e) {
+//        UserErrorResponse response = new UserErrorResponse(e.getMessage(), System.currentTimeMillis());
+//        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+//    }
+//
+//    @ExceptionHandler
+//    private ResponseEntity<LineErrorResponse> handleException(LineNotFoundException e) {
+//        LineErrorResponse response = new LineErrorResponse("Line not exist", System.currentTimeMillis());
+//        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+//    }
 
 }
