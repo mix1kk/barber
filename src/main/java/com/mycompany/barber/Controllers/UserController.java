@@ -93,6 +93,7 @@ public class UserController {
     @GetMapping("/user/{id}/edit")
     public String editUser(Model model, @PathVariable("id") int userId) {
         model.addAttribute("user", convertToUserDTO(userService.findById(userId)));
+        model.addAttribute("allCompanies", companyService.findAll().stream().sorted(Comparator.comparing(Company::getCompanyName)).collect(Collectors.toList()));
         return "User/editUser";
     }
 

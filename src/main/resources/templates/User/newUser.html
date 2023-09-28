@@ -82,15 +82,22 @@
                 <td>Компания</td>
                 <td>
                     <div>
-                        <select name="category" id="category" th:field="*{userCompany}">
-                            <div th:each="company: ${allCompanies}">
-                                <option th:text="${company.getCompanyName()}" th:value="${company.getCompanyName()}">
-                                    Company
-                                </option>
+                        <label for="input"></label>
+                        <input type="text" name="input" id="input" th:field="*{userCompany}" class="form-control">
+                        <div style="color:red" th:if="${#fields.hasErrors('userCompany')}" th:errors="*{userCompany}">
+                            userCompany Errors
+                        </div>
+                        <select name="category" id="category">
+                            <div>
+                                <option value="">Выберите компанию:</option>
+                                <div th:each="company: ${allCompanies}">
+                                    <option th:text="${company.getCompanyName()}"
+                                            th:value="${company.getCompanyName()}">
+                                        Company
+                                    </option>
+                                </div>
                             </div>
                         </select>
-                        <a href="/companies/new"><i
-                                class="glyphicon glyphicon-plus"></i></a>
                     </div>
                 </td>
 
@@ -197,6 +204,17 @@
         </div>
     </div>
 </form>
+<script>
+    let form = document.forms[0], // Любая ссылка на форму
+        select = form.category,
+        input = form.input;
+
+    select.onchange = select_change;
+
+    function select_change() {
+        input.value = this.value;
+    }
+</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
