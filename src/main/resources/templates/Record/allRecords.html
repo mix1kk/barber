@@ -22,7 +22,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Barber Application</a>
+            <a class="navbar-brand" href="#" th:text="${record.getUserName()}">Barber Application</a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -59,72 +59,97 @@
     </div>
 </nav>
 <br>
-<div class="container-fluid">
-    <table class="table table-bordered table-hover">
+<div class="container">
+     <table class="table table-bordered table-hover table-sm">
         <thead>
         <tr>
             <div class="col-md-1" style="background-color: #dff0d8; border-bottom: black">
-                Время
+                <th style="border: 1px solid grey; background-color: #dff0d8">
+                    Время
+                </th>
             </div>
             <div class="col-md-3" style="background-color: #dff0d8">
-                Имя клиента
+                <th style="border: 1px solid grey; background-color: #dff0d8">
+                    Имя клиента
+                </th>
             </div>
             <div class="col-md-2" style="background-color: #dff0d8">
-                Телефон клиента
+                <th style="border: 1px solid grey; background-color: #dff0d8">
+                    Скидка
+                </th>
             </div>
             <div class="col-md-2" style="background-color: #dff0d8">
-                Название процедуры
+                <th style="border: 1px solid grey; background-color: #dff0d8">
+                    Название процедуры
+                </th>
             </div>
             <div class="col-md-2" style="background-color: #dff0d8">
-                Стоимость
+                <th style="border: 1px solid grey; background-color: #dff0d8">
+                    Стоимость
+                </th>
             </div>
             <div class="col-md-2" style="background-color: #dff0d8">
-                Комментарий
+                <th style="border: 1px solid grey; background-color: #dff0d8">
+                    Комментарий
+                </th>
             </div>
         </tr>
         </thead>
-    </table>
-    <div th:each="line: ${allLines}">
-        <table class="table table-bordered table-hover">
-            <tbody class="table-group-divider">
-            <tr>
+        <tbody class="table-group-divider">
+        <div th:each="line, iterStat: ${allLines}">
+            <tr th:style="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'">
                 <div class="col-md-1">
                     <div>
-                        <a href="#"
-                           th:text="${line.getTime()}">Time</a>
+                        <td style="border: 1px solid grey">
+                            <a href="#"
+                               th:text="${line.getTime()}">Time</a></td>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div>
-                        <a href="#"
-                           th:text="${line.getClientName()}">Client Name</a>
+                        <td style="border: 1px solid grey">
+                            <form th:method="POST" th:action="@{/records/user/{userId} (userId = ${line.userId})}">
+                            <input type="text" name="clientName" value="James Carrot" th:value="${line.clientName}" />
+<!--                            <a href="#"-->
+<!--                               th:text="${line.getClientName()}">Client Name</a></td>-->
+                            </form>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div>
-                        <a href="#" th:text="${line.getSpare1()}">Client Phone</a>
+                        <td style="border: 1px solid grey">
+                            <a href="#" th:text="${line.getClientName()}">Discount</a>
+                        </td>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div>
-                        <a href="#"
-                           th:text="${line.getProcedureName()}">Procedure Name</a>
+                        <td style="border: 1px solid grey">
+                            <a href="#"
+                               th:text="${line.getProcedureName()}">Procedure Name</a>
+                        </td>
                     </div>
-                </div>
-                <div>
-                    <a href="#"
-                       th:text="${line.getProcedureCost()}">Procedure Cost</a>
                 </div>
                 <div class="col-md-2">
                     <div>
-                        <a href="#"
-                           th:text="${line.getComment()}">Comment</a>
+                        <td style="border: 1px solid grey">
+                            <a href="#"
+                               th:text="${line.getProcedureCost()}">Procedure Cost</a>
+                        </td>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div>
+                        <td style="border: 1px solid grey">
+                            <a href="#"
+                               th:text="${line.getComment()}">Comment</a></td>
                     </div>
                 </div>
             </tr>
-            </tbody>
-        </table>
-    </div>
+        </div>
+        </tbody>
+    </table>
+
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <!-- Latest compiled and minified JavaScript -->

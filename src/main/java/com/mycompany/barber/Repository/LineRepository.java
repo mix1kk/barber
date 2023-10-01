@@ -13,4 +13,5 @@ public interface LineRepository extends JpaRepository<Line, Integer> {
     List<Line> findByUserId(int userId);
 
     List<Line> findByUserIdAndDateBetween(int userId, LocalDate fromDate, LocalDate toDate);
+    List<Line> findByUserIdAndDate(int userId, LocalDate date);
 }

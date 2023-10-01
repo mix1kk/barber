@@ -49,19 +49,24 @@ public class Line {
     private String spare2;
 
     public Line() {
-        this.lineId = 0;
-        this.userId = 0;
-        this.userCompany = "userCompany";
         this.date = LocalDate.now();
-        this.time = "time";
-        this.clientName = "clientName";
-        this.procedureName = "procedureName";
-        this.comment = "comment";
-        this.createdAt = "createdAt";
-        this.updatedAt = "updatedAt";
-        this.updatedBy = "updatedBy";
-        this.spare1 = "spare1";
-        this.spare2 = "spare2";
+    }
+    public Line(int lineId, int userId, String userCompany, LocalDate date, String time, String clientName, String procedureName, String procedureCost, String procedureDiscount, String comment, String createdAt, String updatedAt, String updatedBy, String spare1, String spare2) {
+        this.lineId = lineId;
+        this.userId = userId;
+        this.userCompany = userCompany;
+        this.date = date;
+        this.time = time;
+        this.clientName = clientName;
+        this.procedureName = procedureName;
+        this.procedureCost = procedureCost;
+        this.procedureDiscount = procedureDiscount;
+        this.comment = comment;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.updatedBy = updatedBy;
+        this.spare1 = spare1;
+        this.spare2 = spare2;
     }
 }
 

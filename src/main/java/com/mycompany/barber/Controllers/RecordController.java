@@ -56,7 +56,7 @@ public class RecordController {
     public String getRecordsForUser(@PathVariable int userId,
                                     @RequestParam(required = false, name="date") String date,
                                     Model model) {
-        RecordDTO recordDTO = recordService.findAllForUserFromDateToDate(userId, userService.findById(userId).getUserName(), date, date).get(0);
+        RecordDTO recordDTO = recordService.findAllForUserOnDate(userId, userService.findById(userId).getUserName(), date);
         model.addAttribute("record", recordDTO);
         model.addAttribute("allLines",recordDTO.getUserRecords());
         return "Record/allRecords";
@@ -68,10 +68,15 @@ public class RecordController {
         return LineMapper.mapToLineDTO(lineService.findById(lineId));
     }
 
-
-    @Operation(summary = "Создать новую запись пользователя")
+    /**Создать новую запись пользователя
+     *
+     * @param lineDTO
+     * @param bindingResult
+     * @param userId
+     * @return
+     */
     @PostMapping("/records/user/{userId}")
-    public ResponseEntity<HttpStatus> addRecord(@RequestBody @Valid LineDTO lineDTO, BindingResult bindingResult, @PathVariable int userId) {
+    public String addRecord(@ModelAttribute("line")@RequestBody @Valid LineDTO lineDTO, BindingResult bindingResult, @PathVariable int userId, Model model, @RequestParam(required = false, name="date") String date) {
         if (bindingResult.hasErrors()) {
             StringBuilder errorMsg = new StringBuilder();
             List<FieldError> errors = bindingResult.getFieldErrors();
@@ -82,11 +87,21 @@ public class RecordController {
             throw new LineNotCreatedException(errorMsg.toString());
         }
         lineDTO.setUserId(userId);
+        System.out.println(lineDTO);
         lineService.save(LineMapper.mapToLine(lineDTO));
-        return ResponseEntity.ok(HttpStatus.OK);
+//        RecordDTO recordDTO = recordService.findAllForUserOnDate(userId, userService.findById(userId).getUserName(), date);
+//        model.addAttribute("record", recordDTO);
+//        model.addAttribute("allLines",recordDTO.getUserRecords());
+        return "redirect:/records/user/"+userId;
     }
 
-    @Operation(summary = "Редактировать запись пользователя")
+    /**
+     * Редактировать запись пользователя
+     * @param lineDTO
+     * @param bindingResult
+     * @param lineId
+     * @return
+     */
     @PatchMapping("/records/line/{lineId}")
     public ResponseEntity<HttpStatus> updateRecord(@RequestBody @Valid LineDTO lineDTO, BindingResult bindingResult,
                                                    @PathVariable("lineId") int lineId) {
