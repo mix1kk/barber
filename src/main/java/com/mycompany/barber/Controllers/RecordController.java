@@ -87,7 +87,6 @@ public class RecordController {
             throw new LineNotCreatedException(errorMsg.toString());
         }
         lineDTO.setUserId(userId);
-        System.out.println(lineDTO);
         lineService.save(LineMapper.mapToLine(lineDTO));
 //        RecordDTO recordDTO = recordService.findAllForUserOnDate(userId, userService.findById(userId).getUserName(), date);
 //        model.addAttribute("record", recordDTO);
