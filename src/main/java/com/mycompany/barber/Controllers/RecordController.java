@@ -75,8 +75,8 @@ public class RecordController {
      * @param userId
      * @return
      */
-    @PostMapping("/records/user/{userId}")
-    public String addRecord(@ModelAttribute("line")@RequestBody @Valid LineDTO lineDTO, BindingResult bindingResult, @PathVariable int userId, Model model, @RequestParam(required = false, name="date") String date) {
+    @PatchMapping("/records/user/{userId}/{lineId}")
+    public String addRecord(@ModelAttribute("line")@RequestBody @Valid LineDTO lineDTO, BindingResult bindingResult, @PathVariable int userId, @PathVariable int lineId) {
         if (bindingResult.hasErrors()) {
             StringBuilder errorMsg = new StringBuilder();
             List<FieldError> errors = bindingResult.getFieldErrors();
@@ -87,6 +87,7 @@ public class RecordController {
             throw new LineNotCreatedException(errorMsg.toString());
         }
         lineDTO.setUserId(userId);
+        lineDTO.setLineId(lineId);
         lineService.save(LineMapper.mapToLine(lineDTO));
 //        RecordDTO recordDTO = recordService.findAllForUserOnDate(userId, userService.findById(userId).getUserName(), date);
 //        model.addAttribute("record", recordDTO);

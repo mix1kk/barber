@@ -97,11 +97,12 @@
         <tbody class="table-group-divider">
         <div th:each="line, iterStat: ${allLines}">
             <tr th:style="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'">
-                <form th:method="POST" th:action="@{/records/user/{userId} (userId = ${line.userId})}">
+                <form th:method="PATCH" th:action="@{/records/user/{userId}/{lineId} (userId = ${line.userId},lineId = ${line.lineId})}">
                     <div class="col-md-1">
                         <div>
                             <td style="border: 1px solid grey">
-                               <button class="btn btn-success btn-sm" type="submit">Записать</button>
+<!--                                <input class="form-control transparent-input" type="text" name="id" th:value = "${line.lineId}"/>-->
+                               <button class="btn btn-success btn-sm" type="submit" >Записать</button>
                             </td>
                         </div>
                     </div>
