@@ -22,9 +22,9 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#" th:text="${record.getUserName()}">Barber Application</a>
+            <a class="navbar-brand" th:href="@{/user/{id} (id = ${record.getUserId()})}"
+               th:text="${record.getUserName()}">Barber Application</a>
         </div>
-
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li><a th:href="@{/companies}"><i
@@ -60,35 +60,42 @@
 </nav>
 <br>
 <div class="container">
-    <table class="table table-bordered table-hover table-sm">
+    <table class="table table-bordered table-condensed table-sm">
         <thead>
+        <tr>
+            <div>
+                <th style="border: 1px solid grey; text-align: center; background-color: #fff0d8" colspan="6" th:text="${record.date}">
+                    Date
+                </th>
+            </div>
+        </tr>
         <tr>
             <div class="col-md-1" style="background-color: #dff0d8">
                 <th style="border: 1px solid grey; background-color: #dff0d8">
                 </th>
             </div>
             <div class="col-md-1" style="background-color: #dff0d8; border-bottom: black">
-                <th style="border: 1px solid grey; background-color: #dff0d8">
+                <th style="border: 1px solid grey; text-align: center; background-color: #dff0d8">
                     Время
                 </th>
             </div>
             <div class="col-md-3" style="background-color: #dff0d8">
-                <th style="border: 1px solid grey; background-color: #dff0d8">
+                <th style="border: 1px solid grey; text-align: center; background-color: #dff0d8">
                     Имя клиента
                 </th>
             </div>
             <div class="col-md-3" style="background-color: #dff0d8">
-                <th style="border: 1px solid grey; background-color: #dff0d8">
+                <th style="border: 1px solid grey; text-align: center; background-color: #dff0d8">
                     Название процедуры
                 </th>
             </div>
             <div class="col-md-2" style="background-color: #dff0d8">
-                <th style="border: 1px solid grey; background-color: #dff0d8">
+                <th style="border: 1px solid grey; text-align: center; background-color: #dff0d8">
                     Стоимость
                 </th>
             </div>
             <div class="col-md-2" style="background-color: #dff0d8">
-                <th style="border: 1px solid grey; background-color: #dff0d8">
+                <th style="border: 1px solid grey; text-align: center; background-color: #dff0d8">
                     Комментарий
                 </th>
             </div>
@@ -96,48 +103,42 @@
         </thead>
         <tbody class="table-group-divider">
         <div th:each="line, iterStat: ${allLines}">
-            <tr th:style="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'">
-                <form th:method="PATCH" th:action="@{/records/user/{userId}/{lineId} (userId = ${line.userId},lineId = ${line.lineId})}">
-                    <div class="col-md-1">
-                        <div>
-                            <td style="border: 1px solid grey">
-<!--                                <input class="form-control transparent-input" type="text" name="id" th:value = "${line.lineId}"/>-->
-                               <button class="btn btn-success btn-sm" type="submit" >Записать</button>
-                            </td>
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <div>
-                            <td style="border: 1px solid grey">
-                                <input class="form-control transparent-input" type="text" name="time" th:value="${line.time}"/>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div>
-                            <td style="border: 1px solid grey">
 
-                                <input class="form-control transparent-input" type="text" name="clientName" th:value="${line.clientName}"/>
-                        </div>
+            <tr th:style="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'">
+                <form th:method="PATCH"
+                      th:action="@{/records/user/{userId}/{lineId} (userId = ${line.userId},lineId = ${line.lineId})}">
+                    <div class="col-md-1">
+                        <td style="border: 1px solid grey">
+                            <button class="btn btn-success btn-sm" type="submit">Записать</button>
+                        </td>
+                    </div>
+                    <div class="col-md-1">
+                        <td style="border: 1px solid grey">
+                            <input class="form-control transparent-input" type="text"  name="time"
+                                   th:value="${line.time}" readonly style="border: 0px; box-shadow: none;" th:styleappend ="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'"/>
                     </div>
                     <div class="col-md-3">
-                        <div>
-                            <td style="border: 1px solid grey">
-                                <input class="form-control transparent-input" type="text" name="procedureName" th:value="${line.procedureName}"/>
-                            </td>
-                        </div>
+                        <td style="border: 1px solid grey">
+
+                            <input class="form-control transparent-input" type="text" name="clientName"
+                                   th:value="${line.clientName}" style="border: 0px; box-shadow: none;" th:styleappend ="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'"/>
+                    </div>
+                    <div class="col-md-3">
+                        <td style="border: 1px solid grey">
+                            <input class="form-control transparent-input" type="text" name="procedureName"
+                                   th:value="${line.procedureName}" style="border: 0px; box-shadow: none;" th:styleappend ="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'"/>
+                        </td>
                     </div>
                     <div class="col-md-2">
-                        <div>
-                            <td style="border: 1px solid grey">
-                                <input class="form-control transparent-input" type="text" name="procedureCost" th:value="${line.procedureCost}"/>
-                            </td>
-                        </div>
+                        <td style="border: 1px solid grey">
+                            <input class="form-control transparent-input" type="text" name="procedureCost"
+                                   th:value="${line.procedureCost}" style="border: 0px; box-shadow: none;" th:styleappend ="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'"/>
+                        </td>
                     </div>
                     <div class="col-md-2">
-                        <div>
-                            <td style="border: 1px solid grey">
-                                <input class="form-control transparent-input" type="text" name="comment" th:value="${line.comment}"/>
-                        </div>
+                        <td style="border: 1px solid grey">
+                            <input class="form-control transparent-input" type="text" name="comment"
+                                   th:value="${line.comment}" style="border: 0px; box-shadow: none;" th:styleappend ="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'"/>
                     </div>
                 </form>
             </tr>
@@ -145,7 +146,6 @@
         </div>
         </tbody>
     </table>
-
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <!-- Latest compiled and minified JavaScript -->

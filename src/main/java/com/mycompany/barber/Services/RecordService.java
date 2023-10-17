@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -30,13 +31,22 @@ public class RecordService {
         if (date == null) {
             date = LocalDate.now().toString();
         }
+
+
         List<LineDTO> filteredLinesDTO = LineFiller.fillWithVoidLines(lineService.findByUserIdAndDate(userId, LocalDate.parse(date, FORMATTER))).stream()
-                .map(line -> LineMapper.addUserToLine(line,userId))
+                .map(line -> LineMapper.addUserToLine(line, userId))
                 .map(line -> LineMapper.mapToLineDTO(line))
                 .collect(Collectors.toList());
-        return new RecordDTO(userId, userName, date, filteredLinesDTO);
-}
+        return new RecordDTO(userId, userName, convertDateToString(date), filteredLinesDTO);
+    }
 
+    private String convertDateToString(String date) {
+        LocalDate tempDate = LocalDate.parse(date, FORMATTER);
+        String[] stringArray = date.split("-");
+
+        return tempDate.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("ru")) + ", " + stringArray[2] + " " +
+                tempDate.getMonth().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("ru")) + " " + stringArray[0];
+    }
 
 //    /**
 //     * Находит все записи для пользователя от одной даты до другой, дата в формате гггг-мм-дд
