@@ -21,6 +21,7 @@ public class RecordDTO {
 //    @Schema(description = "Имя пользователя", example = "John Doe")
     private String userName;
 //    @Schema(description = "Дата", example = "01-01-2020")
+    private String longDate;
     private String date;
 //    @Schema(description = "Список записей", example = "[" +
 //            "{\"lineId\":0," +
@@ -39,9 +40,10 @@ public class RecordDTO {
     public RecordDTO() {
     }
 
-    public RecordDTO(int userId, String userName, String date, List<LineDTO> userRecords) {
+    public RecordDTO(int userId, String userName, String longDate, String date, List<LineDTO> userRecords) {
         this.userId = userId;
         this.userName = userName;
+        this.longDate = longDate;
         this.date = date;
         this.userRecords = userRecords;
     }

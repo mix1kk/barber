@@ -17,8 +17,14 @@ public class LineFiller {
         }
 
         for (int i = 6; i < 23; i++) {//создаем массив значений времени, от 6:00 до 22:30
-            timeList.add(i + ":" + "00");
-            timeList.add(i + ":" + "30");
+            if (i<10){
+                timeList.add("0"+ i + ":" + "00");
+                timeList.add("0"+ i + ":" + "30");
+            }
+            else {
+                timeList.add(i + ":" + "00");
+                timeList.add(i + ":" + "30");
+            }
         }
 
 

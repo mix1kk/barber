@@ -20,6 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -54,21 +55,27 @@ public class RecordController {
      */
     @GetMapping("/records/user/{userId}")
     public String getRecordsForUser(@PathVariable int userId,
-                                    @RequestParam(required = false, name="date") String date,
+                                    @RequestParam(required = false, name = "date") String date,
+                                    @RequestParam(required = false, name = "direction") String direction,
                                     Model model) {
+        if (direction!=null){
+            return "redirect:/records/user/" + userId + "?date=" + RecordService.nextOrPreviousDate(date,direction);
+        }
         RecordDTO recordDTO = recordService.findAllForUserOnDate(userId, userService.findById(userId).getUserName(), date);
         model.addAttribute("record", recordDTO);
-        model.addAttribute("allLines",recordDTO.getUserRecords());
+        model.addAttribute("allLines", recordDTO.getUserRecords());
         return "Record/allRecords";
     }
 
+    //TODO: сделать переход на следующий день и предыдущий день
     @Operation(summary = "Получить запись по id записи")
     @GetMapping("/records/{lineId}")
     public LineDTO singleRecord(@PathVariable("lineId") int lineId) {
         return LineMapper.mapToLineDTO(lineService.findById(lineId));
     }
 
-    /**Создать новую запись пользователя
+    /**
+     * Создать новую запись пользователя
      *
      * @param lineDTO
      * @param bindingResult
@@ -76,7 +83,7 @@ public class RecordController {
      * @return
      */
     @PatchMapping("/records/user/{userId}/{lineId}")
-    public String addRecord(@ModelAttribute("line")@RequestBody @Valid LineDTO lineDTO, BindingResult bindingResult, @PathVariable int userId, @PathVariable int lineId) {
+    public String addRecord(@ModelAttribute("line") @RequestBody @Valid LineDTO lineDTO, BindingResult bindingResult, @PathVariable int userId, @PathVariable int lineId) {
         if (bindingResult.hasErrors()) {
             StringBuilder errorMsg = new StringBuilder();
             List<FieldError> errors = bindingResult.getFieldErrors();
@@ -92,11 +99,12 @@ public class RecordController {
 //        RecordDTO recordDTO = recordService.findAllForUserOnDate(userId, userService.findById(userId).getUserName(), date);
 //        model.addAttribute("record", recordDTO);
 //        model.addAttribute("allLines",recordDTO.getUserRecords());
-        return "redirect:/records/user/"+userId;
+        return "redirect:/records/user/" + userId;
     }
 
     /**
      * Редактировать запись пользователя
+     *
      * @param lineDTO
      * @param bindingResult
      * @param lineId

@@ -2,7 +2,6 @@ package com.mycompany.barber.Services;
 
 import com.mycompany.barber.DTO.LineDTO;
 import com.mycompany.barber.DTO.RecordDTO;
-import com.mycompany.barber.Models.Line;
 import com.mycompany.barber.Utils.Mappers.LineFiller;
 import com.mycompany.barber.Utils.Mappers.LineMapper;
 import jakarta.transaction.Transactional;
@@ -31,16 +30,14 @@ public class RecordService {
         if (date == null) {
             date = LocalDate.now().toString();
         }
-
-
         List<LineDTO> filteredLinesDTO = LineFiller.fillWithVoidLines(lineService.findByUserIdAndDate(userId, LocalDate.parse(date, FORMATTER))).stream()
                 .map(line -> LineMapper.addUserToLine(line, userId))
                 .map(line -> LineMapper.mapToLineDTO(line))
                 .collect(Collectors.toList());
-        return new RecordDTO(userId, userName, convertDateToString(date), filteredLinesDTO);
+        return new RecordDTO(userId, userName, convertDateToLongDate(date), date, filteredLinesDTO);
     }
 
-    private String convertDateToString(String date) {
+    private String convertDateToLongDate(String date) {
         LocalDate tempDate = LocalDate.parse(date, FORMATTER);
         String[] stringArray = date.split("-");
 
@@ -48,6 +45,16 @@ public class RecordService {
                 tempDate.getMonth().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("ru")) + " " + stringArray[0];
     }
 
+    public static String nextOrPreviousDate(String date, String direction) {
+        if (date == null) {
+            date = LocalDate.now().toString();
+        }
+        if (direction.equals("next")) {
+            return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd")).plusDays(1).toString();
+        } else if (direction.equals("prev")) {
+            return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd")).minusDays(1).toString();
+        } else return date;
+    }
 //    /**
 //     * Находит все записи для пользователя от одной даты до другой, дата в формате гггг-мм-дд
 //     *
