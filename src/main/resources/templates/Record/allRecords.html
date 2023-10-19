@@ -23,13 +23,12 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" th:href="@{/user/{id} (id = ${record.getUserId()})}"
-               th:text="${record.getUserName()}">Barber Application</a>
+               th:text="${record.getUserName()}">UserName</a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a th:href="@{/companies}"><i
+                <li><a th:href="@{/records/user/{userId} (userId = ${record.userId})}"><i
                         class="glyphicon glyphicon-home"></i></a></li>
-                <!--                <li><a href="#">Ссылка</a></li>-->
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Навигация<b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -142,7 +141,7 @@
                     </td>
                     <td style="border: 1px solid grey">
                         <input class="form-control transparent-input" name="date"
-                               th:value="${line.date}" type="hidden"/>
+                               th:value="${record.date}" type="hidden"/>
                         <input class="form-control transparent-input" type="text" name="time"
                                th:value="${line.time}" readonly style="border: 0px; box-shadow: none;"
                                th:styleappend="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'"/>

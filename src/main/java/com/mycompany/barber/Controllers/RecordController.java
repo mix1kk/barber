@@ -92,7 +92,7 @@ public class RecordController {
         lineDTO.setUserId(userId);
         lineDTO.setLineId(lineId);
         lineService.save(LineMapper.mapToLine(lineDTO));
-        return "redirect:/records/user/" + userId;
+        return "redirect:/records/user/" + userId + "?date=" + lineDTO.getDate();
     }
 
 //    /**
