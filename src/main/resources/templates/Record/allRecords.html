@@ -72,7 +72,7 @@
                 <th style="border: 0px; text-align: center; background-color: #fff0d8" colspan="3"
                 >
                     <a href="#myModalAccept" data-toggle="modal" data-target="#myModalAccept">
-                        <i class="text" style="color: black" th:text="${record.longDate}"></i></a>
+                        <i class="text" style="color: black; font-size: large" th:text="${record.longDate}"></i></a>
 
                     <div id="myModalAccept" class="modal fade" tabindex="-1">
                         <div class="modal-dialog modal-sm">
@@ -129,9 +129,20 @@
                 <form th:method="PATCH"
                       th:action="@{/records/user/{userId}/{lineId} (userId = ${line.userId},lineId = ${line.lineId})}">
                     <td style="border: 1px solid grey">
-                        <button class="btn btn-success btn-sm" type="submit">Записать</button>
+                        <span>
+                        <button class="glyphicon glyphicon-ok" type="submit" style="border: none; box-shadow: none;"
+                                th:styleappend="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'"></button>
+                       <a th:href="@{/records/user/{userId} (userId = ${record.userId}, date = ${record.date}, direction='next')}"><i
+                               class="glyphicon glyphicon-pencil" style="color: black;"></i></a>
+                        <a href="#"><i class="glyphicon glyphicon-trash" data-toggle="modal"
+                                       data-target="#myModalDelete" id="deleteLink" th:data-line-id="${line.lineId}"
+                                       th:data-user-id="${line.userId}" th:data-date="${line.date}" style="color: black"></i>
+                    </a>
+                        </span>
                     </td>
                     <td style="border: 1px solid grey">
+                        <input class="form-control transparent-input" name="date"
+                               th:value="${line.date}" type="hidden"/>
                         <input class="form-control transparent-input" type="text" name="time"
                                th:value="${line.time}" readonly style="border: 0px; box-shadow: none;"
                                th:styleappend="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'"/>
@@ -154,16 +165,46 @@
                                th:value="${line.comment}" style="border: 0px; box-shadow: none;"
                                th:styleappend="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'"/>
                 </form>
+                <div id="myModalDelete" class="modal fade" tabindex="-1">
+                    <div class="modal-dialog modal-sm modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button class="close" data-dismiss="modal">х</button>
+                                <h4 class="modal-title">Удаление записи</h4>
+                            </div>
+                            <div class="modal-body">Вы уверены, что хотите удалить запись?</div>
+
+                            <form th:method="DELETE" id="modalInput">
+                                <div class="modal-footer">
+                                    <button class="btn btn-success" data-dismiss="modal">Отмена</button>
+                                    <button class="btn btn-danger" type="submit">Удалить</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </tr>
 
         </div>
+
         </tbody>
     </table>
+
+
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
+<script>
+    $('#myModalDelete').on('show.bs.modal', function (event) {
+        let button = $(event.relatedTarget) // Button that triggered the modal
+        let lineId = button.data('line-id') // Extract info from data-* attributes
+        let userId = button.data('user-id') // Extract info from data-* attributes
+        let date = button.data('date') // Extract info from data-* attributes
+        $('#modalInput').attr("action", '/records/user/' + userId + '/line/' + lineId + '?date=' + date)
+    })
+</script>
 </body>
 </html>

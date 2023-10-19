@@ -7,9 +7,7 @@ import com.mycompany.barber.Services.RecordService;
 import com.mycompany.barber.Services.UserService;
 import com.mycompany.barber.Utils.Line.*;
 import com.mycompany.barber.Utils.Mappers.LineMapper;
-import com.mycompany.barber.Utils.User.*;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +18,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 
@@ -67,7 +64,6 @@ public class RecordController {
         return "Record/allRecords";
     }
 
-    //TODO: сделать переход на следующий день и предыдущий день
     @Operation(summary = "Получить запись по id записи")
     @GetMapping("/records/{lineId}")
     public LineDTO singleRecord(@PathVariable("lineId") int lineId) {
@@ -75,7 +71,7 @@ public class RecordController {
     }
 
     /**
-     * Создать новую запись пользователя
+     * Создать новую запись пользователя или отредактировать существующую
      *
      * @param lineDTO
      * @param bindingResult
@@ -96,42 +92,44 @@ public class RecordController {
         lineDTO.setUserId(userId);
         lineDTO.setLineId(lineId);
         lineService.save(LineMapper.mapToLine(lineDTO));
-//        RecordDTO recordDTO = recordService.findAllForUserOnDate(userId, userService.findById(userId).getUserName(), date);
-//        model.addAttribute("record", recordDTO);
-//        model.addAttribute("allLines",recordDTO.getUserRecords());
         return "redirect:/records/user/" + userId;
     }
 
+//    /**
+//     * Редактировать запись пользователя
+//     *
+//     * @param lineDTO
+//     * @param bindingResult
+//     * @param lineId
+//     * @return
+//     */
+//    @PatchMapping("/records/line/{lineId}")
+//    public ResponseEntity<HttpStatus> updateRecord(@RequestBody @Valid LineDTO lineDTO, BindingResult bindingResult,
+//                                                   @PathVariable("lineId") int lineId) {
+//        if (bindingResult.hasErrors()) {
+//            StringBuilder errorMsg = new StringBuilder();
+//            List<FieldError> errors = bindingResult.getFieldErrors();
+//            for (FieldError error : errors) {
+//                errorMsg.append(error.getField()).append(": ").append(error.getDefaultMessage()).append("<br>");
+//            }
+//            System.out.println(errorMsg);
+//            throw new LineNotUpdatedException(errorMsg.toString());
+//        }
+//
+//        lineService.update(lineId, LineMapper.mapToLine(lineDTO));
+//        return ResponseEntity.ok(HttpStatus.OK);
+//    }
+
     /**
-     * Редактировать запись пользователя
-     *
-     * @param lineDTO
-     * @param bindingResult
+     * Удалить запись пользователя
      * @param lineId
      * @return
      */
-    @PatchMapping("/records/line/{lineId}")
-    public ResponseEntity<HttpStatus> updateRecord(@RequestBody @Valid LineDTO lineDTO, BindingResult bindingResult,
-                                                   @PathVariable("lineId") int lineId) {
-        if (bindingResult.hasErrors()) {
-            StringBuilder errorMsg = new StringBuilder();
-            List<FieldError> errors = bindingResult.getFieldErrors();
-            for (FieldError error : errors) {
-                errorMsg.append(error.getField()).append(": ").append(error.getDefaultMessage()).append("<br>");
-            }
-            System.out.println(errorMsg);
-            throw new LineNotUpdatedException(errorMsg.toString());
-        }
-
-        lineService.update(lineId, LineMapper.mapToLine(lineDTO));
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
-
-    @Operation(summary = "Удалить запись")
-    @DeleteMapping("/records/line/{lineId}")
-    public ResponseEntity<HttpStatus> delete(@PathVariable("lineId") int lineId) {
+//    @Operation(summary = "Удалить запись")
+    @DeleteMapping("/records/user/{userId}/line/{lineId}")
+    public String delete(@PathVariable("lineId") int lineId, @PathVariable int userId, @RequestParam(name = "date") String date) {
         lineService.delete(lineId);
-        return ResponseEntity.ok(HttpStatus.NO_CONTENT);
+        return "redirect:/records/user/" + userId + "?date=" + date;
     }
 //
 //    @ExceptionHandler
