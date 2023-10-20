@@ -6,6 +6,7 @@ import com.mycompany.barber.Services.LineService;
 import com.mycompany.barber.Services.RecordService;
 import com.mycompany.barber.Services.UserService;
 import com.mycompany.barber.Utils.Line.*;
+import com.mycompany.barber.Utils.Mappers.LineFiller;
 import com.mycompany.barber.Utils.Mappers.LineMapper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -60,25 +62,10 @@ public class RecordController {
 
     @GetMapping("/records/{lineId}")
     public String showSingleRecord(@PathVariable("lineId") int lineId, Model model) {
+        model.addAttribute("timeList", LineFiller.createTimeList());
         model.addAttribute("line", LineMapper.mapToLineDTO(lineService.findById(lineId)));
         return "Record/editRecord";
     }
-
-//    @PatchMapping ("/records/{lineId}")
-//    public String editSingleRecord(@RequestBody @Valid LineDTO lineDTO, BindingResult bindingResult,@PathVariable("lineId") int lineId) {
-//        if (bindingResult.hasErrors()) {
-//            StringBuilder errorMsg = new StringBuilder();
-//            List<FieldError> errors = bindingResult.getFieldErrors();
-//            for (FieldError error : errors) {
-//                errorMsg.append(error.getField()).append(": ").append(error.getDefaultMessage()).append("<br>");
-//            }
-//            System.out.println(errorMsg);
-//            throw new LineNotUpdatedException(errorMsg.toString());
-//        }
-//        lineDTO.setLineId(lineId);
-//        lineService.save(LineMapper.mapToLine(lineDTO));
-//        return "redirect:/records/user/" + lineDTO.getUserId() + "?date=" + lineDTO.getDate();
-//    }
 
 
     /**
