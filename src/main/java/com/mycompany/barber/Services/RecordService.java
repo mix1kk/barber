@@ -55,7 +55,14 @@ public class RecordService {
             return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd")).minusDays(1).toString();
         } else return date;
     }
-//    /**
+
+    public static boolean checkOnNotEmptyRecord(LineDTO lineDTO) {
+        return lineDTO.getClientName() != "" || lineDTO.getProcedureName() != "" || lineDTO.getProcedureCost() != "" || lineDTO.getComment() != "";
+
+    }
+
+
+    //    /**
 //     * Находит все записи для пользователя от одной даты до другой, дата в формате гггг-мм-дд
 //     *
 //     * @param userId

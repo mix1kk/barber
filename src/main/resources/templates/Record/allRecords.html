@@ -129,19 +129,17 @@
                       th:action="@{/records/user/{userId}/{lineId} (userId = ${line.userId},lineId = ${line.lineId})}">
                     <td style="border: 1px solid grey">
                         <span>
-                        <button class="glyphicon glyphicon-ok" type="submit" style="border: none; box-shadow: none;"
-                                th:styleappend="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'"></button>
+                        <button class="glyphicon glyphicon-ok" type="submit" style="color: green; border: none; box-shadow: none;"
+                                th:styleappend="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'">
+                        </button>
                        <a th:href="@{/records/{lineId} (lineId = ${line.lineId})}">
-                           <i class="glyphicon glyphicon-pencil" ></i>
-<!--                              data-toggle="modal"-->
-<!--                                      data-target="#myModalEdit" th:data-line-id="${line.lineId}"-->
-<!--                                      th:data-user-id="${line.userId}" th:data-date="${line.date}"-->
-<!--                                      style="color: black"></i>-->
+                           <i class="glyphicon glyphicon-pencil"
+                                      style="color: coral"></i>
                        </a>
-                        <a href="#"><i class="glyphicon glyphicon-trash" data-toggle="modal"
+                        <a href="#"><i class="glyphicon glyphicon-trash"  data-toggle="modal"
                                        data-target="#myModalDelete" id="deleteLink" th:data-line-id="${line.lineId}"
                                        th:data-user-id="${line.userId}" th:data-date="${line.date}"
-                                       style="color: black"></i>
+                                       style="color: darkred" th:if = "${line.lineId != 0}"></i>
                         </a>
                         </span>
                     </td>

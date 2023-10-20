@@ -7,11 +7,8 @@ import com.mycompany.barber.Services.RecordService;
 import com.mycompany.barber.Services.UserService;
 import com.mycompany.barber.Utils.Line.*;
 import com.mycompany.barber.Utils.Mappers.LineMapper;
-import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -44,8 +41,8 @@ public class RecordController {
                                     @RequestParam(required = false, name = "date") String date,
                                     @RequestParam(required = false, name = "direction") String direction,
                                     Model model) {
-        if (direction!=null){
-            return "redirect:/records/user/" + userId + "?date=" + RecordService.nextOrPreviousDate(date,direction);
+        if (direction != null) {
+            return "redirect:/records/user/" + userId + "?date=" + RecordService.nextOrPreviousDate(date, direction);
         }
         RecordDTO recordDTO = recordService.findAllForUserOnDate(userId, userService.findById(userId).getUserName(), date);
         model.addAttribute("record", recordDTO);
@@ -55,24 +52,33 @@ public class RecordController {
 
     /**
      * Получить и отредактировать единичную запись по айди
+     *
      * @param lineId
      * @return
      */
 
 
-
     @GetMapping("/records/{lineId}")
     public String showSingleRecord(@PathVariable("lineId") int lineId, Model model) {
-        model.addAttribute("line",LineMapper.mapToLineDTO(lineService.findById(lineId)));
+        model.addAttribute("line", LineMapper.mapToLineDTO(lineService.findById(lineId)));
         return "Record/editRecord";
     }
 
-    @PatchMapping ("/records/{lineId}")
-    public String editSingleRecord(@PathVariable("lineId") int lineId) {
-        LineMapper.mapToLineDTO(lineService.findById(lineId));
-        return "Record/allRecords";
-    }
-
+//    @PatchMapping ("/records/{lineId}")
+//    public String editSingleRecord(@RequestBody @Valid LineDTO lineDTO, BindingResult bindingResult,@PathVariable("lineId") int lineId) {
+//        if (bindingResult.hasErrors()) {
+//            StringBuilder errorMsg = new StringBuilder();
+//            List<FieldError> errors = bindingResult.getFieldErrors();
+//            for (FieldError error : errors) {
+//                errorMsg.append(error.getField()).append(": ").append(error.getDefaultMessage()).append("<br>");
+//            }
+//            System.out.println(errorMsg);
+//            throw new LineNotUpdatedException(errorMsg.toString());
+//        }
+//        lineDTO.setLineId(lineId);
+//        lineService.save(LineMapper.mapToLine(lineDTO));
+//        return "redirect:/records/user/" + lineDTO.getUserId() + "?date=" + lineDTO.getDate();
+//    }
 
 
     /**
@@ -91,17 +97,19 @@ public class RecordController {
             for (FieldError error : errors) {
                 errorMsg.append(error.getField()).append(": ").append(error.getDefaultMessage()).append("<br>");
             }
-            System.out.println(errorMsg);
             throw new LineNotCreatedException(errorMsg.toString());
         }
-        lineDTO.setUserId(userId);
-        lineDTO.setLineId(lineId);
-        lineService.save(LineMapper.mapToLine(lineDTO));
+        if (RecordService.checkOnNotEmptyRecord(lineDTO)) {
+            lineDTO.setUserId(userId);
+            lineDTO.setLineId(lineId);
+            lineService.save(LineMapper.mapToLine(lineDTO));
+        }
         return "redirect:/records/user/" + userId + "?date=" + lineDTO.getDate();
     }
 
     /**
      * Удалить запись пользователя
+     *
      * @param lineId
      * @return
      */
