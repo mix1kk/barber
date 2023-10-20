@@ -23,7 +23,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#" th:text="${company.getCompanyName()}">CompanyName</a>
+            <a class="navbar-brand" href="#" th:text="${line.userId}">User</a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -41,11 +41,11 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a th:href="@{/companies/company/{id}(id=${company.getCompanyId()})}"><i
+                    <a href="#"><i
                             class="glyphicon glyphicon-arrow-left"></i></a>
                 </li>
                 <li>
-                    <a href="/companies/new"><i
+                    <a href="#"><i
                             class="glyphicon glyphicon-plus"></i></a>
                 </li>
                 <li>
@@ -57,10 +57,10 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button class="close" data-dismiss="modal">х</button>
-                                    <h4 class="modal-title">Удаление компании</h4>
+                                    <h4 class="modal-title">Удаление записи</h4>
                                 </div>
-                                <div class="modal-body">Вы уверены, что хотите удалить компанию?</div>
-                                <form th:method="DELETE" th:action="@{/companies/company/{id} (id = ${company.getCompanyId()})}">
+                                <div class="modal-body">Вы уверены, что хотите удалить запись?</div>
+                                <form th:method="DELETE" th:action="@{/records/user/{userId}/line/{lineId} (userId = ${line.userId},lineId = ${line.lineId})}">
                                     <div class="modal-footer">
                                         <button class="btn btn-success" data-dismiss="modal">Отмена</button>
                                         <button class="btn btn-danger" type="submit">Удалить</button>
@@ -90,103 +90,104 @@
 
 
 <br>
-<form th:method="PATCH" th:action="@{/company/{id}/edit (id=${company.getCompanyId()})}" th:object="${company}">
+<div class = "container">
+<form th:method="PATCH" th:action="@{/record/{lineId} (lineId=${line.lineId})}" th:object="${line}">
     <div class="container-sm">
         <table class="table table-bordered table-hover">
             <thead>
             <th class="warning" colspan=2>
-                <div th:text="'Редактирование профиля компании: '+${company.getCompanyName()}"></div>
+                <i>Редактирование одиночной записи</i>
             </th>
             </thead>
             <tbody class="table-group-divider">
             <tr>
-                <td>Id компании</td>
+                <td>Id записи</td>
                 <td>
                     <!--                    <label for="userId"></label>-->
-                    <input type="text" th:field="*{companyId}" id="companyId" disabled="true">
+                    <input type="text" th:field="*{lineId}" id="lineId" disabled="true">
                 </td>
             </tr>
             <tr>
-                <td>Название компании</td>
+                <td>Id мастера</td>
                 <td>
                     <!--                    <label for="userName"></label>-->
-                    <input type="text" th:field="*{companyName}" id="companyName">
-                    <div style="color:red" th:if="${#fields.hasErrors('companyName')}" th:errors="*{companyName}">companyName
+                    <input type="text" th:field="*{userId}" id="userId">
+                    <div style="color:red" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}">userId
                         Errors
                     </div>
                 </td>
             </tr>
             <tr>
-                <td>Адрес компании</td>
+                <td>Дата</td>
                 <td>
-                    <label for="address"></label>
-                    <input type="text" th:field="*{address}" id="address">
-                    <div style="color:red" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">
-                        address Errors
+                    <label for="date"></label>
+                    <input type="text" th:field="*{date}" id="date">
+                    <div style="color:red" th:if="${#fields.hasErrors('date')}" th:errors="*{date}">
+                        date Errors
                     </div>
                 </td>
 
             </tr>
             <tr>
-                <td>Номер телефона компании</td>
+                <td>Время</td>
                 <td>
-                    <label for="phoneNumber"></label>
-                    <input type="text" th:field="*{phoneNumber}" id="phoneNumber">
-                    <div style="color:red" th:if="${#fields.hasErrors('phoneNumber')}"
-                         th:errors="*{phoneNumber}">
-                        phoneNumber Errors
+                    <label for="time"></label>
+                    <input type="text" th:field="*{time}" id="time">
+                    <div style="color:red" th:if="${#fields.hasErrors('time')}"
+                         th:errors="*{time}">
+                        time Errors
                     </div>
                 </td>
             </tr>
             <tr>
-                <td>Email компании</td>
+                <td>Имя клиента</td>
                 <td>
-                    <label for="email"></label>
-                    <input type="text" th:field="*{email}" id="email">
-                    <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
-                        email
+                    <label for="clientName"></label>
+                    <input type="text" th:field="*{clientName}" id="clientName">
+                    <div style="color:red" th:if="${#fields.hasErrors('clientName')}" th:errors="*{clientName}">
+                        clientName
                         Errors
                     </div>
                 </td>
             </tr>
             <tr>
-                <td>Cайт компании</td>
+                <td>Название процедуры</td>
                 <td>
-                    <label for="siteLink"></label>
-                    <input type="text" th:field="*{siteLink}" id="siteLink">
-                    <div style="color:red" th:if="${#fields.hasErrors('siteLink')}" th:errors="*{siteLink}">siteLink
+                    <label for="procedureName"></label>
+                    <input type="text" th:field="*{procedureName}" id="procedureName">
+                    <div style="color:red" th:if="${#fields.hasErrors('procedureName')}" th:errors="*{procedureName}">procedureName
                         Errors
                     </div>
                 </td>
             </tr>
             <tr>
-                <td>ОГРН компании</td>
+                <td>Стоимость процедуры</td>
                 <td>
-                    <label for="ogrn"></label>
-                    <input type="text" th:field="*{ogrn}" id="ogrn">
-                    <div style="color:red" th:if="${#fields.hasErrors('ogrn')}" th:errors="*{ogrn}">
-                        ogrn
+                    <label for="procedureCost"></label>
+                    <input type="text" th:field="*{procedureCost}" id="procedureCost">
+                    <div style="color:red" th:if="${#fields.hasErrors('procedureCost')}" th:errors="*{procedureCost}">
+                        procedureCost
                         Errors
                     </div>
                 </td>
             </tr>
             <tr>
-                <td>ИНН компании</td>
+                <td>Скидка</td>
                 <td>
-                    <label for="inn"></label>
-                    <input type="text" th:field="*{inn}" id="inn">
-                    <div style="color:red" th:if="${#fields.hasErrors('inn')}" th:errors="*{inn}">inn
+                    <label for="procedureDiscount"></label>
+                    <input type="text" th:field="*{procedureDiscount}" id="procedureDiscount">
+                    <div style="color:red" th:if="${#fields.hasErrors('procedureDiscount')}" th:errors="*{procedureDiscount}">procedureDiscount
                         Errors
                     </div>
                 </td>
             </tr>
             <tr>
             <tr>
-                <td>ОКПО компании</td>
+                <td>Комментарий к записи</td>
                 <td>
-                    <label for="okpo"></label>
-                    <input type="text" th:field="*{okpo}" id="okpo">
-                    <div style="color:red" th:if="${#fields.hasErrors('okpo')}" th:errors="*{okpo}">okpo
+                    <label for="comment"></label>
+                    <input type="text" th:field="*{comment}" id="comment">
+                    <div style="color:red" th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}">comment
                         Errors
                     </div>
                 </td>
@@ -204,7 +205,7 @@
                         <h4 class="modal-title">Подтвердите изменения</h4>
                     </div>
                     <div class="modal-body">Сохранить изменения?</div>
-                    <form th:method="PATCH" th:action="@{/company/{id}/edit (id=${company.getCompanyId()})}" th:object="${company}">
+                    <form th:method="PATCH" th:action="@{/records/{lineId} (lineId=${line.lineId})}" th:object="${line}">
                         <div class="modal-footer">
                             <button class="btn btn-danger" data-dismiss="modal">Отмена</button>
                             <button class="btn btn-success" type="submit">Сохранить</button>
@@ -218,6 +219,7 @@
         </div>
     </div>
 </form>
+</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"

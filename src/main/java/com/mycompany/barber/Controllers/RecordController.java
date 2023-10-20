@@ -35,17 +35,6 @@ public class RecordController {
         this.recordService = recordService;
     }
 
-//    /**
-//     * Получить список записей пользователя от даты до даты
-//     * даты передаются в параметрах запроса
-//     */
-//    @GetMapping("/records/user/{userId}")
-//    public List<RecordDTO> getAllRecordsForUser(@PathVariable int userId,
-//                                                @RequestParam("startDate") String startDate,
-//                                                @RequestParam("endDate") String endDate) {
-//        return recordService.findAllForUserFromDateToDate(userId, userService.findById(userId).getUserName(), startDate, endDate);
-//    }
-
     /**
      * Получить список записей пользователя на конкретную дату
      * дата передается в параметрах запроса
@@ -64,11 +53,27 @@ public class RecordController {
         return "Record/allRecords";
     }
 
-    @Operation(summary = "Получить запись по id записи")
+    /**
+     * Получить и отредактировать единичную запись по айди
+     * @param lineId
+     * @return
+     */
+
+
+
     @GetMapping("/records/{lineId}")
-    public LineDTO singleRecord(@PathVariable("lineId") int lineId) {
-        return LineMapper.mapToLineDTO(lineService.findById(lineId));
+    public String showSingleRecord(@PathVariable("lineId") int lineId, Model model) {
+        model.addAttribute("line",LineMapper.mapToLineDTO(lineService.findById(lineId)));
+        return "Record/editRecord";
     }
+
+    @PatchMapping ("/records/{lineId}")
+    public String editSingleRecord(@PathVariable("lineId") int lineId) {
+        LineMapper.mapToLineDTO(lineService.findById(lineId));
+        return "Record/allRecords";
+    }
+
+
 
     /**
      * Создать новую запись пользователя или отредактировать существующую
@@ -94,31 +99,6 @@ public class RecordController {
         lineService.save(LineMapper.mapToLine(lineDTO));
         return "redirect:/records/user/" + userId + "?date=" + lineDTO.getDate();
     }
-
-//    /**
-//     * Редактировать запись пользователя
-//     *
-//     * @param lineDTO
-//     * @param bindingResult
-//     * @param lineId
-//     * @return
-//     */
-//    @PatchMapping("/records/line/{lineId}")
-//    public ResponseEntity<HttpStatus> updateRecord(@RequestBody @Valid LineDTO lineDTO, BindingResult bindingResult,
-//                                                   @PathVariable("lineId") int lineId) {
-//        if (bindingResult.hasErrors()) {
-//            StringBuilder errorMsg = new StringBuilder();
-//            List<FieldError> errors = bindingResult.getFieldErrors();
-//            for (FieldError error : errors) {
-//                errorMsg.append(error.getField()).append(": ").append(error.getDefaultMessage()).append("<br>");
-//            }
-//            System.out.println(errorMsg);
-//            throw new LineNotUpdatedException(errorMsg.toString());
-//        }
-//
-//        lineService.update(lineId, LineMapper.mapToLine(lineDTO));
-//        return ResponseEntity.ok(HttpStatus.OK);
-//    }
 
     /**
      * Удалить запись пользователя

@@ -131,12 +131,18 @@
                         <span>
                         <button class="glyphicon glyphicon-ok" type="submit" style="border: none; box-shadow: none;"
                                 th:styleappend="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'"></button>
-                       <a th:href="@{/records/user/{userId} (userId = ${record.userId}, date = ${record.date}, direction='next')}"><i
-                               class="glyphicon glyphicon-pencil" style="color: black;"></i></a>
+                       <a th:href="@{/records/{lineId} (lineId = ${line.lineId})}">
+                           <i class="glyphicon glyphicon-pencil" ></i>
+<!--                              data-toggle="modal"-->
+<!--                                      data-target="#myModalEdit" th:data-line-id="${line.lineId}"-->
+<!--                                      th:data-user-id="${line.userId}" th:data-date="${line.date}"-->
+<!--                                      style="color: black"></i>-->
+                       </a>
                         <a href="#"><i class="glyphicon glyphicon-trash" data-toggle="modal"
                                        data-target="#myModalDelete" id="deleteLink" th:data-line-id="${line.lineId}"
-                                       th:data-user-id="${line.userId}" th:data-date="${line.date}" style="color: black"></i>
-                    </a>
+                                       th:data-user-id="${line.userId}" th:data-date="${line.date}"
+                                       style="color: black"></i>
+                        </a>
                         </span>
                     </td>
                     <td style="border: 1px solid grey">
@@ -174,6 +180,25 @@
                             <div class="modal-body">Вы уверены, что хотите удалить запись?</div>
 
                             <form th:method="DELETE" id="modalInput">
+                                <div class="modal-footer">
+                                    <button class="btn btn-success" data-dismiss="modal">Отмена</button>
+                                    <button class="btn btn-danger" type="submit">Удалить</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div id="myModalEdit" class="modal fade" tabindex="-1">
+                    <div class="modal-dialog modal-sm modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button class="close" data-dismiss="modal">х</button>
+                                <h4 class="modal-title">Редактирование записи</h4>
+                            </div>
+                            <div class="modal-body">
+
+                            </div>
+                            <form th:method="DELETE" id="">
                                 <div class="modal-footer">
                                     <button class="btn btn-success" data-dismiss="modal">Отмена</button>
                                     <button class="btn btn-danger" type="submit">Удалить</button>
