@@ -38,6 +38,7 @@ public class UserController {
     @GetMapping("/users")
     public String allUsers(Model model) {
         model.addAttribute("allUsers", userService.findAll().stream().map(this::convertToUserDTO).collect(Collectors.toList()));
+        model.addAttribute("allCompanies", CompanyService.convertToCompanyMap(companyService.findAll()));
         return "User/allUsers";
     }
 
