@@ -94,7 +94,7 @@ public class RecordController {
             throw new LineNotCreatedException(errorMsg.toString());
         }
         if (RecordService.checkOnNotEmptyRecord(lineDTO)) {
-            lineDTO.setUserId(userId);
+//            lineDTO.setUserId(userId);
             lineDTO.setLineId(lineId);
             lineService.save(LineMapper.mapToLine(lineDTO));
         }
