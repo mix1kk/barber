@@ -61,9 +61,15 @@ public class RecordController {
 
 
     @GetMapping("/records/{lineId}")
-    public String showSingleRecord(@PathVariable("lineId") int lineId, Model model) {
+    public String showSingleRecord(@PathVariable("lineId") int lineId, Model model, @RequestParam(required = false, name = "date") String date,
+                                   @RequestParam(required = false, name = "userId") int userId,
+                                   @RequestParam(required = false, name = "time") String time) {
         model.addAttribute("timeList", LineFiller.createTimeList());
-        model.addAttribute("line", LineMapper.mapToLineDTO(lineService.findById(lineId)));
+        if (lineId <= 0) {
+            model.addAttribute("line", new LineDTO(0, userId, date, time, "", "", "", "", ""));
+        } else {
+            model.addAttribute("line", LineMapper.mapToLineDTO(lineService.findById(lineId)));
+        }
         return "Record/editRecord";
     }
 

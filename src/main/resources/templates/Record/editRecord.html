@@ -106,14 +106,12 @@
                 <tr>
                     <td>Id записи</td>
                     <td>
-                        <!--                    <label for="userId"></label>-->
                         <input type="text" th:field="*{lineId}" id="lineId" disabled="true" style="border: 0px; box-shadow: none;">
                     </td>
                 </tr>
                 <tr>
                     <td>Id мастера</td>
                     <td>
-                        <!--                    <label for="userName"></label>-->
                         <input type="text" th:field="*{userId}" id="userId" style="border: 0px; box-shadow: none;">
                         <div style="color:red" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}">userId
                             Errors
@@ -123,27 +121,6 @@
                 <tr>
                     <td>Дата</td>
                     <td>
-<!--                        <a href="#myModalDate" data-toggle="modal" data-target="#myModalDate">-->
-<!--                            <i class="text" style="color: black; font-size: small" th:text="${line.date}"></i></a>-->
-
-<!--                        <div id="myModalDate" class="modal fade" tabindex="-1">-->
-<!--                            <div class="modal-dialog modal-sm">-->
-<!--                                <div class="modal-content">-->
-<!--                                    <div class="modal-header">-->
-<!--                                        <button class="close" data-dismiss="modal">х</button>-->
-<!--                                        <h4 class="modal-title">Выберите дату</h4>-->
-<!--                                    </div>-->
-<!--                                    <div class="modal-body">Дата</div>-->
-<!--                                    <form th:method="GET" th:action="@{/records/user/{userId} (userId = ${line.userId})}">-->
-<!--                                        <input type="date" id="date" th:name="date" th:value="${line.date}">-->
-<!--                                        <div class="modal-footer">-->
-<!--                                            <button class="btn btn-danger" data-dismiss="modal">Отмена</button>-->
-<!--                                            <button class="btn btn-success" type="submit">Выбрать</button>-->
-<!--                                        </div>-->
-<!--                                    </form>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
                         <label for="date"></label>
                         <input type="date" th:field="*{date}" id="date" style="border: 0px; box-shadow: none;">
                         <div style="color:red" th:if="${#fields.hasErrors('date')}" th:errors="*{date}">

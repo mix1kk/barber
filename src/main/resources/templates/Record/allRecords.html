@@ -72,7 +72,6 @@
                 >
                     <a href="#myModalAccept" data-toggle="modal" data-target="#myModalAccept">
                         <i class="text" style="color: black; font-size: large" th:text="${record.longDate}"></i></a>
-
                     <div id="myModalAccept" class="modal fade" tabindex="-1">
                         <div class="modal-dialog modal-sm">
                             <div class="modal-content">
@@ -132,7 +131,7 @@
                         <button class="glyphicon glyphicon-ok" type="submit" style="color: green; border: none; box-shadow: none;"
                                 th:styleappend="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'">
                         </button>
-                       <a th:href="@{/records/{lineId} (lineId = ${line.lineId})}">
+                       <a th:href="@{/records/{lineId} (date=${line.date},time=${line.time},userId=${line.userId},lineId = ${line.lineId})}">
                            <i class="glyphicon glyphicon-pencil"
                                       style="color: coral"></i>
                        </a>
