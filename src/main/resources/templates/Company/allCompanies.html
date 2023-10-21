@@ -8,7 +8,7 @@
       integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 <head>
     <meta charset="UTF-8">
-    <title>Все пользователи</title>
+    <title>Все Компании</title>
 </head>
 
 <body>
@@ -27,7 +27,7 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a th:href="@{/users}"><i
+                <li><a th:href="@{/companies}"><i
                         class="glyphicon glyphicon-home"></i></a></li>
                 <!--                <li><a href="#">Ссылка</a></li>-->
                 <li class="dropdown">
@@ -41,7 +41,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="/users/new"><i
+                    <a href="/companies/new"><i
                             class="glyphicon glyphicon-plus"></i></a>
                 </li>
                 <li class="dropdown">
@@ -64,57 +64,57 @@
         <thead>
         <tr>
             <div class="col-md-1" style="background-color: #dff0d8; border-bottom: black">
-                Id
+               Id
             </div>
             <div class="col-md-3" style="background-color: #dff0d8">
-                Имя пользователя
+                Название компании
             </div>
             <div class="col-md-2" style="background-color: #dff0d8">
-                Компания
+                Адрес компании
             </div>
             <div class="col-md-2" style="background-color: #dff0d8">
-                Телефон пользователя
+                Номер телефона компании
             </div>
             <div class="col-md-2" style="background-color: #dff0d8">
-                Профессия пользователя
+                Cайт компании
             </div>
             <div class="col-md-2" style="background-color: #dff0d8">
-                Email пользователя
+                ИНН компании
             </div>
         </tr>
         </thead>
     </table>
-    <div th:each="user: ${allUsers}">
+    <div th:each="company: ${allCompanies}">
         <table class="table table-bordered table-hover">
             <tbody class="table-group-divider">
             <tr>
                 <div class="col-md-1">
                     <div>
-                        <a th:href="@{user/{id}(id=${user.getUserId()})}"
-                           th:text="${user.getUserId()}">id</a>
+                        <a th:href="@{companies/{id}(id=${company.getCompanyId()})}"
+                           th:text="${company.getCompanyId()}">id</a>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div>
-                        <a th:href="@{user/{id}(id=${user.getUserId()})}"
-                           th:text="${user.getUserName()}">user</a>
+                        <a th:href="@{companies/{id}(id=${company.getCompanyId()})}"
+                           th:text="${company.getCompanyName()}">user</a>
                     </div>
                 </div>
                 <div class="col-md-2">
-                    <div th:text="${user.getUserCompany()}"></div>
+                    <div th:text="${company.getAddress()}"></div>
                 </div>
                 <div class="col-md-2">
                     <div>
-                        <a th:href="@{user/{id}(id=${user.getUserId()})}"
-                           th:text="${user.getUserPhoneNumber()}">phone</a>
+                        <a th:href="@{companies/{id}(id=${company.getCompanyId()})}"
+                           th:text="${company.getPhoneNumber()}">phone</a>
                     </div>
                 </div>
                 <div class="col-md-2">
-                    <div th:text="${user.getUserProfession()}"></div>
+                    <div th:text="${company.getSiteLink()}"></div>
                 </div>
                 <div class="col-md-2">
 
-                    <div th:text="${user.getEmail()}"></div>
+                    <div th:text="${company.getInn()}"></div>
 
                 </div>
             </tr>

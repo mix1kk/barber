@@ -15,7 +15,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Пользователь</title>
+    <title>Компания</title>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -28,14 +28,13 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#" th:text="${user.getUserCompany()}">Company</a>
+            <a class="navbar-brand" href="#" th:text="${company.getCompanyName()}">Company Name</a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a th:href="@{/users}"><i
+                <li><a th:href="@{/companies}"><i
                         class="glyphicon glyphicon-home"></i></a></li>
-                <!--                <li><a href="#">Ссылка</a></li>-->
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Навигация<b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -45,118 +44,103 @@
                     </ul>
                 </li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="/users/new"><i
-                            class="glyphicon glyphicon-plus"></i></a>
-                </li>
-                <li>
-                    <a th:href="@{/user/{id}/edit (id = ${user.getUserId()})}"><i
-                            class="glyphicon glyphicon-pencil"></i></a>
-                </li>
-                <li>
-                    <a th:href="@{/records/user/{id} (id = ${user.getUserId()})}"><i
-                            class="	glyphicon glyphicon-th-list"></i></a>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Действие</a></li>
-                        <li><a href="#">Другое действие</a></li>
-                        <li><a href="#">Что-то еще</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Отдельная ссылка</a></li>
-                    </ul>
-                </li>
-            </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/companies/new"><i
+                                class="glyphicon glyphicon-plus"></i></a>
+                    </li>
+                    <li>
+                        <a th:href="@{/companies/company/{id}/edit (id = ${company.getCompanyId()})}"><i
+                                class="glyphicon glyphicon-pencil"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Действие</a></li>
+                            <li><a href="#">Другое действие</a></li>
+                            <li><a href="#">Что-то еще</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Отдельная ссылка</a></li>
+                        </ul>
+                    </li>
+                </ul>
             </form>
         </div>
     </div>
 </nav>
-
-<!--<div class="dropdown">-->
-<!--    <button class="btn btn-info dropdown-toggle" data-toggle="dropdown">Список <span class="caret"></span></button>-->
-<!--    <ul class="dropdown-menu">-->
-<!--        <li class="dropdown-header">Заголовок 1</li>-->
-<!--        <li><a href="#">CSS</a></li>-->
-<!--        <li class="disabled"><a href="#">HTML</a></li>-->
-<!--        <li><a href="#">jQuery</a></li>-->
-<!--        <li class="divider"></li>-->
-<!--        <li class="dropdown-header">Заголовок 2</li>-->
-<!--        <li><a href="#">Javascript</a></li>-->
-<!--    </ul>-->
-<!--</div>-->
-
 
 <br>
 <div class="container-sm">
     <table class="table table-bordered table-hover">
         <thead>
         <th class="success" colspan=2>
-            <div th:text="'Просмотр профиля пользователя: '+${user.getUserName()}"></div>
+            <div th:text="'Просмотр профиля компании: '+${company.getCompanyName()}"></div>
         </th>
         </thead>
         <tbody class="table-group-divider">
         <tr>
-            <td>Id пользователя</td>
+            <td>Id компании</td>
             <td>
-                <div th:text="${user.getUserId()}"></div>
+                <div th:text="${company.getCompanyId}">
+                </div>
             </td>
         </tr>
         <tr>
-            <td>Имя пользователя</td>
+            <td>Название компании</td>
             <td>
-                <div th:text="${user.getUserName()}"></div>
+                <div th:text="${company.getCompanyName}">
+                </div>
             </td>
         </tr>
         <tr>
-            <td>Компания</td>
+            <td>Адрес компании</td>
             <td>
-                <div th:text="${user.getUserCompany()}"></div>
+                <div th:text="${company.getAddress}">
+                </div>
             </td>
 
         </tr>
         <tr>
-            <td>Телефон пользователя</td>
+            <td>Номер телефона компании</td>
             <td>
-                <div th:text="${user.getUserPhoneNumber()}"></div>
+                <div th:text="${company.getPhoneNumber}">
+                </div>
             </td>
         </tr>
         <tr>
-            <td>Профессия пользователя</td>
+            <td>Email компании</td>
             <td>
-                <div th:text="${user.getUserProfession()}"></div>
+                <div th:text="${company.getEmail}">
+                </div>
             </td>
         </tr>
         <tr>
-            <td>Роль пользователя</td>
+            <td>Cайт компании</td>
             <td>
-                <div th:text="${user.getUserRole()}"></div>
+                <div th:text="${company.getSiteLink}">
+                </div>
             </td>
         </tr>
         <tr>
-            <td>Доступ к пользователям</td>
+            <td>ОГРН компании</td>
             <td>
-                <div th:text="${user.getUsersAccessed()}"></div>
+                <div th:text="${company.getOgrn}">
+                </div>
             </td>
         </tr>
         <tr>
-            <td>Пароль</td>
+            <td>ИНН компании</td>
             <td>
-                <div th:text="${user.getPassword()}"></div>
+                <div th:text="${company.getInn}">
+                </div>
             </td>
         </tr>
         <tr>
         <tr>
-            <td>Email пользователя</td>
+            <td>ОКПО компании</td>
             <td>
-                <div th:text="${user.getEmail()}"></div>
-            </td>
-        </tr>
-        <tr>
-            <td>Аватар пользователя</td>
-            <td>
-                <div th:text="${user.getPicture()}"></div>
+                <div th:text="${company.getOkpo}">
+                </div>
             </td>
         </tr>
         </tbody>

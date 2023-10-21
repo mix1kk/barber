@@ -1,11 +1,13 @@
 package com.mycompany.barber.DTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString(includeFieldNames = true)
 public class LineDTO {
     @Schema(description = "Идентификатор строки", example = "0")
     private int lineId;

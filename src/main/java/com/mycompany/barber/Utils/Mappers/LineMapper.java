@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class LineMapper {
-    static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public static LineDTO mapToLineDTO(Line line) {
         LineDTO lineDTO = new LineDTO();
         lineDTO.setLineId(line.getLineId());
@@ -22,6 +22,9 @@ public class LineMapper {
         return lineDTO;
     }
     public static Line mapToLine(LineDTO lineDTO) {
+        if (lineDTO.getDate()==null){
+            lineDTO.setDate(LocalDate.now().toString());
+        }
         Line line = new Line();
         line.setLineId(lineDTO.getLineId());
         line.setUserId(lineDTO.getUserId());
@@ -32,6 +35,12 @@ public class LineMapper {
         line.setProcedureCost(lineDTO.getProcedureCost());
         line.setProcedureDiscount(lineDTO.getProcedureDiscount());
         line.setComment(lineDTO.getComment());
+        return line;
+    }
+    public static Line addUserToLine(Line line,int userId) {
+        if (line.getUserId() == 0) {
+            line.setUserId(userId);
+        }
         return line;
     }
 }

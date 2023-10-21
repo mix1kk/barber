@@ -237,3 +237,68 @@ databaseChangeLog:
             schemaName: public
             startWith: 1
             tableName: procedure
+  - changeSet:
+      id: 5
+      author: postgres
+      changes:
+        - createTable:
+            tableName: company
+            columns:
+              - column:
+                  name: companyId
+                  type: integer
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: companyName
+                  type: varchar
+              - column:
+                  name: address
+                  type: varchar
+              - column:
+                  name: phoneNumber
+                  type: varchar
+              - column:
+                  name: email
+                  type: varchar
+              - column:
+                  name: siteLink
+                  type: varchar
+              - column:
+                  name: ogrn
+                  type: varchar
+              - column:
+                  name: inn
+                  type: varchar
+              - column:
+                  name: okpo
+                  type: varchar
+              - column:
+                  name: createdBy
+                  type: varchar
+              - column:
+                  name: createdAt
+                  type: varchar
+              - column:
+                  name: updatedAt
+                  type: varchar
+              - column:
+                  name: updatedBy
+                  type: varchar
+              - column:
+                  name: spare1
+                  type: varchar
+              - column:
+                  name: spare2
+                  type: varchar
+        - addAutoIncrement:
+            catalogName: cat
+            columnDataType: int
+            columnName: companyId
+            defaultOnNull: false
+            generationType: ALWAYS
+            incrementBy: 1
+            schemaName: public
+            startWith: 1
+            tableName: company

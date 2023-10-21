@@ -11,33 +11,33 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Schema(description = "Сущность пользователя")
+//@Schema(description = "Сущность пользователя")
 public class UserDTO {
-    @Schema(description = "Идентификатор пользователя", example = "0")
+//    @Schema(description = "Идентификатор пользователя", example = "0")
     private int userId;
     @NotEmpty(message = "Empty name")
     @Size(min = 3, max = 20, message = "Name must be between 3 and 20 symbols")
-    @Schema(description = "Имя пользователя", example = "John Doe")
+//    @Schema(description = "Имя пользователя", example = "John Doe")
     private String userName;
     @NotEmpty(message = "Empty company name")
-    @Schema(description = "Название компании пользователя", example = "My Company")
+//    @Schema(description = "Название компании пользователя", example = "My Company")
     private String userCompany;
-    @Schema(description = "Номер телефона пользователя", example = "8909058030")
+//    @Schema(description = "Номер телефона пользователя", example = "8909058030")
     private String userPhoneNumber;
-    @Schema(description = "Профессия пользователя", example = "Парикмахер")
+//    @Schema(description = "Профессия пользователя", example = "Парикмахер")
     private String userProfession;
-    @Schema(description = "Роль пользователя", example = "USER")
+//    @Schema(description = "Роль пользователя", example = "USER")
     private String userRole;
-    @Schema(description = "Доступные пользователи", example = "доделать")
+//    @Schema(description = "Доступные пользователи", example = "доделать")
     private String usersAccessed;
     @NotEmpty(message = "Empty password")
     @Size(min = 6, max = 20, message = "Password must be between 6 and 20 symbols")
-    @Schema(description = "Пароль пользователя", example = "123456")
+//    @Schema(description = "Пароль пользователя", example = "123456")
     private String password;
     @Email
     @NotEmpty(message = "Empty email")
-    @Schema(description = "Email пользователя", example = "dycjh@example.com")
+//    @Schema(description = "Email пользователя", example = "dycjh@example.com")
     private String email;
-    @Schema(description = "URL Изображения пользователя")
+//    @Schema(description = "URL Изображения пользователя")
     private String picture;
 }

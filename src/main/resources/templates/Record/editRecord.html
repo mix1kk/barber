@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://thymeleaf.org ">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+      integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Update Company</title>
+</head>
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Навигация</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" th:text="${line.userId}">User</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a th:href="@{/companies}"><i
+                        class="glyphicon glyphicon-home"></i></a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Навигация<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a th:href="@{/companies}">Все компании</a></li>
+                        <li class="divider"></li>
+                        <li><a th:href="@{/users}">Все пользователи</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#"><i
+                            class="glyphicon glyphicon-arrow-left"></i></a>
+                </li>
+                <li>
+                    <a href="#"><i
+                            class="glyphicon glyphicon-plus"></i></a>
+                </li>
+                <li>
+                    <a href="#"><i class="glyphicon glyphicon-trash" data-toggle="modal"
+                                   data-target="#myModalDelete"></i>
+                    </a>
+                    <div id="myModalDelete" class="modal fade" tabindex="-1">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button class="close" data-dismiss="modal">х</button>
+                                    <h4 class="modal-title">Удаление записи</h4>
+                                </div>
+                                <div class="modal-body">Вы уверены, что хотите удалить запись?</div>
+                                <form th:method="DELETE"
+                                      th:action="@{/records/user/{userId}/line/{lineId} (userId = ${line.userId},lineId = ${line.lineId})}">
+                                    <div class="modal-footer">
+                                        <button class="btn btn-success" data-dismiss="modal">Отмена</button>
+                                        <button class="btn btn-danger" type="submit">Удалить</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Действие</a></li>
+                        <li><a href="#">Другое действие</a></li>
+                        <li><a href="#">Что-то еще</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Отдельная ссылка</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+
+<br>
+<div class="container">
+    <form th:method="PATCH"
+          th:action="@{/records/user/{userId}/{lineId} (userId=${line.userId}, lineId=${line.lineId})}"
+          th:object="${line}">
+        <div class="container-sm">
+            <table class="table table-bordered">
+                <thead>
+                <th class="warning" colspan=2>
+                    <i>Редактирование одиночной записи</i>
+                </th>
+                </thead>
+                <tbody class="table-group-divider">
+                <tr>
+                    <td>Id записи</td>
+                    <td>
+                        <input type="text" th:field="*{lineId}" id="lineId" disabled="true" style="border: 0px; box-shadow: none;">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Id мастера</td>
+                    <td>
+                        <input type="text" th:field="*{userId}" id="userId" style="border: 0px; box-shadow: none;">
+                        <div style="color:red" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}">userId
+                            Errors
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Дата</td>
+                    <td>
+                        <label for="date"></label>
+                        <input type="date" th:field="*{date}" id="date" style="border: 0px; box-shadow: none;">
+                        <div style="color:red" th:if="${#fields.hasErrors('date')}" th:errors="*{date}">
+                            date Errors
+                        </div>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>Время</td>
+                    <td>
+                        <select class="form-control" id = dropdownList th:field="*{time}" >
+                            <option th:each="option : ${timeList}" th:value="${option}" th:text="${option}"></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Имя клиента</td>
+                    <td>
+                        <label for="clientName"></label>
+                        <input type="text" th:field="*{clientName}" id="clientName" style="border: 0px; box-shadow: none;">
+                        <div style="color:red" th:if="${#fields.hasErrors('clientName')}" th:errors="*{clientName}">
+                            clientName
+                            Errors
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Название процедуры</td>
+                    <td>
+                        <label for="procedureName"></label>
+                        <input type="text" th:field="*{procedureName}" id="procedureName" style="border: 0px; box-shadow: none;">
+                        <div style="color:red" th:if="${#fields.hasErrors('procedureName')}"
+                             th:errors="*{procedureName}">procedureName
+                            Errors
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Стоимость процедуры</td>
+                    <td>
+                        <label for="procedureCost"></label>
+                        <input type="text" th:field="*{procedureCost}" id="procedureCost" style="border: 0px; box-shadow: none;">
+                        <div style="color:red" th:if="${#fields.hasErrors('procedureCost')}"
+                             th:errors="*{procedureCost}">
+                            procedureCost
+                            Errors
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Скидка</td>
+                    <td>
+                        <label for="procedureDiscount"></label>
+                        <input type="text" th:field="*{procedureDiscount}" id="procedureDiscount" style="border: 0px; box-shadow: none;">
+                        <div style="color:red" th:if="${#fields.hasErrors('procedureDiscount')}"
+                             th:errors="*{procedureDiscount}">procedureDiscount
+                            Errors
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                <tr>
+                    <td>Комментарий к записи</td>
+                    <td>
+                        <label for="comment"></label>
+                        <input type="text" th:field="*{comment}" id="comment" style="border: 0px; box-shadow: none;">
+                        <div style="color:red" th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}">comment
+                            Errors
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+            <div>
+                <input class="btn btn-success button-md btn-block" value="Сохранить изменения" data-toggle="modal"
+                       data-target="#myModalAccept">
+                <div id="myModalAccept" class="modal fade" tabindex="-1">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button class="close" data-dismiss="modal">х</button>
+                                <h4 class="modal-title">Подтвердите изменения</h4>
+                            </div>
+                            <div class="modal-body">Сохранить изменения?</div>
+                            <form th:method="PATCH"
+                                  th:action="@{/records/user/{userId}/{lineId} (userId=${line.userId}, lineId=${line.lineId})}"
+                                  th:object="${line}">
+                                <div class="modal-footer">
+                                    <button class="btn btn-danger" data-dismiss="modal">Отмена</button>
+                                    <button class="btn btn-success" type="submit">Сохранить</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </form>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+</body>
+</html>

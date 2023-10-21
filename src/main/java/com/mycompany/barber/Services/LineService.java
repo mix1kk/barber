@@ -33,6 +33,9 @@ public class LineService {
     public List<Line> findByUserIdAndDateBetween(int userId, LocalDate fromDate, LocalDate toDate) {
         return lineRepository.findByUserIdAndDateBetween(userId, fromDate,toDate);
     }
+    public List<Line> findByUserIdAndDate(int userId, LocalDate date) {
+        return lineRepository.findByUserIdAndDate(userId, date);
+    }
     public Line findById(Integer lineId) {
         return lineRepository.findById(lineId).orElseThrow();
     }

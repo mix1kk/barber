@@ -3,21 +3,18 @@ package com.mycompany.barber.Controllers;
 
 import com.mycompany.barber.DTO.UserDTO;
 import com.mycompany.barber.Models.*;
+import com.mycompany.barber.Services.CompanyService;
 import com.mycompany.barber.Services.UserService;
-import com.mycompany.barber.Utils.User.*;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,11 +23,13 @@ import java.util.stream.Collectors;
 public class UserController {
     private final UserService userService;
     private final ModelMapper modelMapper;
+    private final CompanyService companyService;
 
     @Autowired
-    public UserController(UserService userService, ModelMapper modelMapper) {
+    public UserController(UserService userService, ModelMapper modelMapper, CompanyService companyService) {
         this.userService = userService;
         this.modelMapper = modelMapper;
+        this.companyService = companyService;
     }
 
     /**
@@ -41,6 +40,7 @@ public class UserController {
         model.addAttribute("allUsers", userService.findAll().stream().map(this::convertToUserDTO).collect(Collectors.toList()));
         return "User/allUsers";
     }
+
 
     /**
      * получить список всех пользователей в компаниии
@@ -65,7 +65,8 @@ public class UserController {
      */
 
     @GetMapping("/users/new")
-    public String newUser(@ModelAttribute("user") UserDTO userDTO) {
+    public String newUser(@ModelAttribute("user") UserDTO userDTO, Model model) {
+        model.addAttribute("allCompanies", companyService.findAll().stream().sorted(Comparator.comparing(Company::getCompanyName)).collect(Collectors.toList()));
         return "User/newUser";
     }
 
@@ -92,6 +93,7 @@ public class UserController {
     @GetMapping("/user/{id}/edit")
     public String editUser(Model model, @PathVariable("id") int userId) {
         model.addAttribute("user", convertToUserDTO(userService.findById(userId)));
+        model.addAttribute("allCompanies", companyService.findAll().stream().sorted(Comparator.comparing(Company::getCompanyName)).collect(Collectors.toList()));
         return "User/editUser";
     }
 

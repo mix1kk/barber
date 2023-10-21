@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+      integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<head>
+    <meta charset="UTF-8">
+    <title>Все записи на день</title>
+</head>
+
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Навигация</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" th:href="@{/user/{id} (id = ${record.getUserId()})}"
+               th:text="${record.getUserName()}">UserName</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a th:href="@{/records/user/{userId} (userId = ${record.userId})}"><i
+                        class="glyphicon glyphicon-home"></i></a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Навигация<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a th:href="@{/companies}">Все компании</a></li>
+                        <li class="divider"></li>
+                        <li><a th:href="@{/users}">Все пользователи</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="/companies/new"><i
+                            class="glyphicon glyphicon-plus"></i></a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Действие</a></li>
+                        <li><a href="#">Другое действие</a></li>
+                        <li><a href="#">Что-то еще</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Отдельная ссылка</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br>
+<div class="container">
+    <table class="table table-bordered table-condensed table-sm">
+        <thead>
+        <tr>
+            <div>
+                <th style="border: 0px; background-color: #fff0d8" colspan="2">
+                    <a th:href="@{/records/user/{userId} (userId = ${record.userId}, date = ${record.date}, direction='prev' )}"><i
+                            class="glyphicon glyphicon-arrow-left" style="color: black"></i></a>
+                </th>
+
+                <th style="border: 0px; text-align: center; background-color: #fff0d8" colspan="3"
+                >
+                    <a href="#myModalAccept" data-toggle="modal" data-target="#myModalAccept">
+                        <i class="text" style="color: black; font-size: large" th:text="${record.longDate}"></i></a>
+                    <div id="myModalAccept" class="modal fade" tabindex="-1">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button class="close" data-dismiss="modal">х</button>
+                                    <h4 class="modal-title">Выберите дату</h4>
+                                </div>
+                                <div class="modal-body">Дата</div>
+                                <form th:method="GET" th:action="@{/records/user/{userId} (userId = ${record.userId})}">
+                                    <input type="date" id="date" th:name="date" th:value="${record.date}">
+                                    <div class="modal-footer">
+                                        <button class="btn btn-danger" data-dismiss="modal">Отмена</button>
+                                        <button class="btn btn-success" type="submit">Выбрать</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </th>
+
+
+                <th style="border: 0px; text-align: end; background-color: #fff0d8">
+                    <a th:href="@{/records/user/{userId} (userId = ${record.userId}, date = ${record.date}, direction='next')}"><i
+                            class="glyphicon glyphicon-arrow-right" style="color: black"></i></a>
+                </th>
+            </div>
+        </tr>
+        <tr>
+            <th class="col-md-1" style="border: 1px solid grey; background-color: #dff0d8">
+            </th>
+            <th class="col-md-1" style="border: 1px solid grey; text-align: center; background-color: #dff0d8">
+                Время
+            </th>
+            <th class="col-md-4" style="border: 1px solid grey; text-align: center; background-color: #dff0d8">
+                Имя клиента
+            </th>
+            <th class="col-md-3" style="border: 1px solid grey; text-align: center; background-color: #dff0d8">
+                Название процедуры
+            </th>
+            <th class="col-md-1" style="border: 1px solid grey; text-align: center; background-color: #dff0d8">
+                Стоимость
+            </th>
+            <th class="col-md-2" style="border: 1px solid grey; text-align: center; background-color: #dff0d8">
+                Комментарий
+            </th>
+        </tr>
+        </thead>
+        <tbody class="table-group-divider">
+        <div th:each="line, iterStat: ${allLines}">
+
+            <tr th:style="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'">
+                <form th:method="PATCH"
+                      th:action="@{/records/user/{userId}/{lineId} (userId = ${line.userId},lineId = ${line.lineId})}">
+                    <td style="border: 1px solid grey">
+                        <span>
+                        <button class="glyphicon glyphicon-ok" type="submit" style="color: green; border: none; box-shadow: none;"
+                                th:styleappend="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'">
+                        </button>
+                       <a th:href="@{/records/{lineId} (date=${line.date},time=${line.time},userId=${line.userId},lineId = ${line.lineId})}">
+                           <i class="glyphicon glyphicon-pencil"
+                                      style="color: coral"></i>
+                       </a>
+                        <a href="#"><i class="glyphicon glyphicon-trash"  data-toggle="modal"
+                                       data-target="#myModalDelete" id="deleteLink" th:data-line-id="${line.lineId}"
+                                       th:data-user-id="${line.userId}" th:data-date="${line.date}"
+                                       style="color: darkred" th:if = "${line.lineId != 0}"></i>
+                        </a>
+                        </span>
+                    </td>
+                    <td style="border: 1px solid grey">
+                        <input class="form-control transparent-input" name="date"
+                               th:value="${record.date}" type="hidden"/>
+                        <input class="form-control transparent-input" type="text" name="time"
+                               th:value="${line.time}" readonly style="border: 0px; box-shadow: none;"
+                               th:styleappend="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'"/>
+                    <td style="border: 1px solid grey">
+                        <input class="form-control transparent-input" type="text" name="clientName"
+                               th:value="${line.clientName}" style="border: 0px; box-shadow: none;"
+                               th:styleappend="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'"/>
+                    <td style="border: 1px solid grey">
+                        <input class="form-control transparent-input" type="text" name="procedureName"
+                               th:value="${line.procedureName}" style="border: 0px; box-shadow: none;"
+                               th:styleappend="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'"/>
+                    </td>
+                    <td style="border: 1px solid grey">
+                        <input class="form-control transparent-input" type="text" name="procedureCost"
+                               th:value="${line.procedureCost}" style="border: 0px; box-shadow: none;"
+                               th:styleappend="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'"/>
+                    </td>
+                    <td style="border: 1px solid grey">
+                        <input class="form-control transparent-input" type="text" name="comment"
+                               th:value="${line.comment}" style="border: 0px; box-shadow: none;"
+                               th:styleappend="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'"/>
+                </form>
+                <div id="myModalDelete" class="modal fade" tabindex="-1">
+                    <div class="modal-dialog modal-sm modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button class="close" data-dismiss="modal">х</button>
+                                <h4 class="modal-title">Удаление записи</h4>
+                            </div>
+                            <div class="modal-body">Вы уверены, что хотите удалить запись?</div>
+
+                            <form th:method="DELETE" id="modalInput">
+                                <div class="modal-footer">
+                                    <button class="btn btn-success" data-dismiss="modal">Отмена</button>
+                                    <button class="btn btn-danger" type="submit">Удалить</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div id="myModalEdit" class="modal fade" tabindex="-1">
+                    <div class="modal-dialog modal-sm modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button class="close" data-dismiss="modal">х</button>
+                                <h4 class="modal-title">Редактирование записи</h4>
+                            </div>
+                            <div class="modal-body">
+
+                            </div>
+                            <form th:method="DELETE" id="">
+                                <div class="modal-footer">
+                                    <button class="btn btn-success" data-dismiss="modal">Отмена</button>
+                                    <button class="btn btn-danger" type="submit">Удалить</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </tr>
+
+        </div>
+
+        </tbody>
+    </table>
+
+
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<script>
+    $('#myModalDelete').on('show.bs.modal', function (event) {
+        let button = $(event.relatedTarget) // Button that triggered the modal
+        let lineId = button.data('line-id') // Extract info from data-* attributes
+        let userId = button.data('user-id') // Extract info from data-* attributes
+        let date = button.data('date') // Extract info from data-* attributes
+        $('#modalInput').attr("action", '/records/user/' + userId + '/line/' + lineId + '?date=' + date)
+    })
+</script>
+</body>
+</html>
