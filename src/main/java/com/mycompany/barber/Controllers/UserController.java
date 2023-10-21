@@ -78,8 +78,6 @@ public class UserController {
             for (FieldError error : errors) {
                 errorMsg.append(error.getField()).append(": ").append(error.getDefaultMessage()).append("<br>");
             }
-            System.out.println(errorMsg);
-            //throw new UserNotCreatedException(errorMsg.toString());
             return "User/newUser";
         }
         userService.save(convertToUser(userDTO));
