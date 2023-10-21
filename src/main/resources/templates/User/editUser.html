@@ -13,7 +13,7 @@
 <body>
 
 <nav class="navbar navbar-default" role="navigation">
-    <div class="container">
+    <div class="container-fluid">
         <div class="navbar-header">
 
             <button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -112,7 +112,7 @@
 
 <br>
 <form th:method="PATCH" th:action="@{/user/{id}/edit (id=${user.getUserId()})}" th:object="${user}">
-    <div class="container-sm">
+    <div class="container">
         <table class="table table-bordered table-hover">
             <thead>
             <th class="warning" colspan=2>
