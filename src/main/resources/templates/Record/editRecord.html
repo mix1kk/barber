@@ -110,12 +110,17 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Id мастера</td>
+                    <td>Мастер</td>
                     <td>
-                        <input type="text" th:field="*{userId}" id="userId" style="border: 0px; box-shadow: none;">
-                        <div style="color:red" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}">userId
-                            Errors
-                        </div>
+                        <select class="form-control" id = dropdownUserList th:field="*{userId}" >
+                            <option th:each="option : ${users}" th:value="${option.userId}" th:text="${option.userName}"></option>
+                        </select>
+
+<!--                        <input type="text" th:field="*{userId}" id="userId" style="border: 0px; box-shadow: none;">-->
+<!--                        <div style="color:red" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}">userId-->
+<!--                            Errors-->
+<!--                        </div>-->
+
                     </td>
                 </tr>
                 <tr>

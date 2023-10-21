@@ -64,6 +64,7 @@ public class RecordController {
     public String showSingleRecord(@PathVariable("lineId") int lineId, Model model, @RequestParam(required = false, name = "date") String date,
                                    @RequestParam(required = false, name = "userId") int userId,
                                    @RequestParam(required = false, name = "time") String time) {
+        model.addAttribute("users",userService.findByUserCompany(userService.findById(userId).getUserCompany()));
         model.addAttribute("timeList", LineFiller.createTimeList());
         if (lineId <= 0) {
             model.addAttribute("line", new LineDTO(0, userId, date, time, "", "", "", "", ""));
@@ -93,7 +94,7 @@ public class RecordController {
             throw new LineNotCreatedException(errorMsg.toString());
         }
         if (RecordService.checkOnNotEmptyRecord(lineDTO)) {
-            lineDTO.setUserId(userId);
+//            lineDTO.setUserId(userId);
             lineDTO.setLineId(lineId);
             lineService.save(LineMapper.mapToLine(lineDTO));
         }
