@@ -73,30 +73,30 @@ public class ProcedureController {
         return "Procedure/singleProcedure";
     }
 
-    /**
-     * Сохранить новую процедуру
-     *
-     * @param procedureDTO
-     * @param bindingResult
-     * @param userId
-     * @return
-     */
-    @PostMapping("/procedures/user/{userId}")
-//    @Operation(summary = "Сохранить новую процедуру")
-    public String create(@RequestBody @Valid ProcedureDTO procedureDTO, BindingResult bindingResult,
-                         @PathVariable int userId) {
-        if (bindingResult.hasErrors()) {
-            StringBuilder errorMsg = new StringBuilder();
-            List<FieldError> errors = bindingResult.getFieldErrors();
-            for (FieldError error : errors) {
-                errorMsg.append(error.getField()).append(": ").append(error.getDefaultMessage()).append("<br>");
-            }
-            throw new ProcedureNotCreatedException(errorMsg.toString());
-        }
-        procedureDTO.setUserId(userId);
-        procedureService.save(convertToProcedure(procedureDTO));
-        return "Procedure/allProcedures";
-    }
+//    /**
+//     * Сохранить новую процедуру
+//     *
+//     * @param procedureDTO
+//     * @param bindingResult
+//     * @param userId
+//     * @return
+//     */
+//    @PostMapping("/procedures/user/{userId}")
+////    @Operation(summary = "Сохранить новую процедуру")
+//    public String create(@RequestBody @Valid ProcedureDTO procedureDTO, BindingResult bindingResult,
+//                         @PathVariable int userId) {
+//        if (bindingResult.hasErrors()) {
+//            StringBuilder errorMsg = new StringBuilder();
+//            List<FieldError> errors = bindingResult.getFieldErrors();
+//            for (FieldError error : errors) {
+//                errorMsg.append(error.getField()).append(": ").append(error.getDefaultMessage()).append("<br>");
+//            }
+//            throw new ProcedureNotCreatedException(errorMsg.toString());
+//        }
+//        procedureDTO.setUserId(userId);
+//        procedureService.save(convertToProcedure(procedureDTO));
+//        return "Procedure/allProcedures";
+//    }
 
     /**
      * Редактировать процедуру

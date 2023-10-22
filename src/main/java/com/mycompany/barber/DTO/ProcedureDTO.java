@@ -17,6 +17,7 @@ public class ProcedureDTO {
 //    @Schema(description = "Длительность процедуры", example = "30 минут")
     private String procedureDuration;
 //    @Schema(description = "Идентификатор пользователя", example = "1")
+    private double procedureCost;
     private int userId;
 //    @Schema(description = "Идентификатор компании", example = "Парикмахерская №1")
     private String companyName;

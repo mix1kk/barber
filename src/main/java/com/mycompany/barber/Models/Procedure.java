@@ -21,6 +21,8 @@ public class Procedure {
     private String procedureName;
     @Column(name = "\"procedureDuration\"")
     private String procedureDuration;
+    @Column(name = "\"procedureCost\"")
+    private double procedureCost;
     @Column(name = "\"userId\"")
     private int userId;
     @Column(name = "\"companyName\"")
