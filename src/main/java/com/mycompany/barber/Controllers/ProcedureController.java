@@ -2,14 +2,14 @@ package com.mycompany.barber.Controllers;
 
 import com.mycompany.barber.DTO.ProcedureDTO;
 import com.mycompany.barber.Models.Procedure;
+import com.mycompany.barber.Models.User;
+import com.mycompany.barber.Services.CompanyService;
 import com.mycompany.barber.Services.ProcedureService;
+import com.mycompany.barber.Services.UserService;
 import com.mycompany.barber.Utils.Procedure.*;
-import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,11 +26,33 @@ public class ProcedureController {
 
     private final ProcedureService procedureService;
     private final ModelMapper modelMapper;
+    private final UserService userService;
+    private final CompanyService companyService;
 
     @Autowired
-    public ProcedureController(ProcedureService procedureService, ModelMapper modelMapper) {
+    public ProcedureController(ProcedureService procedureService, ModelMapper modelMapper, UserService userService, CompanyService companyService) {
         this.procedureService = procedureService;
         this.modelMapper = modelMapper;
+        this.userService = userService;
+        this.companyService = companyService;
+    }
+
+    /**
+     * Создать новую процедуру
+     * @param userId
+     * @param procedureDTO
+     * @param model
+     * @return
+     */
+    @GetMapping("/procedures/{userId}/new")
+    public String newUProcedure(@PathVariable int userId, @ModelAttribute("procedure") ProcedureDTO procedureDTO, Model model) {
+
+        User user = userService.findById(userId);
+        String companyId = user.getUserCompany();
+        model.addAttribute("user",user);
+        model.addAttribute("company",companyService.findById(Integer.parseInt(companyId)));
+//        model.addAttribute("allUsers", userService.findByUserCompany(companyId));
+        return "Procedure/newProcedure";
     }
 
     /**
@@ -42,23 +64,24 @@ public class ProcedureController {
     @GetMapping("/procedures/user/{userId}")
 //    @Operation(summary = "Получить список всех процедур для пользователя")
     public String allProceduresForUser(@PathVariable int userId, Model model) {
+        model.addAttribute("user",userService.findById(userId));
         model.addAttribute("allProcedures", procedureService.findAllForUser(userId).stream().map(this::convertToProcedureDTO).collect(Collectors.toList()));
         return "Procedure/allProcedures";
     }
 
-    /**
-     * Получить список всех процедур для компании
-     *
-     * @param companyId
-     * @param model
-     * @return
-     */
-    @GetMapping("/procedures/company/{companyId}")
-//    @Operation(summary = "Получить список всех процедур для компании")
-    public String allProceduresForCompany(@PathVariable("companyId") String companyId, Model model) {
-        model.addAttribute("allProcedures", procedureService.findByCompanyName(companyId).stream().map(this::convertToProcedureDTO).collect(Collectors.toList()));
-        return "Procedure/allProcedures";
-    }
+//    /**
+//     * Получить список всех процедур для компании
+//     *
+//     * @param companyId
+//     * @param model
+//     * @return
+//     */
+//    @GetMapping("/procedures/company/{companyId}")
+////    @Operation(summary = "Получить список всех процедур для компании")
+//    public String allProceduresForCompany(@PathVariable("companyId") String companyId, Model model) {
+//        model.addAttribute("allProcedures", procedureService.findByCompanyName(companyId).stream().map(this::convertToProcedureDTO).collect(Collectors.toList()));
+//        return "Procedure/allProcedures";
+//    }
 
     /**
      * Получить одну процедуру по id процедуры
@@ -70,33 +93,32 @@ public class ProcedureController {
 //    @Operation(summary = "Получить одну процедуру по id процедуры")
     public String singleProcedure(@PathVariable int procedureId, Model model) {
         model.addAttribute("procedure", convertToProcedureDTO(procedureService.findById(procedureId)));
-        return "Procedure/singleProcedure";
+        return "Procedure/editProcedure";
     }
 
-//    /**
-//     * Сохранить новую процедуру
-//     *
-//     * @param procedureDTO
-//     * @param bindingResult
-//     * @param userId
-//     * @return
-//     */
-//    @PostMapping("/procedures/user/{userId}")
-////    @Operation(summary = "Сохранить новую процедуру")
-//    public String create(@RequestBody @Valid ProcedureDTO procedureDTO, BindingResult bindingResult,
-//                         @PathVariable int userId) {
-//        if (bindingResult.hasErrors()) {
-//            StringBuilder errorMsg = new StringBuilder();
-//            List<FieldError> errors = bindingResult.getFieldErrors();
-//            for (FieldError error : errors) {
-//                errorMsg.append(error.getField()).append(": ").append(error.getDefaultMessage()).append("<br>");
-//            }
-//            throw new ProcedureNotCreatedException(errorMsg.toString());
-//        }
-//        procedureDTO.setUserId(userId);
-//        procedureService.save(convertToProcedure(procedureDTO));
-//        return "Procedure/allProcedures";
-//    }
+    /**
+     * Сохранить новую процедуру
+     *
+     * @param procedureDTO
+     * @param bindingResult
+     * @param userId
+     * @return
+     */
+    @PostMapping("/procedures/user/{userId}")
+//    @Operation(summary = "Сохранить новую процедуру")
+    public String create(@ModelAttribute @Valid ProcedureDTO procedureDTO, BindingResult bindingResult,
+                         @PathVariable int userId) {
+        if (bindingResult.hasErrors()) {
+            StringBuilder errorMsg = new StringBuilder();
+            List<FieldError> errors = bindingResult.getFieldErrors();
+            for (FieldError error : errors) {
+                errorMsg.append(error.getField()).append(": ").append(error.getDefaultMessage()).append("<br>");
+            }
+            throw new ProcedureNotCreatedException(errorMsg.toString());
+        }
+        procedureService.save(convertToProcedure(procedureDTO));
+        return "redirect:/procedures/user/" + procedureDTO.getUserId();
+    }
 
     /**
      * Редактировать процедуру
@@ -117,6 +139,7 @@ public class ProcedureController {
             }
             throw new ProcedureNotUpdatedException(errorMsg.toString());
         }
+        procedureDTO.setProcedureId(procedureId);
         procedureService.save(convertToProcedure(procedureDTO));
         return "Procedure/allProcedures";
     }

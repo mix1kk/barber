@@ -23,7 +23,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#" th:text="${company.getCompanyName()}">CompanyName</a>
+            <a class="navbar-brand" href="#" th:text="${procedure.companyName}">CompanyName</a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -39,48 +39,49 @@
                     </ul>
                 </li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a th:href="@{/companies/company/{id}(id=${company.getCompanyId()})}"><i
-                            class="glyphicon glyphicon-arrow-left"></i></a>
-                </li>
-                <li>
-                    <a href="/companies/new"><i
-                            class="glyphicon glyphicon-plus"></i></a>
-                </li>
-                <li>
-                    <a href="#"><i class="glyphicon glyphicon-trash" data-toggle="modal"
-                                   data-target="#myModalDelete"></i>
-                    </a>
-                    <div id="myModalDelete" class="modal fade" tabindex="-1">
-                        <div class="modal-dialog modal-sm">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button class="close" data-dismiss="modal">х</button>
-                                    <h4 class="modal-title">Удаление компании</h4>
-                                </div>
-                                <div class="modal-body">Вы уверены, что хотите удалить компанию?</div>
-                                <form th:method="DELETE" th:action="@{/companies/company/{id} (id = ${company.getCompanyId()})}">
-                                    <div class="modal-footer">
-                                        <button class="btn btn-success" data-dismiss="modal">Отмена</button>
-                                        <button class="btn btn-danger" type="submit">Удалить</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </li>
+            <!--            <ul class="nav navbar-nav navbar-right">-->
+            <!--                <li>-->
+            <!--                    <a th:href="@{/companies/company/{id}(id=${company.getCompanyId()})}"><i-->
+            <!--                            class="glyphicon glyphicon-arrow-left"></i></a>-->
+            <!--                </li>-->
+            <!--                <li>-->
+            <!--                    <a href="/companies/new"><i-->
+            <!--                            class="glyphicon glyphicon-plus"></i></a>-->
+            <!--                </li>-->
+            <!--                <li>-->
+            <!--                    <a href="#"><i class="glyphicon glyphicon-trash" data-toggle="modal"-->
+            <!--                                   data-target="#myModalDelete"></i>-->
+            <!--                    </a>-->
+            <!--                    <div id="myModalDelete" class="modal fade" tabindex="-1">-->
+            <!--                        <div class="modal-dialog modal-sm">-->
+            <!--                            <div class="modal-content">-->
+            <!--                                <div class="modal-header">-->
+            <!--                                    <button class="close" data-dismiss="modal">х</button>-->
+            <!--                                    <h4 class="modal-title">Удаление компании</h4>-->
+            <!--                                </div>-->
+            <!--                                <div class="modal-body">Вы уверены, что хотите удалить компанию?</div>-->
+            <!--                                <form th:method="DELETE"-->
+            <!--                                      th:action="@{/companies/company/{id} (id = ${company.getCompanyId()})}">-->
+            <!--                                    <div class="modal-footer">-->
+            <!--                                        <button class="btn btn-success" data-dismiss="modal">Отмена</button>-->
+            <!--                                        <button class="btn btn-danger" type="submit">Удалить</button>-->
+            <!--                                    </div>-->
+            <!--                                </form>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+            <!--                    </div>-->
+            <!--                </li>-->
 
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Действие</a></li>
-                        <li><a href="#">Другое действие</a></li>
-                        <li><a href="#">Что-то еще</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Отдельная ссылка</a></li>
-                    </ul>
-                </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Действие</a></li>
+                    <li><a href="#">Другое действие</a></li>
+                    <li><a href="#">Что-то еще</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Отдельная ссылка</a></li>
+                </ul>
+            </li>
 
             </ul>
 
@@ -90,129 +91,99 @@
 
 
 <br>
-<form th:method="PATCH" th:action="@{/company/{id}/edit (id=${company.getCompanyId()})}" th:object="${company}">
-    <div class="container-sm">
+<form th:method="PATCH" th:action="@{/procedures/user/{userId} (userId=${procedure.userId})}" th:object="${procedure}">
+    <div class="container">
         <table class="table table-bordered table-hover">
             <thead>
             <th class="warning" colspan=2>
-                <div th:text="'Редактирование профиля компании: '+${company.getCompanyName()}"></div>
+                Добавление процедуры
             </th>
             </thead>
             <tbody class="table-group-divider">
             <tr>
-                <td>Id компании</td>
+                <td>Id</td>
                 <td>
-                    <!--                    <label for="userId"></label>-->
-                    <input type="text" th:field="*{companyId}" id="companyId" disabled="true">
+                    <input type="text" th:field="*{procedureId}" id="procedureId" disabled="true">
                 </td>
             </tr>
             <tr>
-                <td>Название компании</td>
+                <td>Название процедуры</td>
                 <td>
-                    <!--                    <label for="userName"></label>-->
-                    <input type="text" th:field="*{companyName}" id="companyName">
-                    <div style="color:red" th:if="${#fields.hasErrors('companyName')}" th:errors="*{companyName}">companyName
+                    <label for="procedureName"></label>
+                    <input type="text" th:field="*{procedureName}" id="procedureName">
+                    <div style="color:red" th:if="${#fields.hasErrors('procedureName')}" th:errors="*{procedureName}">
+                        procedureName
                         Errors
                     </div>
                 </td>
             </tr>
             <tr>
-                <td>Адрес компании</td>
+                <td>Продолжительность процедуры</td>
                 <td>
-                    <label for="address"></label>
-                    <input type="text" th:field="*{address}" id="address">
-                    <div style="color:red" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">
+                    <label for="procedureDuration"></label>
+                    <input type="text" th:field="*{procedureDuration}" id="procedureDuration">
+                    <div style="color:red" th:if="${#fields.hasErrors('procedureDuration')}"
+                         th:errors="*{procedureDuration}">
                         address Errors
                     </div>
                 </td>
 
             </tr>
             <tr>
-                <td>Номер телефона компании</td>
+                <td>Стоимость процедуры</td>
                 <td>
-                    <label for="phoneNumber"></label>
-                    <input type="text" th:field="*{phoneNumber}" id="phoneNumber">
-                    <div style="color:red" th:if="${#fields.hasErrors('phoneNumber')}"
-                         th:errors="*{phoneNumber}">
-                        phoneNumber Errors
+                    <label for="procedureCost"></label>
+                    <input type="text" th:field="*{procedureCost}" id="procedureCost">
+                    <div style="color:red" th:if="${#fields.hasErrors('procedureCost')}"
+                         th:errors="*{procedureCost}">
+                        procedureCost Errors
                     </div>
                 </td>
             </tr>
             <tr>
-                <td>Email компании</td>
+                <td>Пользователь</td>
                 <td>
-                    <label for="email"></label>
-                    <input type="text" th:field="*{email}" id="email">
-                    <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
-                        email
+                    <label for="userId"></label>
+                    <input type="text" th:field="*{userId}" id="userId">
+                    <div style="color:red" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}">
+                        userId
                         Errors
                     </div>
                 </td>
             </tr>
             <tr>
-                <td>Cайт компании</td>
+                <td>Компания</td>
                 <td>
-                    <label for="siteLink"></label>
-                    <input type="text" th:field="*{siteLink}" id="siteLink">
-                    <div style="color:red" th:if="${#fields.hasErrors('siteLink')}" th:errors="*{siteLink}">siteLink
-                        Errors
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>ОГРН компании</td>
-                <td>
-                    <label for="ogrn"></label>
-                    <input type="text" th:field="*{ogrn}" id="ogrn">
-                    <div style="color:red" th:if="${#fields.hasErrors('ogrn')}" th:errors="*{ogrn}">
-                        ogrn
-                        Errors
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>ИНН компании</td>
-                <td>
-                    <label for="inn"></label>
-                    <input type="text" th:field="*{inn}" id="inn">
-                    <div style="color:red" th:if="${#fields.hasErrors('inn')}" th:errors="*{inn}">inn
-                        Errors
-                    </div>
-                </td>
-            </tr>
-            <tr>
-            <tr>
-                <td>ОКПО компании</td>
-                <td>
-                    <label for="okpo"></label>
-                    <input type="text" th:field="*{okpo}" id="okpo">
-                    <div style="color:red" th:if="${#fields.hasErrors('okpo')}" th:errors="*{okpo}">okpo
+                    <label for="companyName"></label>
+                    <input type="text" th:field="*{companyName}" id="companyName">
+                    <div style="color:red" th:if="${#fields.hasErrors('companyName')}" th:errors="*{companyName}">companyName
                         Errors
                     </div>
                 </td>
             </tr>
             </tbody>
-
         </table>
         <div>
-            <input class="btn btn-success button-md btn-block" value="Сохранить изменения" data-toggle="modal" data-target="#myModalAccept">
-        <div id="myModalAccept" class="modal fade" tabindex="-1">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button class="close" data-dismiss="modal">х</button>
-                        <h4 class="modal-title">Подтвердите изменения</h4>
-                    </div>
-                    <div class="modal-body">Сохранить изменения?</div>
-                    <form th:method="PATCH" th:action="@{/company/{id}/edit (id=${company.getCompanyId()})}" th:object="${company}">
-                        <div class="modal-footer">
-                            <button class="btn btn-danger" data-dismiss="modal">Отмена</button>
-                            <button class="btn btn-success" type="submit">Сохранить</button>
+            <input class="btn btn-success button-md btn-block" value="Сохранить изменения" data-toggle="modal"
+                   data-target="#myModalAccept">
+            <div id="myModalAccept" class="modal fade" tabindex="-1">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" data-dismiss="modal">х</button>
+                            <h4 class="modal-title">Подтвердите изменения</h4>
                         </div>
-                    </form>
+                        <div class="modal-body">Сохранить изменения?</div>
+                        <form th:method="PATCH" th:action="@{/procedures/{procedureId} (procedureId=${procedure.procedureId})}"
+                              th:object="${procedure}">
+                            <div class="modal-footer">
+                                <button class="btn btn-danger" data-dismiss="modal">Отмена</button>
+                                <button class="btn btn-success" type="submit">Сохранить</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
 
 
         </div>

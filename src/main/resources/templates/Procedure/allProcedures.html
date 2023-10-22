@@ -41,7 +41,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="/users/new"><i
+                    <a th:href="@{/procedures/{userId}/new (userId = ${user.userId})}"><i
                             class="glyphicon glyphicon-plus"></i></a>
                 </li>
                 <li class="dropdown">
@@ -72,10 +72,13 @@
             <th class="col-md-2" style="border: 1px solid grey; background-color: #dff0d8">
                 Длительность процедуры
             </th>
-            <th class="col-md-3" style="border: 1px solid grey; background-color: #dff0d8">
+            <th class="col-md-2" style="border: 1px solid grey; background-color: #dff0d8">
+                Стоимость процедуры
+            </th>
+            <th class="col-md-2" style="border: 1px solid grey; background-color: #dff0d8">
                 Пользователь
             </th>
-            <th class="col-md-3" style="border: 1px solid grey; background-color: #dff0d8">
+            <th class="col-md-2" style="border: 1px solid grey; background-color: #dff0d8">
                 Компания
             </th>
         </tr>
@@ -84,11 +87,11 @@
         <div th:each="procedure, iterStat: ${allProcedures}">
             <tr th:style="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'">
                 <td style="border: 1px solid grey">
-                    <a href="#"
+                    <a th:href="@{/procedures/{procedureId} (procedureId=${procedure.procedureId})}"
                        th:text="${procedure.procedureId}">id</a>
                 </td>
                 <td style="border: 1px solid grey">
-                    <a href="#"
+                    <a th:href="@{/procedures/{procedureId} (procedureId=${procedure.procedureId})}"
                        th:text="${procedure.procedureName}">procedureName</a>
                 </td>
                 <td style="border: 1px solid grey">
@@ -97,10 +100,14 @@
                 </td>
                 <td style="border: 1px solid grey">
                     <a href="#"
+                       th:text="${procedure.procedureCost}">procedureCost</a>
+                </td>
+                <td style="border: 1px solid grey">
+                    <a th:href="@{/user/{userId} (userId=${procedure.userId})}"
                        th:text="${procedure.userId}">userId</a>
                 </td>
                 <td style="border: 1px solid grey">
-                    <a href="#"
+                    <a th:href="@{/companies/{companyId} (companyId=${procedure.companyName})}"
                        th:text="${procedure.companyName}">companyName</a>
                 </td>
             </tr>
