@@ -5,12 +5,13 @@ import com.mycompany.barber.Models.Procedure;
 import com.mycompany.barber.Services.ProcedureService;
 import com.mycompany.barber.Utils.Procedure.*;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +19,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RestController
-@CrossOrigin
-@RequestMapping("/procedures")
-@Tag(name = "Контроллер процедур", description = "Позволяет добавлять, удалять, редактировать процедуры")
+@Controller
+@RequestMapping()
+//@Tag(name = "Контроллер процедур", description = "Позволяет добавлять, удалять, редактировать процедуры")
 public class ProcedureController {
 
     private final ProcedureService procedureService;
@@ -33,89 +33,130 @@ public class ProcedureController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/user/{userId}")
-    @Operation(summary = "Получить список всех процедур для пользователя")
-    public List<ProcedureDTO> allProceduresForUser(@PathVariable int userId) {
-        return procedureService.findAllForUser(userId).stream().map(this::convertToProcedureDTO).collect(Collectors.toList());
+    /**
+     * Получить список всех процедур для пользователя
+     *
+     * @param userId
+     * @return
+     */
+    @GetMapping("/procedures/user/{userId}")
+//    @Operation(summary = "Получить список всех процедур для пользователя")
+    public String allProceduresForUser(@PathVariable int userId, Model model) {
+        model.addAttribute("allProcedures", procedureService.findAllForUser(userId).stream().map(this::convertToProcedureDTO).collect(Collectors.toList()));
+        return "Procedure/allProcedures";
     }
 
-    @GetMapping("/company/{companyName}")
-    @Operation(summary = "Получить список всех процедур для компании")
-    public List<ProcedureDTO> allProceduresForCompany(@PathVariable("companyName") String companyName) {
-        return procedureService.findByCompanyName(companyName).stream().map(this::convertToProcedureDTO).collect(Collectors.toList());
+    /**
+     * Получить список всех процедур для компании
+     *
+     * @param companyId
+     * @param model
+     * @return
+     */
+    @GetMapping("/procedures/company/{companyId}")
+//    @Operation(summary = "Получить список всех процедур для компании")
+    public String allProceduresForCompany(@PathVariable("companyId") String companyId, Model model) {
+        model.addAttribute("allProcedures", procedureService.findByCompanyName(companyId).stream().map(this::convertToProcedureDTO).collect(Collectors.toList()));
+        return "Procedure/allProcedures";
     }
 
-    @GetMapping("/{procedureId}")
-    @Operation(summary = "Получить одну процедуру по id процедуры")
-    public ProcedureDTO singleProcedure(@PathVariable int procedureId) {
-        return convertToProcedureDTO(procedureService.findById(procedureId));
+    /**
+     * Получить одну процедуру по id процедуры
+     *
+     * @param procedureId
+     * @return
+     */
+    @GetMapping("/procedures/{procedureId}")
+//    @Operation(summary = "Получить одну процедуру по id процедуры")
+    public String singleProcedure(@PathVariable int procedureId, Model model) {
+        model.addAttribute("procedure", convertToProcedureDTO(procedureService.findById(procedureId)));
+        return "Procedure/singleProcedure";
     }
 
-    @PostMapping("/user/{userId}")
-    @Operation(summary = "Сохранить новую процедуру")
-    public ResponseEntity<HttpStatus> create(@RequestBody @Valid ProcedureDTO procedureDTO, BindingResult bindingResult,
-                                             @PathVariable int userId) {
+    /**
+     * Сохранить новую процедуру
+     *
+     * @param procedureDTO
+     * @param bindingResult
+     * @param userId
+     * @return
+     */
+    @PostMapping("/procedures/user/{userId}")
+//    @Operation(summary = "Сохранить новую процедуру")
+    public String create(@RequestBody @Valid ProcedureDTO procedureDTO, BindingResult bindingResult,
+                         @PathVariable int userId) {
         if (bindingResult.hasErrors()) {
             StringBuilder errorMsg = new StringBuilder();
             List<FieldError> errors = bindingResult.getFieldErrors();
             for (FieldError error : errors) {
                 errorMsg.append(error.getField()).append(": ").append(error.getDefaultMessage()).append("<br>");
             }
-            System.out.println(errorMsg);
             throw new ProcedureNotCreatedException(errorMsg.toString());
         }
         procedureDTO.setUserId(userId);
         procedureService.save(convertToProcedure(procedureDTO));
-        return ResponseEntity.ok(HttpStatus.OK);
+        return "Procedure/allProcedures";
     }
 
-    @Operation(summary = "Редактировать процедуру")
-    @PatchMapping("/{procedureId}")
-    public ResponseEntity<HttpStatus> updateProcedure(@RequestBody @Valid ProcedureDTO procedureDTO, BindingResult bindingResult, @PathVariable("procedureId") int procedureId) {
+    /**
+     * Редактировать процедуру
+     *
+     * @param procedureDTO
+     * @param bindingResult
+     * @param procedureId
+     * @return
+     */
+//    @Operation(summary = "Редактировать процедуру")
+    @PatchMapping("/procedures/{procedureId}")
+    public String updateProcedure(@RequestBody @Valid ProcedureDTO procedureDTO, BindingResult bindingResult, @PathVariable("procedureId") int procedureId) {
         if (bindingResult.hasErrors()) {
             StringBuilder errorMsg = new StringBuilder();
             List<FieldError> errors = bindingResult.getFieldErrors();
             for (FieldError error : errors) {
                 errorMsg.append(error.getField()).append(": ").append(error.getDefaultMessage()).append("<br>");
             }
-            System.out.println(errorMsg);
             throw new ProcedureNotUpdatedException(errorMsg.toString());
         }
-
-        procedureService.update(procedureId, convertToProcedure(procedureDTO));
-        return ResponseEntity.ok(HttpStatus.OK);
+        procedureService.save(convertToProcedure(procedureDTO));
+        return "Procedure/allProcedures";
     }
 
-    @Operation(summary = "Удалить Процедуру")
-    @DeleteMapping("/{procedureId}")
-    public ResponseEntity<HttpStatus> delete(@PathVariable("procedureId") int procedureId) {
+    /**
+     * Удалить Процедуру
+     *
+     * @param procedureId
+     * @return
+     */
+//    @Operation(summary = "Удалить Процедуру")
+    @DeleteMapping("/procedures/{procedureId}")
+    public String delete(@PathVariable("procedureId") int procedureId) {
         procedureService.delete(procedureId);
-        return ResponseEntity.ok(HttpStatus.NO_CONTENT);
+        return "Procedure/allProcedures";
     }
 
-    @ExceptionHandler
-    private ResponseEntity<ProcedureErrorResponse> handleException(ProcedureNotDeletedException e) {
-        ProcedureErrorResponse response = new ProcedureErrorResponse(e.getMessage(), System.currentTimeMillis());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<ProcedureErrorResponse> handleException(ProcedureNotFoundException e) {
-        ProcedureErrorResponse response = new ProcedureErrorResponse("Procedure not exist", System.currentTimeMillis());
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<ProcedureErrorResponse> handleException(ProcedureNotUpdatedException e) {
-        ProcedureErrorResponse response = new ProcedureErrorResponse(e.getMessage(), System.currentTimeMillis());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<ProcedureErrorResponse> handleException(ProcedureNotCreatedException e) {
-        ProcedureErrorResponse response = new ProcedureErrorResponse(e.getMessage(), System.currentTimeMillis());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
+//    @ExceptionHandler
+//    private ResponseEntity<ProcedureErrorResponse> handleException(ProcedureNotDeletedException e) {
+//        ProcedureErrorResponse response = new ProcedureErrorResponse(e.getMessage(), System.currentTimeMillis());
+//        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+//    }
+//
+//    @ExceptionHandler
+//    private ResponseEntity<ProcedureErrorResponse> handleException(ProcedureNotFoundException e) {
+//        ProcedureErrorResponse response = new ProcedureErrorResponse("Procedure not exist", System.currentTimeMillis());
+//        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+//    }
+//
+//    @ExceptionHandler
+//    private ResponseEntity<ProcedureErrorResponse> handleException(ProcedureNotUpdatedException e) {
+//        ProcedureErrorResponse response = new ProcedureErrorResponse(e.getMessage(), System.currentTimeMillis());
+//        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+//    }
+//
+//    @ExceptionHandler
+//    private ResponseEntity<ProcedureErrorResponse> handleException(ProcedureNotCreatedException e) {
+//        ProcedureErrorResponse response = new ProcedureErrorResponse(e.getMessage(), System.currentTimeMillis());
+//        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+//    }
 
     private Procedure convertToProcedure(ProcedureDTO procedureDTO) {
         return modelMapper.map(procedureDTO, Procedure.class);

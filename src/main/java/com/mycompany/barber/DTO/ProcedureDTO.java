@@ -10,14 +10,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProcedureDTO {
-    @Schema(description = "Идентификатор процедуры", example = "0")
+//    @Schema(description = "Идентификатор процедуры", example = "0")
     private int procedureId;
-    @Schema(description = "Название процедуры", example = "Стрижка")
+//    @Schema(description = "Название процедуры", example = "Стрижка")
     private String procedureName;
-    @Schema(description = "Длительность процедуры", example = "30 минут")
+//    @Schema(description = "Длительность процедуры", example = "30 минут")
     private String procedureDuration;
-    @Schema(description = "Идентификатор пользователя", example = "1")
+//    @Schema(description = "Идентификатор пользователя", example = "1")
     private int userId;
-    @Schema(description = "Идентификатор компании", example = "Парикмахерская №1")
+//    @Schema(description = "Идентификатор компании", example = "Парикмахерская №1")
     private String companyName;
 }

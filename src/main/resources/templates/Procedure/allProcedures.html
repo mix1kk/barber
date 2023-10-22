@@ -8,7 +8,7 @@
       integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 <head>
     <meta charset="UTF-8">
-    <title>Все Компании</title>
+    <title>Все пользователи</title>
 </head>
 
 <body>
@@ -27,7 +27,7 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a th:href="@{/companies}"><i
+                <li><a th:href="@{/users}"><i
                         class="glyphicon glyphicon-home"></i></a></li>
                 <!--                <li><a href="#">Ссылка</a></li>-->
                 <li class="dropdown">
@@ -41,7 +41,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="/companies/new"><i
+                    <a href="/users/new"><i
                             class="glyphicon glyphicon-plus"></i></a>
                 </li>
                 <li class="dropdown">
@@ -59,68 +59,54 @@
     </div>
 </nav>
 <br>
-<div class="container-fluid">
-    <table class="table table-bordered table-hover">
+<div class="container">
+    <table class="table table-bordered table-condensed table-sm">
         <thead>
         <tr>
-            <div class="col-md-1" style="background-color: #dff0d8; border-bottom: black">
-               Id
-            </div>
-            <div class="col-md-3" style="background-color: #dff0d8">
-                Название компании
-            </div>
-            <div class="col-md-2" style="background-color: #dff0d8">
-                Адрес компании
-            </div>
-            <div class="col-md-2" style="background-color: #dff0d8">
-                Номер телефона компании
-            </div>
-            <div class="col-md-2" style="background-color: #dff0d8">
-                Cайт компании
-            </div>
-            <div class="col-md-2" style="background-color: #dff0d8">
-                ИНН компании
-            </div>
+            <th class="col-md-1" style="border: 1px solid grey; background-color: #dff0d8">
+                Id
+            </th>
+            <th class="col-md-3" style="border: 1px solid grey; background-color: #dff0d8">
+                Название процедуры
+            </th>
+            <th class="col-md-2" style="border: 1px solid grey; background-color: #dff0d8">
+                Длительность процедуры
+            </th>
+            <th class="col-md-3" style="border: 1px solid grey; background-color: #dff0d8">
+                Пользователь
+            </th>
+            <th class="col-md-3" style="border: 1px solid grey; background-color: #dff0d8">
+                Компания
+            </th>
         </tr>
         </thead>
-    </table>
-    <div th:each="company: ${allCompanies}">
-        <table class="table table-bordered table-hover">
-            <tbody class="table-group-divider">
-            <tr>
-                <div class="col-md-1">
-                    <div>
-                        <a th:href="@{companies/{id}(id=${company.getCompanyId()})}"
-                           th:text="${company.getCompanyId()}">id</a>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div>
-                        <a th:href="@{companies/{id}(id=${company.getCompanyId()})}"
-                           th:text="${company.getCompanyName()}">user</a>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div th:text="${company.getAddress()}"></div>
-                </div>
-                <div class="col-md-2">
-                    <div>
-                        <a th:href="@{companies/{id}(id=${company.getCompanyId()})}"
-                           th:text="${company.getPhoneNumber()}">phone</a>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div th:text="${company.getSiteLink()}"></div>
-                </div>
-                <div class="col-md-2">
-
-                    <div th:text="${company.getInn()}"></div>
-
-                </div>
+        <tbody class="table-group-divider">
+        <div th:each="procedure, iterStat: ${allProcedures}">
+            <tr th:style="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'">
+                <td style="border: 1px solid grey">
+                    <a href="#"
+                       th:text="${procedure.procedureId}">id</a>
+                </td>
+                <td style="border: 1px solid grey">
+                    <a href="#"
+                       th:text="${procedure.procedureName}">procedureName</a>
+                </td>
+                <td style="border: 1px solid grey">
+                    <a href="#"
+                       th:text="${procedure.procedureDuration}">procedureDuration</a>
+                </td>
+                <td style="border: 1px solid grey">
+                    <a href="#"
+                       th:text="${procedure.userId}">userId</a>
+                </td>
+                <td style="border: 1px solid grey">
+                    <a href="#"
+                       th:text="${procedure.companyName}">companyName</a>
+                </td>
             </tr>
-            </tbody>
-        </table>
-    </div>
+        </div>
+        </tbody>
+    </table>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <!-- Latest compiled and minified JavaScript -->
