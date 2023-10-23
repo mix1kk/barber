@@ -36,41 +36,43 @@
                         <li><a th:href="@{/companies}">Все компании</a></li>
                         <li class="divider"></li>
                         <li><a th:href="@{/users}">Все пользователи</a></li>
+                        <li class="divider"></li>
+                        <li><a th:href="@{/procedures/user/{userId} (userId = ${procedure.userId})}">Все процедуры пользователя</a></li>
                     </ul>
                 </li>
             </ul>
-            <!--            <ul class="nav navbar-nav navbar-right">-->
-            <!--                <li>-->
-            <!--                    <a th:href="@{/companies/company/{id}(id=${company.getCompanyId()})}"><i-->
-            <!--                            class="glyphicon glyphicon-arrow-left"></i></a>-->
-            <!--                </li>-->
-            <!--                <li>-->
-            <!--                    <a href="/companies/new"><i-->
-            <!--                            class="glyphicon glyphicon-plus"></i></a>-->
-            <!--                </li>-->
-            <!--                <li>-->
-            <!--                    <a href="#"><i class="glyphicon glyphicon-trash" data-toggle="modal"-->
-            <!--                                   data-target="#myModalDelete"></i>-->
-            <!--                    </a>-->
-            <!--                    <div id="myModalDelete" class="modal fade" tabindex="-1">-->
-            <!--                        <div class="modal-dialog modal-sm">-->
-            <!--                            <div class="modal-content">-->
-            <!--                                <div class="modal-header">-->
-            <!--                                    <button class="close" data-dismiss="modal">х</button>-->
-            <!--                                    <h4 class="modal-title">Удаление компании</h4>-->
-            <!--                                </div>-->
-            <!--                                <div class="modal-body">Вы уверены, что хотите удалить компанию?</div>-->
-            <!--                                <form th:method="DELETE"-->
-            <!--                                      th:action="@{/companies/company/{id} (id = ${company.getCompanyId()})}">-->
-            <!--                                    <div class="modal-footer">-->
-            <!--                                        <button class="btn btn-success" data-dismiss="modal">Отмена</button>-->
-            <!--                                        <button class="btn btn-danger" type="submit">Удалить</button>-->
-            <!--                                    </div>-->
-            <!--                                </form>-->
-            <!--                            </div>-->
-            <!--                        </div>-->
-            <!--                    </div>-->
-            <!--                </li>-->
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>
+                                <a th:href="@{/companies/company/{id}(id=${procedure.companyName})}"><i
+                                        class="glyphicon glyphicon-arrow-left"></i></a>
+                            </li>
+                            <li>
+                                <a href="/companies/new"><i
+                                        class="glyphicon glyphicon-plus"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="glyphicon glyphicon-trash" data-toggle="modal"
+                                               data-target="#myModalDelete"></i>
+                                </a>
+                                <div id="myModalDelete" class="modal fade" tabindex="-1">
+                                    <div class="modal-dialog modal-sm">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button class="close" data-dismiss="modal">х</button>
+                                                <h4 class="modal-title">Удаление процедуры</h4>
+                                            </div>
+                                            <div class="modal-body">Вы уверены, что хотите удалить процедуру?</div>
+                                            <form th:method="DELETE"
+                                                  th:action="@{/procedures/user/{userId}/deleteProcedure/{procedureId} (userId = ${procedure.userId}, procedureId = ${procedure.procedureId})}">
+                                                <div class="modal-footer">
+                                                    <button class="btn btn-success" data-dismiss="modal">Отмена</button>
+                                                    <button class="btn btn-danger" type="submit">Удалить</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
 
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
@@ -91,7 +93,7 @@
 
 
 <br>
-<form th:method="PATCH" th:action="@{/procedures/user/{userId} (userId=${procedure.userId})}" th:object="${procedure}">
+<form th:method="PATCH" th:action="@{/procedures/{procedureId} (procedureId=${procedure.procedureId})}" th:object="${procedure}">
     <div class="container">
         <table class="table table-bordered table-hover">
             <thead>

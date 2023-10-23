@@ -35,6 +35,8 @@
                         <li><a th:href="@{/companies}">Все компании</a></li>
                         <li class="divider"></li>
                         <li><a th:href="@{/users}">Все пользователи</a></li>
+                        <li class="divider"></li>
+                        <li><a th:href="@{/procedures/user/{userId} (userId = ${record.userId})}">Все процедуры пользователя</a></li>
                     </ul>
                 </li>
             </ul>

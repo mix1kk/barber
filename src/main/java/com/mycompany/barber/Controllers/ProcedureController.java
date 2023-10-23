@@ -130,7 +130,7 @@ public class ProcedureController {
      */
 //    @Operation(summary = "Редактировать процедуру")
     @PatchMapping("/procedures/{procedureId}")
-    public String updateProcedure(@RequestBody @Valid ProcedureDTO procedureDTO, BindingResult bindingResult, @PathVariable("procedureId") int procedureId) {
+    public String updateProcedure(@Valid ProcedureDTO procedureDTO, BindingResult bindingResult, @PathVariable("procedureId") int procedureId) {
         if (bindingResult.hasErrors()) {
             StringBuilder errorMsg = new StringBuilder();
             List<FieldError> errors = bindingResult.getFieldErrors();
@@ -140,8 +140,8 @@ public class ProcedureController {
             throw new ProcedureNotUpdatedException(errorMsg.toString());
         }
         procedureDTO.setProcedureId(procedureId);
-        procedureService.save(convertToProcedure(procedureDTO));
-        return "Procedure/allProcedures";
+        procedureService.update(procedureId,convertToProcedure(procedureDTO));
+        return  "redirect:/procedures/user/" + procedureDTO.getUserId();
     }
 
     /**
@@ -151,10 +151,10 @@ public class ProcedureController {
      * @return
      */
 //    @Operation(summary = "Удалить Процедуру")
-    @DeleteMapping("/procedures/{procedureId}")
-    public String delete(@PathVariable("procedureId") int procedureId) {
+    @DeleteMapping("/procedures/user/{userId}/deleteProcedure/{procedureId}")
+    public String delete(@PathVariable("procedureId") int procedureId, @PathVariable("userId") int userId) {
         procedureService.delete(procedureId);
-        return "Procedure/allProcedures";
+        return "redirect:/procedures/user/" + userId;
     }
 
 //    @ExceptionHandler
