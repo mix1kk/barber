@@ -7,6 +7,7 @@ import com.mycompany.barber.Services.CompanyService;
 import com.mycompany.barber.Services.ProcedureService;
 import com.mycompany.barber.Services.UserService;
 import com.mycompany.barber.Utils.Procedure.*;
+import com.mycompany.barber.Utils.TimeFiller;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,7 @@ public class ProcedureController {
 
         User user = userService.findById(userId);
         String companyId = user.getUserCompany();
+        model.addAttribute("times", TimeFiller.createTimeList(0,15,5,0,15));
         model.addAttribute("user",user);
         model.addAttribute("company",companyService.findById(Integer.parseInt(companyId)));
 //        model.addAttribute("allUsers", userService.findByUserCompany(companyId));
@@ -93,7 +95,7 @@ public class ProcedureController {
     @GetMapping("/procedures/{procedureId}")
 //    @Operation(summary = "Получить одну процедуру по id процедуры")
     public String editProcedure(@PathVariable int procedureId, Model model) {
-        model.addAttribute("times", List.of("00:15","00:30","00:45","01:00","01:15","01:30","01:45","02:00","02:15","02:30","02:45","03:00"));
+        model.addAttribute("times", TimeFiller.createTimeList(0,15,5,0,15));
         model.addAttribute("procedure", convertToProcedureDTO(procedureService.findById(procedureId)));
         return "Procedure/editProcedure";
     }

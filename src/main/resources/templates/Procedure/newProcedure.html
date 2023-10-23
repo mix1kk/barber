@@ -120,12 +120,9 @@
             <tr>
                 <td>Продолжительность процедуры</td>
                 <td>
-                    <label for="procedureDuration"></label>
-                    <input type="text" th:field="*{procedureDuration}" id="procedureDuration">
-                    <div style="color:red" th:if="${#fields.hasErrors('procedureDuration')}"
-                         th:errors="*{procedureDuration}">
-                        address Errors
-                    </div>
+                    <select class="form-control" id = dropdownUserList th:field="*{procedureDuration}" >
+                        <option th:each="option : ${times}" th:value="${option}" th:text="${option}"></option>
+                    </select>
                 </td>
 
             </tr>
