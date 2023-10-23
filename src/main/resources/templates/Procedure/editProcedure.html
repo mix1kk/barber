@@ -47,7 +47,7 @@
                                         class="glyphicon glyphicon-arrow-left"></i></a>
                             </li>
                             <li>
-                                <a href="/companies/new"><i
+                                <a th:href="@{/procedures/{userId}/new (userId = ${procedure.userId})}"><i
                                         class="glyphicon glyphicon-plus"></i></a>
                             </li>
                             <li>
