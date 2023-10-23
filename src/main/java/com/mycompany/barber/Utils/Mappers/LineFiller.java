@@ -1,6 +1,7 @@
 package com.mycompany.barber.Utils.Mappers;
 
 import com.mycompany.barber.Models.Line;
+import com.mycompany.barber.Utils.TimeFiller;
 
 import java.util.*;
 
@@ -13,7 +14,7 @@ public class LineFiller {
             map.put(list.get(i).getTime(), list.get(i));
         }
 
-        for (String time : createTimeList()) {
+        for (String time : TimeFiller.createTimeList(6,0,23,30,30)) {
             Line newLine = new Line();// пустая запись
             if (map.get(time) != null) {
                 filledList.add(map.get(time));
@@ -23,19 +24,5 @@ public class LineFiller {
             }
         }
         return filledList;
-    }
-    public static ArrayList<String> createTimeList(){
-        ArrayList<String> timeList = new ArrayList<>();//массив для хранения времени работы
-        for (int i = 6; i < 23; i++) {//создаем массив значений времени, от 6:00 до 22:30
-            if (i<10){
-                timeList.add("0"+ i + ":" + "00");
-                timeList.add("0"+ i + ":" + "30");
-            }
-            else {
-                timeList.add(i + ":" + "00");
-                timeList.add(i + ":" + "30");
-            }
-        }
-        return timeList;
     }
 }

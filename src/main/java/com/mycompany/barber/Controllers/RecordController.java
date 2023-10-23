@@ -8,6 +8,7 @@ import com.mycompany.barber.Services.UserService;
 import com.mycompany.barber.Utils.Line.*;
 import com.mycompany.barber.Utils.Mappers.LineFiller;
 import com.mycompany.barber.Utils.Mappers.LineMapper;
+import com.mycompany.barber.Utils.TimeFiller;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -65,7 +66,7 @@ public class RecordController {
                                    @RequestParam(required = false, name = "userId") int userId,
                                    @RequestParam(required = false, name = "time") String time) {
         model.addAttribute("users",userService.findByUserCompany(userService.findById(userId).getUserCompany()));
-        model.addAttribute("timeList", LineFiller.createTimeList());
+        model.addAttribute("timeList", TimeFiller.createTimeList(6,0,23,30,30));
         if (lineId <= 0) {
             model.addAttribute("line", new LineDTO(0, userId, date, time, "", "", "", "", ""));
         } else {

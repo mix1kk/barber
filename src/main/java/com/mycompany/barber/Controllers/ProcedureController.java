@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -91,7 +92,8 @@ public class ProcedureController {
      */
     @GetMapping("/procedures/{procedureId}")
 //    @Operation(summary = "Получить одну процедуру по id процедуры")
-    public String singleProcedure(@PathVariable int procedureId, Model model) {
+    public String editProcedure(@PathVariable int procedureId, Model model) {
+        model.addAttribute("times", List.of("00:15","00:30","00:45","01:00","01:15","01:30","01:45","02:00","02:15","02:30","02:45","03:00"));
         model.addAttribute("procedure", convertToProcedureDTO(procedureService.findById(procedureId)));
         return "Procedure/editProcedure";
     }
