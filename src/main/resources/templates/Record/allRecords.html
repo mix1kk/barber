@@ -124,7 +124,6 @@
         </thead>
         <tbody class="table-group-divider">
         <div th:each="line, iterStat: ${allLines}">
-
             <tr th:style="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'">
                 <form th:method="PATCH"
                       th:action="@{/records/user/{userId}/{lineId} (userId = ${line.userId},lineId = ${line.lineId})}">
@@ -155,6 +154,11 @@
                                th:value="${line.clientName}" style="border: 0px; box-shadow: none;"
                                th:styleappend="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'"/>
                     <td style="border: 1px solid grey">
+<!--                    <select class="form-control" id = "procedureName" name = "procedureName" th:value ="${line.procedureName}" style="border: 0px; box-shadow: none;"-->
+<!--                            th:styleappend="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'">-->
+<!--                        <option></option>-->
+<!--                        <option th:each="procedure : ${allProcedures}" th:value="${procedure.procedureName}" th:text="${procedure.procedureName}" ></option>-->
+<!--                    </select>-->
                         <input class="form-control transparent-input" type="text" name="procedureName"
                                th:value="${line.procedureName}" style="border: 0px; box-shadow: none;"
                                th:styleappend="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'"/>
@@ -229,5 +233,6 @@
         $('#modalInput').attr("action", '/records/user/' + userId + '/line/' + lineId + '?date=' + date)
     })
 </script>
+
 </body>
 </html>
