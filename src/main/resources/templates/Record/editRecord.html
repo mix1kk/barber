@@ -37,7 +37,8 @@
                         <li class="divider"></li>
                         <li><a th:href="@{/users}">Все пользователи</a></li>
                         <li class="divider"></li>
-                        <li><a th:href="@{/procedures/user/{userId} (userId = ${line.userId})}">Все процедуры пользователя</a></li>
+                        <li><a th:href="@{/procedures/user/{userId} (userId = ${line.userId})}">Все процедуры
+                            пользователя</a></li>
                     </ul>
                 </li>
             </ul>
@@ -108,20 +109,22 @@
                 <tr>
                     <td>Id записи</td>
                     <td>
-                        <input type="text" th:field="*{lineId}" id="lineId" disabled="true" style="border: 0px; box-shadow: none;">
+                        <input type="text" th:field="*{lineId}" id="lineId" disabled="true"
+                               style="border: 0px; box-shadow: none;">
                     </td>
                 </tr>
                 <tr>
                     <td>Мастер</td>
                     <td>
-                        <select class="form-control" id = dropdownUserList th:field="*{userId}" >
-                            <option th:each="option : ${users}" th:value="${option.userId}" th:text="${option.userName}"></option>
+                        <select class="form-control" id=dropdownUserList th:field="*{userId}">
+                            <option th:each="option : ${users}" th:value="${option.userId}"
+                                    th:text="${option.userName}"></option>
                         </select>
 
-<!--                        <input type="text" th:field="*{userId}" id="userId" style="border: 0px; box-shadow: none;">-->
-<!--                        <div style="color:red" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}">userId-->
-<!--                            Errors-->
-<!--                        </div>-->
+                        <!--                        <input type="text" th:field="*{userId}" id="userId" style="border: 0px; box-shadow: none;">-->
+                        <!--                        <div style="color:red" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}">userId-->
+                        <!--                            Errors-->
+                        <!--                        </div>-->
 
                     </td>
                 </tr>
@@ -139,7 +142,7 @@
                 <tr>
                     <td>Время</td>
                     <td>
-                        <select class="form-control" id = dropdownList th:field="*{time}" >
+                        <select class="form-control" id=dropdownList th:field="*{time}">
                             <option th:each="option : ${timeList}" th:value="${option}" th:text="${option}"></option>
                         </select>
                     </td>
@@ -148,7 +151,8 @@
                     <td>Имя клиента</td>
                     <td>
                         <label for="clientName"></label>
-                        <input type="text" th:field="*{clientName}" id="clientName" style="border: 0px; box-shadow: none;">
+                        <input type="text" th:field="*{clientName}" id="clientName"
+                               style="border: 0px; box-shadow: none;">
                         <div style="color:red" th:if="${#fields.hasErrors('clientName')}" th:errors="*{clientName}">
                             clientName
                             Errors
@@ -158,19 +162,20 @@
                 <tr>
                     <td>Название процедуры</td>
                     <td>
-                        <label for="procedureName"></label>
-                        <input type="text" th:field="*{procedureName}" id="procedureName" style="border: 0px; box-shadow: none;">
-                        <div style="color:red" th:if="${#fields.hasErrors('procedureName')}"
-                             th:errors="*{procedureName}">procedureName
-                            Errors
-                        </div>
+                        <select class="form-control" id="procedureName" name="procedureName" th:field="*{procedureName}"
+                                style="border: 0px; box-shadow: none">
+                            <option disabled value=""></option>
+                            <option th:each="option : ${allProcedures}" th:value="${option.procedureName}"
+                                    th:text="${option.procedureName}"></option>
+                        </select>
                     </td>
                 </tr>
                 <tr>
                     <td>Стоимость процедуры</td>
                     <td>
                         <label for="procedureCost"></label>
-                        <input type="text" th:field="*{procedureCost}" id="procedureCost" style="border: 0px; box-shadow: none;">
+                        <input type="text" th:field="*{procedureCost}" id="procedureCost"
+                               style="border: 0px; box-shadow: none;" readonly>
                         <div style="color:red" th:if="${#fields.hasErrors('procedureCost')}"
                              th:errors="*{procedureCost}">
                             procedureCost
@@ -182,7 +187,8 @@
                     <td>Скидка</td>
                     <td>
                         <label for="procedureDiscount"></label>
-                        <input type="text" th:field="*{procedureDiscount}" id="procedureDiscount" style="border: 0px; box-shadow: none;">
+                        <input type="text" th:field="*{procedureDiscount}" id="procedureDiscount"
+                               style="border: 0px; box-shadow: none;">
                         <div style="color:red" th:if="${#fields.hasErrors('procedureDiscount')}"
                              th:errors="*{procedureDiscount}">procedureDiscount
                             Errors
@@ -231,6 +237,19 @@
         </div>
     </form>
 </div>
+<script th:inline="javascript">
+    let
+        input = document.getElementById('procedureCost'),
+        procedures = /*[[${allProcedures}]]*/ null,
+        select = document.getElementById('procedureName');
+
+        select.onchange = select_change;
+
+    function select_change() {
+        input.value = procedures.find(proc=>proc.procedureName===this.value).procedureCost;
+    }
+
+</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"

@@ -36,6 +36,7 @@
                         <li><a th:href="@{/companies}">Все компании</a></li>
                         <li class="divider"></li>
                         <li><a th:href="@{/users}">Все пользователи</a></li>
+
                     </ul>
                 </li>
             </ul>
@@ -60,7 +61,7 @@
 
 <br>
 <form th:method="POST" th:action="@{/users/new}" th:object="${user}">
-    <div class="container-sm">
+    <div class="container">
         <table class="table table-bordered table-hover">
             <thead>
             <th class="warning" colspan=2>

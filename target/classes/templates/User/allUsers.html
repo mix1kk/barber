@@ -59,68 +59,59 @@
     </div>
 </nav>
 <br>
-<div class="container-fluid">
-    <table class="table table-bordered table-hover">
+<div class="container">
+    <table class="table table-bordered table-condensed table-sm">
         <thead>
         <tr>
-            <div class="col-md-1" style="background-color: #dff0d8; border-bottom: black">
+            <th class="col-md-1" style="border: 1px solid grey; background-color: #dff0d8">
                 Id
-            </div>
-            <div class="col-md-3" style="background-color: #dff0d8">
+            </th>
+            <th class="col-md-3" style="border: 1px solid grey; background-color: #dff0d8">
                 Имя пользователя
-            </div>
-            <div class="col-md-2" style="background-color: #dff0d8">
+            </th>
+            <th class="col-md-2" style="border: 1px solid grey; background-color: #dff0d8">
                 Компания
-            </div>
-            <div class="col-md-2" style="background-color: #dff0d8">
+            </th>
+            <th class="col-md-2" style="border: 1px solid grey; background-color: #dff0d8">
                 Телефон пользователя
-            </div>
-            <div class="col-md-2" style="background-color: #dff0d8">
+            </th>
+            <th class="col-md-2" style="border: 1px solid grey; background-color: #dff0d8">
                 Профессия пользователя
-            </div>
-            <div class="col-md-2" style="background-color: #dff0d8">
+            </th>
+            <th class="col-md-2" style="border: 1px solid grey; background-color: #dff0d8">
                 Email пользователя
-            </div>
+            </th>
         </tr>
         </thead>
-    </table>
-    <div th:each="user: ${allUsers}">
-        <table class="table table-bordered table-hover">
-            <tbody class="table-group-divider">
-            <tr>
-                <div class="col-md-1">
-                    <div>
-                        <a th:href="@{user/{id}(id=${user.getUserId()})}"
-                           th:text="${user.getUserId()}">id</a>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div>
-                        <a th:href="@{user/{id}(id=${user.getUserId()})}"
-                           th:text="${user.getUserName()}">user</a>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div th:text="${user.getUserCompany()}"></div>
-                </div>
-                <div class="col-md-2">
-                    <div>
-                        <a th:href="@{user/{id}(id=${user.getUserId()})}"
-                           th:text="${user.getUserPhoneNumber()}">phone</a>
-                    </div>
-                </div>
-                <div class="col-md-2">
+        <tbody class="table-group-divider">
+        <div th:each="user, iterStat: ${allUsers}">
+            <tr th:style="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'">
+                <td style="border: 1px solid grey">
+                    <a th:href="@{user/{id}(id=${user.getUserId()})}"
+                       th:text="${user.getUserId()}">id</a>
+                </td>
+                <td style="border: 1px solid grey">
+                    <a th:href="@{user/{id}(id=${user.getUserId()})}"
+                       th:text="${user.getUserName()}">user</a>
+                </td>
+                <td style="border: 1px solid grey">
+                    <a th:href="@{/companies/{companyId} (companyId=${user.userCompany})}"
+                            th:text="${allCompanies.get(user.userCompany)}"></a>
+                </td>
+                <td style="border: 1px solid grey">
+                    <a th:href="@{user/{id}(id=${user.getUserId()})}"
+                       th:text="${user.getUserPhoneNumber()}">phone</a>
+                </td>
+                <td style="border: 1px solid grey">
                     <div th:text="${user.getUserProfession()}"></div>
-                </div>
-                <div class="col-md-2">
-
+                </td>
+                <td style="border: 1px solid grey">
                     <div th:text="${user.getEmail()}"></div>
-
-                </div>
+                </td>
             </tr>
-            </tbody>
-        </table>
-    </div>
+        </div>
+        </tbody>
+    </table>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <!-- Latest compiled and minified JavaScript -->

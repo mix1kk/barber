@@ -3,10 +3,10 @@ package com.mycompany.barber.Controllers;
 import com.mycompany.barber.DTO.LineDTO;
 import com.mycompany.barber.DTO.RecordDTO;
 import com.mycompany.barber.Services.LineService;
+import com.mycompany.barber.Services.ProcedureService;
 import com.mycompany.barber.Services.RecordService;
 import com.mycompany.barber.Services.UserService;
 import com.mycompany.barber.Utils.Line.*;
-import com.mycompany.barber.Utils.Mappers.LineFiller;
 import com.mycompany.barber.Utils.Mappers.LineMapper;
 import com.mycompany.barber.Utils.TimeFiller;
 import jakarta.validation.Valid;
@@ -17,7 +17,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,12 +26,14 @@ public class RecordController {
     private final LineService lineService;
     private final UserService userService;
     private final RecordService recordService;
+    private final ProcedureService procedureService;
 
     @Autowired
-    public RecordController(LineService lineService, UserService userService, RecordService recordService) {
+    public RecordController(LineService lineService, UserService userService, RecordService recordService, ProcedureService procedureService) {
         this.lineService = lineService;
         this.userService = userService;
         this.recordService = recordService;
+        this.procedureService = procedureService;
     }
 
     /**
@@ -47,6 +48,7 @@ public class RecordController {
         if (direction != null) {
             return "redirect:/records/user/" + userId + "?date=" + RecordService.nextOrPreviousDate(date, direction);
         }
+        model.addAttribute("allProcedures", procedureService.findAllForUser(userId));
         RecordDTO recordDTO = recordService.findAllForUserOnDate(userId, userService.findById(userId).getUserName(), date);
         model.addAttribute("record", recordDTO);
         model.addAttribute("allLines", recordDTO.getUserRecords());
@@ -72,6 +74,7 @@ public class RecordController {
         } else {
             model.addAttribute("line", LineMapper.mapToLineDTO(lineService.findById(lineId)));
         }
+        model.addAttribute("allProcedures", procedureService.findAllForUser(userId));
         return "Record/editRecord";
     }
 

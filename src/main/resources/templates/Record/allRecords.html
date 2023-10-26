@@ -123,11 +123,11 @@
         </tr>
         </thead>
         <tbody class="table-group-divider">
-        <div th:each="line, iterStat: ${allLines}">
-
+        <div th:each="line, iterStat: *{allLines}">
             <tr th:style="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'">
                 <form th:method="PATCH"
-                      th:action="@{/records/user/{userId}/{lineId} (userId = ${line.userId},lineId = ${line.lineId})}">
+                      th:action="@{/records/user/{userId}/{lineId} (userId = ${line.userId},lineId = ${line.lineId})}"
+                      >
                     <td style="border: 1px solid grey">
                         <span>
                         <button class="glyphicon glyphicon-ok" type="submit" style="color: green; border: none; box-shadow: none;"
@@ -155,12 +155,17 @@
                                th:value="${line.clientName}" style="border: 0px; box-shadow: none;"
                                th:styleappend="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'"/>
                     <td style="border: 1px solid grey">
-                        <input class="form-control transparent-input" type="text" name="procedureName"
-                               th:value="${line.procedureName}" style="border: 0px; box-shadow: none;"
-                               th:styleappend="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'"/>
+                    <select class="form-control" id = "procedureName" name = "procedureName" th:field = "*{allLines[__${iterStat.index}__].procedureName}"  style="border: 0px; box-shadow: none;"
+                            th:styleappend="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'">
+                        <option></option>
+                        <option th:each="procedure : ${allProcedures}" th:value="${procedure.procedureName}" th:text="${procedure.procedureName}" ></option>
+                    </select>
+<!--                        <input class="form-control transparent-input" type="text" name="procedureName" id="procedureName"-->
+<!--                               th:value="${line.procedureName}" style="border: 0px; box-shadow: none;"-->
+<!--                               th:styleappend="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'"/>-->
                     </td>
                     <td style="border: 1px solid grey">
-                        <input class="form-control transparent-input" type="text" name="procedureCost"
+                        <input class="form-control transparent-input" type="text" id="procedureCost" name="procedureCost"
                                th:value="${line.procedureCost}" style="border: 0px; box-shadow: none;"
                                th:styleappend="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'"/>
                     </td>
@@ -228,6 +233,21 @@
         let date = button.data('date') // Extract info from data-* attributes
         $('#modalInput').attr("action", '/records/user/' + userId + '/line/' + lineId + '?date=' + date)
     })
+</script>
+
+<script th:inline="javascript">
+    let
+        input = document.getElementById('procedureCost'),
+        procedures = /*[[${allProcedures}]]*/ null,
+        select = document.getElementById('procedureName');
+
+
+    select.onchange = select_change;
+
+    function select_change() {
+        input.value = procedures.find(proc=>proc.procedureName===this.value).procedureCost;
+    }
+
 </script>
 </body>
 </html>

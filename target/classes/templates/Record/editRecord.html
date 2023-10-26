@@ -23,7 +23,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#" th:text="${company.getCompanyName()}">CompanyName</a>
+            <a class="navbar-brand" href="#" th:text="${line.userId}">User</a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -36,16 +36,19 @@
                         <li><a th:href="@{/companies}">Все компании</a></li>
                         <li class="divider"></li>
                         <li><a th:href="@{/users}">Все пользователи</a></li>
+                        <li class="divider"></li>
+                        <li><a th:href="@{/procedures/user/{userId} (userId = ${line.userId})}">Все процедуры
+                            пользователя</a></li>
                     </ul>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a th:href="@{/companies/company/{id}(id=${company.getCompanyId()})}"><i
+                    <a href="#"><i
                             class="glyphicon glyphicon-arrow-left"></i></a>
                 </li>
                 <li>
-                    <a href="/companies/new"><i
+                    <a href="#"><i
                             class="glyphicon glyphicon-plus"></i></a>
                 </li>
                 <li>
@@ -57,10 +60,11 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button class="close" data-dismiss="modal">х</button>
-                                    <h4 class="modal-title">Удаление компании</h4>
+                                    <h4 class="modal-title">Удаление записи</h4>
                                 </div>
-                                <div class="modal-body">Вы уверены, что хотите удалить компанию?</div>
-                                <form th:method="DELETE" th:action="@{/companies/company/{id} (id = ${company.getCompanyId()})}">
+                                <div class="modal-body">Вы уверены, что хотите удалить запись?</div>
+                                <form th:method="DELETE"
+                                      th:action="@{/records/user/{userId}/line/{lineId} (userId = ${line.userId},lineId = ${line.lineId})}">
                                     <div class="modal-footer">
                                         <button class="btn btn-success" data-dismiss="modal">Отмена</button>
                                         <button class="btn btn-danger" type="submit">Удалить</button>
@@ -90,134 +94,162 @@
 
 
 <br>
-<form th:method="PATCH" th:action="@{/company/{id}/edit (id=${company.getCompanyId()})}" th:object="${company}">
-    <div class="container-sm">
-        <table class="table table-bordered table-hover">
-            <thead>
-            <th class="warning" colspan=2>
-                <div th:text="'Редактирование профиля компании: '+${company.getCompanyName()}"></div>
-            </th>
-            </thead>
-            <tbody class="table-group-divider">
-            <tr>
-                <td>Id компании</td>
-                <td>
-                    <!--                    <label for="userId"></label>-->
-                    <input type="text" th:field="*{companyId}" id="companyId" disabled="true">
-                </td>
-            </tr>
-            <tr>
-                <td>Название компании</td>
-                <td>
-                    <!--                    <label for="userName"></label>-->
-                    <input type="text" th:field="*{companyName}" id="companyName">
-                    <div style="color:red" th:if="${#fields.hasErrors('companyName')}" th:errors="*{companyName}">companyName
-                        Errors
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>Адрес компании</td>
-                <td>
-                    <label for="address"></label>
-                    <input type="text" th:field="*{address}" id="address">
-                    <div style="color:red" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">
-                        address Errors
-                    </div>
-                </td>
+<div class="container">
+    <form th:method="PATCH"
+          th:action="@{/records/user/{userId}/{lineId} (userId=${line.userId}, lineId=${line.lineId})}"
+          th:object="${line}">
+        <div class="container-sm">
+            <table class="table table-bordered">
+                <thead>
+                <th class="warning" colspan=2>
+                    <i>Редактирование одиночной записи</i>
+                </th>
+                </thead>
+                <tbody class="table-group-divider">
+                <tr>
+                    <td>Id записи</td>
+                    <td>
+                        <input type="text" th:field="*{lineId}" id="lineId" disabled="true"
+                               style="border: 0px; box-shadow: none;">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Мастер</td>
+                    <td>
+                        <select class="form-control" id=dropdownUserList th:field="*{userId}">
+                            <option th:each="option : ${users}" th:value="${option.userId}"
+                                    th:text="${option.userName}"></option>
+                        </select>
 
-            </tr>
-            <tr>
-                <td>Номер телефона компании</td>
-                <td>
-                    <label for="phoneNumber"></label>
-                    <input type="text" th:field="*{phoneNumber}" id="phoneNumber">
-                    <div style="color:red" th:if="${#fields.hasErrors('phoneNumber')}"
-                         th:errors="*{phoneNumber}">
-                        phoneNumber Errors
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>Email компании</td>
-                <td>
-                    <label for="email"></label>
-                    <input type="text" th:field="*{email}" id="email">
-                    <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
-                        email
-                        Errors
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>Cайт компании</td>
-                <td>
-                    <label for="siteLink"></label>
-                    <input type="text" th:field="*{siteLink}" id="siteLink">
-                    <div style="color:red" th:if="${#fields.hasErrors('siteLink')}" th:errors="*{siteLink}">siteLink
-                        Errors
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>ОГРН компании</td>
-                <td>
-                    <label for="ogrn"></label>
-                    <input type="text" th:field="*{ogrn}" id="ogrn">
-                    <div style="color:red" th:if="${#fields.hasErrors('ogrn')}" th:errors="*{ogrn}">
-                        ogrn
-                        Errors
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>ИНН компании</td>
-                <td>
-                    <label for="inn"></label>
-                    <input type="text" th:field="*{inn}" id="inn">
-                    <div style="color:red" th:if="${#fields.hasErrors('inn')}" th:errors="*{inn}">inn
-                        Errors
-                    </div>
-                </td>
-            </tr>
-            <tr>
-            <tr>
-                <td>ОКПО компании</td>
-                <td>
-                    <label for="okpo"></label>
-                    <input type="text" th:field="*{okpo}" id="okpo">
-                    <div style="color:red" th:if="${#fields.hasErrors('okpo')}" th:errors="*{okpo}">okpo
-                        Errors
-                    </div>
-                </td>
-            </tr>
-            </tbody>
+                        <!--                        <input type="text" th:field="*{userId}" id="userId" style="border: 0px; box-shadow: none;">-->
+                        <!--                        <div style="color:red" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}">userId-->
+                        <!--                            Errors-->
+                        <!--                        </div>-->
 
-        </table>
-        <div>
-            <input class="btn btn-success button-md btn-block" value="Сохранить изменения" data-toggle="modal" data-target="#myModalAccept">
-        <div id="myModalAccept" class="modal fade" tabindex="-1">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button class="close" data-dismiss="modal">х</button>
-                        <h4 class="modal-title">Подтвердите изменения</h4>
-                    </div>
-                    <div class="modal-body">Сохранить изменения?</div>
-                    <form th:method="PATCH" th:action="@{/company/{id}/edit (id=${company.getCompanyId()})}" th:object="${company}">
-                        <div class="modal-footer">
-                            <button class="btn btn-danger" data-dismiss="modal">Отмена</button>
-                            <button class="btn btn-success" type="submit">Сохранить</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Дата</td>
+                    <td>
+                        <label for="date"></label>
+                        <input type="date" th:field="*{date}" id="date" style="border: 0px; box-shadow: none;">
+                        <div style="color:red" th:if="${#fields.hasErrors('date')}" th:errors="*{date}">
+                            date Errors
                         </div>
-                    </form>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>Время</td>
+                    <td>
+                        <select class="form-control" id=dropdownList th:field="*{time}">
+                            <option th:each="option : ${timeList}" th:value="${option}" th:text="${option}"></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Имя клиента</td>
+                    <td>
+                        <label for="clientName"></label>
+                        <input type="text" th:field="*{clientName}" id="clientName"
+                               style="border: 0px; box-shadow: none;">
+                        <div style="color:red" th:if="${#fields.hasErrors('clientName')}" th:errors="*{clientName}">
+                            clientName
+                            Errors
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Название процедуры</td>
+                    <td>
+                        <select class="form-control" id="procedureName" name="procedureName" th:field="*{procedureName}"
+                                style="border: 0px; box-shadow: none">
+                            <option disabled value=""></option>
+                            <option th:each="option : ${allProcedures}" th:value="${option.procedureName}"
+                                    th:text="${option.procedureName}"></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Стоимость процедуры</td>
+                    <td>
+                        <label for="procedureCost"></label>
+                        <input type="text" th:field="*{procedureCost}" id="procedureCost"
+                               style="border: 0px; box-shadow: none;" readonly>
+                        <div style="color:red" th:if="${#fields.hasErrors('procedureCost')}"
+                             th:errors="*{procedureCost}">
+                            procedureCost
+                            Errors
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Скидка</td>
+                    <td>
+                        <label for="procedureDiscount"></label>
+                        <input type="text" th:field="*{procedureDiscount}" id="procedureDiscount"
+                               style="border: 0px; box-shadow: none;">
+                        <div style="color:red" th:if="${#fields.hasErrors('procedureDiscount')}"
+                             th:errors="*{procedureDiscount}">procedureDiscount
+                            Errors
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                <tr>
+                    <td>Комментарий к записи</td>
+                    <td>
+                        <label for="comment"></label>
+                        <input type="text" th:field="*{comment}" id="comment" style="border: 0px; box-shadow: none;">
+                        <div style="color:red" th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}">comment
+                            Errors
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+            <div>
+                <input class="btn btn-success button-md btn-block" value="Сохранить изменения" data-toggle="modal"
+                       data-target="#myModalAccept">
+                <div id="myModalAccept" class="modal fade" tabindex="-1">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button class="close" data-dismiss="modal">х</button>
+                                <h4 class="modal-title">Подтвердите изменения</h4>
+                            </div>
+                            <div class="modal-body">Сохранить изменения?</div>
+                            <form th:method="PATCH"
+                                  th:action="@{/records/user/{userId}/{lineId} (userId=${line.userId}, lineId=${line.lineId})}"
+                                  th:object="${line}">
+                                <div class="modal-footer">
+                                    <button class="btn btn-danger" data-dismiss="modal">Отмена</button>
+                                    <button class="btn btn-success" type="submit">Сохранить</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
+
+
             </div>
         </div>
+    </form>
+</div>
+<script th:inline="javascript">
+    let
+        input = document.getElementById('procedureCost'),
+        procedures = /*[[${allProcedures}]]*/ null,
+        select = document.getElementById('procedureName');
 
+        select.onchange = select_change;
 
-        </div>
-    </div>
-</form>
+    function select_change() {
+        input.value = procedures.find(proc=>proc.procedureName===this.value).procedureCost;
+    }
+
+</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"

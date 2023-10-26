@@ -302,3 +302,13 @@ databaseChangeLog:
             schemaName: public
             startWith: 1
             tableName: company
+  - changeSet:
+      id: 6
+      author: postgres
+      changes:
+        - addColumn:
+           tableName : "procedure"
+           columns:
+             - column:
+                 name: procedureCost
+                 type: varchar
