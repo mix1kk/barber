@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://thymeleaf.org ">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+      integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Update User</title>
+</head>
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Навигация</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Barber Application</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a th:href="@{/users}"><i
+                        class="glyphicon glyphicon-home"></i></a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Навигация<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a th:href="@{/companies}">Все компании</a></li>
+                        <li class="divider"></li>
+                        <li><a th:href="@{/users}">Все пользователи</a></li>
+
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Действие</a></li>
+                        <li><a href="#">Другое действие</a></li>
+                        <li><a href="#">Что-то еще</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Отдельная ссылка</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+
+<br>
+<form th:method="POST" th:action="@{/users/new}" th:object="${user}">
+    <div class="container">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <th class="warning" colspan=2>
+                <div>Создание нового пользователя</div>
+            </th>
+            </thead>
+            <tbody class="table-group-divider">
+            <tr>
+                <td>Имя пользователя</td>
+                <td>
+                    <!--                    <label for="userName"></label>-->
+                    <input type="text" th:field="*{userName}" id="userName">
+                    <div style="color:red" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">userName
+                        Errors
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Компания</td>
+                <td>
+                    <div>
+                        <label for="input"></label>
+                        <input type="text" name="input" id="input" th:field="*{userCompany}" class="form-control">
+                        <div style="color:red" th:if="${#fields.hasErrors('userCompany')}" th:errors="*{userCompany}">
+                            userCompany Errors
+                        </div>
+                        <select name="category" id="category">
+                            <div>
+                                <option value="">Выберите компанию:</option>
+                                <div th:each="company: ${allCompanies}">
+                                    <option th:text="${company.getCompanyName()}"
+                                            th:value="${company.getCompanyName()}">
+                                        Company
+                                    </option>
+                                </div>
+                            </div>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Телефон пользователя</td>
+                <td>
+                    <label for="userPhoneNumber"></label>
+                    <input type="text" th:field="*{userPhoneNumber}" id="userPhoneNumber">
+                    <div style="color:red" th:if="${#fields.hasErrors('userPhoneNumber')}"
+                         th:errors="*{userPhoneNumber}">
+                        userPhoneNumber Errors
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Профессия пользователя</td>
+                <td>
+                    <label for="userProfession"></label>
+                    <input type="text" th:field="*{userProfession}" id="userProfession">
+                    <div style="color:red" th:if="${#fields.hasErrors('userProfession')}" th:errors="*{userProfession}">
+                        userProfession
+                        Errors
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Роль пользователя</td>
+                <td>
+                    <label for="userRole"></label>
+                    <input type="text" th:field="*{userRole}" id="userRole">
+                    <div style="color:red" th:if="${#fields.hasErrors('userRole')}" th:errors="*{userRole}">userRole
+                        Errors
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Доступ к пользователям</td>
+                <td>
+                    <label for="usersAccessed"></label>
+                    <input type="text" th:field="*{usersAccessed}" id="usersAccessed">
+                    <div style="color:red" th:if="${#fields.hasErrors('usersAccessed')}" th:errors="*{usersAccessed}">
+                        userAccessed1
+                        Errors
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Пароль</td>
+                <td>
+                    <label for="password"></label>
+                    <input type="text" th:field="*{password}" id="password">
+                    <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password
+                        Errors
+                    </div>
+                </td>
+            </tr>
+            <tr>
+            <tr>
+                <td>Email пользователя</td>
+                <td>
+                    <label for="email"></label>
+                    <input type="text" th:field="*{email}" id="email">
+                    <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email
+                        Errors
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Аватар пользователя</td>
+                <td>
+                    <label for="picture"></label>
+                    <input type="text" th:field="*{picture}" id="picture">
+                    <div style="color:red" th:if="${#fields.hasErrors('picture')}" th:errors="*{picture}">picture
+                        Errors
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+        <div>
+            <input class="btn btn-success button-md btn-block" value="Сохранить изменения" data-toggle="modal"
+                   data-target="#myModalAccept">
+            <div id="myModalAccept" class="modal fade" tabindex="-1">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" data-dismiss="modal">х</button>
+                            <h4 class="modal-title">Подтвердите изменения</h4>
+                        </div>
+                        <div class="modal-body">Сохранить изменения?</div>
+                        <form th:method="POST" th:action="@{/users/new}" th:object="${user}">
+                            <div class="modal-footer">
+                                <button class="btn btn-danger" data-dismiss="modal">Отмена</button>
+                                <button class="btn btn-success" type="submit">Сохранить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</form>
+<script>
+    let form = document.forms[0], // Любая ссылка на форму
+        select = form.category,
+        input = form.input;
+
+    select.onchange = select_change;
+
+    function select_change() {
+        input.value = this.value;
+    }
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+</body>
+</html>
+
+
+
