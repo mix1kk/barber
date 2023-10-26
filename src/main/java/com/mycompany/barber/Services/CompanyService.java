@@ -11,7 +11,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -61,5 +63,12 @@ public class CompanyService {
         }
         company.setUpdatedAt(String.valueOf(System.currentTimeMillis()));
         company.setUpdatedBy(company.getCompanyName());//TODO: сделать запись имени того, кто изменил поле
+    }
+    public static HashMap<String,String> convertToCompanyMap(List<Company> companyList){
+        HashMap<String,String> resultMap = new HashMap<>();
+        for (Company company : companyList){
+            resultMap.put(String.valueOf(company.getCompanyId()),company.getCompanyName());
+        }
+        return resultMap;
     }
 }

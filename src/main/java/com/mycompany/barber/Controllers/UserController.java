@@ -38,6 +38,7 @@ public class UserController {
     @GetMapping("/users")
     public String allUsers(Model model) {
         model.addAttribute("allUsers", userService.findAll().stream().map(this::convertToUserDTO).collect(Collectors.toList()));
+        model.addAttribute("allCompanies", CompanyService.convertToCompanyMap(companyService.findAll()));
         return "User/allUsers";
     }
 
@@ -78,8 +79,6 @@ public class UserController {
             for (FieldError error : errors) {
                 errorMsg.append(error.getField()).append(": ").append(error.getDefaultMessage()).append("<br>");
             }
-            System.out.println(errorMsg);
-            //throw new UserNotCreatedException(errorMsg.toString());
             return "User/newUser";
         }
         userService.save(convertToUser(userDTO));

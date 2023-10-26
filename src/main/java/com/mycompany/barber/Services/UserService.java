@@ -1,6 +1,7 @@
 package com.mycompany.barber.Services;
 
 import com.mycompany.barber.Models.User;
+import com.mycompany.barber.Repository.CompanyRepository;
 import com.mycompany.barber.Repository.UserRepository;
 import com.mycompany.barber.Utils.User.UserNotDeletedException;
 import com.mycompany.barber.Utils.User.UserNotFoundException;
@@ -8,17 +9,18 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 
 @Service
 @Transactional
 public class UserService {
     private final UserRepository userRepository;
+    private final CompanyRepository companyRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, CompanyRepository companyRepository) {
         this.userRepository = userRepository;
+        this.companyRepository = companyRepository;
     }
 
     public List<User> findAll() {
@@ -63,6 +65,4 @@ public class UserService {
         user.setUpdatedAt(String.valueOf(System.currentTimeMillis()));
         user.setUpdatedBy(user.getUserName());//TODO: сделать запись имени того, кто изменил поле
     }
-
-
 }
