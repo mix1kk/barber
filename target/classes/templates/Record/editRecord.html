@@ -116,7 +116,7 @@
                 <tr>
                     <td>Мастер</td>
                     <td>
-                        <select class="form-control" id=dropdownUserList th:field="*{userId}">
+                        <select class="form-control" id="dropdownUserList" th:field="*{userId}" style="border: 0px; box-shadow: none;">
                             <option th:each="option : ${users}" th:value="${option.userId}"
                                     th:text="${option.userName}"></option>
                         </select>
@@ -142,7 +142,7 @@
                 <tr>
                     <td>Время</td>
                     <td>
-                        <select class="form-control" id=dropdownList th:field="*{time}">
+                        <select class="form-control" id="dropdownList" th:field="*{time}" style="border: 0px; box-shadow: none;">
                             <option th:each="option : ${timeList}" th:value="${option}" th:text="${option}"></option>
                         </select>
                     </td>
