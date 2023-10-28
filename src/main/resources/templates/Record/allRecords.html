@@ -166,8 +166,10 @@
 <!--                               th:styleappend="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'"/>-->
                     </td>
                     <td style="border: 1px solid grey">
-                        <input class="form-control transparent-input" readonly type="text" name = "procedureCost" id="procedureCost" th:name="'procedureCost'+${iterStat.index}" th:id="'procedureCost'+${iterStat.index}"
-                               th:field = "*{procedureCost}" style="border: 0px; box-shadow: none;"
+                        <input class="form-control transparent-input" readonly type="text" th:id="'procedureCost'+${iterStat.index}"
+                               th:value = "*{procedureCost}"
+                               th:name="procedureCost"
+                               style="border: 0px; box-shadow: none;"
                                th:styleappend="${iterStat.odd}?'background:#EEEEEE':'background:#FFFFFF'"/>
                     </td>
                     <td style="border: 1px solid grey">
