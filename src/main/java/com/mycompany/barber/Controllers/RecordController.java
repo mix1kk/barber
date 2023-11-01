@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -52,6 +53,7 @@ public class RecordController {
         RecordDTO recordDTO = recordService.findAllForUserOnDate(userId, userService.findById(userId).getUserName(), date);
         model.addAttribute("record", recordDTO);
         model.addAttribute("allLines", recordDTO.getUserRecords());
+        model.addAttribute("line", new LineDTO());
         return "Record/allRecords";
     }
 
